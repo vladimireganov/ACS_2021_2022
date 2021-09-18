@@ -1,0 +1,30 @@
+Pseudo-code:
+
+
+Begin
+	initialize sensors and I/O devices
+	start logging
+	while not armed:
+		log data and wait for arm signal
+	log - armed
+	while not launched:
+		log data and wait for launch
+	log - launched
+	while not burnt out:
+		log data 
+	log - burnt out
+	while not apogee:
+		do math and control 
+		log data
+		wait for apogee
+	log: apogee
+	close air brakes
+	while not landed:
+		log data 
+	log landed
+	while not picked up:
+		send coordinates of the rocket
+		log data
+	log picked up
+	turn off
+End 
