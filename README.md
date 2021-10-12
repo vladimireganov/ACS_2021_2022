@@ -10,4 +10,5 @@ testing folder will hold all testing files for sensors and logic
 
 for this year we are using MS5607 and BMX 160 as sensors.
 
-refer to BMP390 and BNO055 as examples from last year. They were wriiten for Arduino-like boards.
+refer to last_year_libs folder as examples from last year. They were wriiten for Arduino-like boards.
+
