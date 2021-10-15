@@ -4,7 +4,7 @@ libs folder is designated for writing libraries for the code.
 
 main.h curretly the main file for the code
 
-main.ino is file for testing on sensors and other various things on teensy board
+main.ino is file for testing sensors and other various things on teensy board
 
 testing folder will hold all testing files for sensors and logic
 
