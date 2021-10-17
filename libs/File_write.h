@@ -7,7 +7,6 @@ using namespace std;
 // TO DO
 // create names for the files
 // write insides of the functions
-//testing git - Jacob
 
 class File_write
 {
