@@ -7,11 +7,13 @@ using namespace std;
 // TO DO
 // create names for the files
 // write insides of the functions
+//testing git - Jacob
 
 class File_write
 {
 private:
     /* data */
+    string data_test; //testing git push
     string name_of_the_file;
     string log_file_name;
     ofstream data_file;
