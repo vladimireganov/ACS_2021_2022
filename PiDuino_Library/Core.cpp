@@ -77,6 +77,7 @@ static volatile uint32_t *gpio_map = NULL;
 static bool g_open_gpiomem_flag = false;
 int g_gpio_pin_set[SOC_GPIO_PINS];           // Used to know which gpio pins are set (HIGH) or not set (LOW) 
 char GPIO_DRIVER_NAME[128] = "/dev/gpiomem";
+char GPIO_DRIVER_NAME[128] = "test"; //test
 
 // -- Analog I/O --
 #define BCM2708_PERI_BASE   0x20000000
