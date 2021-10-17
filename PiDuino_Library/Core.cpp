@@ -1,6 +1,6 @@
 /*
   Core.cpp - piDuino Digital, PWM and Arduino functions
-  // test
+  // test - test3
   Copyright (c) 2016 Jorge Garza <jgarzagu@ucsd.edu>
 
   This library is free software; you can redistribute it and/or
