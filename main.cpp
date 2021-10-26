@@ -5,7 +5,7 @@
 //#include <fstream>
 using namespace std;
 
-//File_write file = File_write();
+Data flight_data; // creating class to store data
 
 int main(){
     // section for init
@@ -15,6 +15,7 @@ int main(){
 
     cout << "Hello World";
     File_write file;
+    file.flight_data = &flight_data;
     file.create_log_file();
     file.log_error();
     file.create_table_names();
