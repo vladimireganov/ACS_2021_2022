@@ -12,7 +12,7 @@ class File_write
 {
 private:
     /* data */
-    string data_test; //testing git push
+    //string data_test; //testing git push
     string name_of_the_file;
     string log_file_name;
     ofstream data_file;
@@ -28,6 +28,8 @@ public:
 
 File_write::File_write(/* args */)
 {   
+    name_of_the_file = "data.scv";
+    log_file_name = "log.txt";
     //add choosing names for files
 }
 
@@ -59,3 +61,4 @@ void File_write::log_error(){ // logs error to the log
     log_file << "error\n";
     log_file.close();
 }
+
