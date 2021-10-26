@@ -4,15 +4,20 @@
 #include <fstream>
 #include "libs/File_write.h"
 
+#include "PiDuino_Library/Serial.h"
 #include "PiDuino_Library/Core.h"
 #include "PiDuino_Library/SPI.h"
-#include "PiDuino_Library/Arduinoh/Arduino.h"
+#include "PiDuino_Library/piDuino.h"
 #include "PiDuino_Library/DFRobot_BMX160.h"
 #include "PiDuino_Library/MS5607.h"
+
+//#include "PiDuino_Library/DFRobot_BMX160.cpp"
+//#include "PiDuino_Library/MS5607.cpp"
 
 using namespace std;
 
 Data flight_data; // creating class to store data
+
 
 int main(){
     // section for init
@@ -20,11 +25,51 @@ int main(){
     file.connect_data(flight_data);
     file.create_log_file();
     file.create_table_names();
+    
+    DFRobot_BMX160 bmx160;
+    bmx160SensorData Omagn, Ogyro, Oaccel;
     // create file
     // activate sensors 
     // log everything is good, else log error and exit program
 
+    //Serial.begin(115200);
+    //delay(100);
+    if (bmx160.begin() != true){
+        //Serial.println("init false");
+        cout << "init false";
+        while(1);
+    }
     cout << "Hello World";// debug
+    for (int i = 0; i < 25; i++)
+    {
+       
+        bmx160.getAllData(&Omagn, &Ogyro, &Oaccel);
+
+  /* Display the magnetometer results (magn is magnetometer in uTesla) */
+        cout << "M ";
+        cout << "X: "; cout << Omagn.x << "  ";
+        cout << "Y: "; cout << Omagn.y << "  ";
+        cout << "Z: "; cout << Omagn.z << "  ";
+        cout << "uT\n";
+        
+
+  /* Display the gyroscope results (gyroscope data is in g) */
+        cout << "G ";
+        cout << "X: "; cout << Ogyro.x << "  ";
+        cout << "Y: "; cout << Ogyro.y << "  ";
+        cout << "Z: "; cout << Ogyro.z << "  ";
+        cout << "g\n";
+  
+  /* Display the accelerometer results (accelerometer data is in m/s^2) */
+        cout << "A ";
+        cout << "X: "; cout << Oaccel.x << "  ";
+        cout << "Y: "; cout << Oaccel.y << "  ";
+        cout << "Z: "; cout << Oaccel.z << "  ";
+        cout << "m/s^2\n";
+
+        cout << "\n";
+    }
+    
     
     
     
