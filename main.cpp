@@ -1,7 +1,14 @@
+
+
 #include <iostream>
 #include <fstream>
 #include "libs/File_write.h"
 
+#include "PiDuino_Library/Core.h"
+#include "SPI.h"
+#include "PiDuino_Library/Arduinoh/Arduino.h"
+#include "PiDuino_Library/DFRobot_BMX160.h"
+#include "PiDuino_Library/MS5607.h"
 //#include <fstream>
 using namespace std;
 
