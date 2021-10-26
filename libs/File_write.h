@@ -22,11 +22,13 @@ private:
 public:
     File_write(/* args */);
     ~File_write();
+    void connect_data(Data& data);
     void write_to_file();
     void create_table_names();
     void create_log_file();
-    void log_error();
+    void log_error(string msg);
     void save_data();
+    void close_files();
     Data* flight_data; // pointer to the data
 };
 
@@ -40,6 +42,10 @@ File_write::File_write(/* args */)
 File_write::~File_write()
 {
     //add making sure all files closed and will not be lost
+}
+
+void File_write::connect_data(Data& data){
+    flight_data = &data;
 }
 
 void File_write::create_table_names(){ //prints name of the columns in the csv file
@@ -73,9 +79,9 @@ void File_write::create_log_file(){ // creates log file
     log_file.close();
 }
 
-void File_write::log_error(){ // logs error to the log
+void File_write::log_error(string msg){ // logs error to the log
     log_file.open(log_file_name);
-    log_file << "error\n";
+    log_file << msg + "\n";
     data_file.flush();
     log_file.close();
 }
@@ -122,4 +128,11 @@ void File_write::save_data(){ // prints data into the file
 
     data_file.flush();
     data_file.close();
+}
+
+void File_write::close_files(){
+    data_file.flush();
+    log_file.flush();
+    data_file.close();
+    log_file.close();
 }

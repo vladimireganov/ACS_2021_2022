@@ -9,16 +9,18 @@ Data flight_data; // creating class to store data
 
 int main(){
     // section for init
+    File_write file;
+    file.connect_data(flight_data);
+    file.create_log_file();
+    file.create_table_names();
     // create file
     // activate sensors 
     // log everything is good, else log error and exit program
 
-    cout << "Hello World";
-    File_write file;
-    file.flight_data = &flight_data;
-    file.create_log_file();
-    file.log_error();
-    file.create_table_names();
+    cout << "Hello World";// debug
+    
+    
+    
     //section for waiting from radio command that rocket is ready for launch
 
     // section for main code
@@ -29,7 +31,7 @@ int main(){
     
     
     // closing everything
-    
+    file.close_files();
 
     return 0;
 }
