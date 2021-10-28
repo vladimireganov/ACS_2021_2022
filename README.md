@@ -12,3 +12,17 @@ for this year we are using MS5607 and BMX 160 as sensors.
 
 refer to last_year_libs folder as examples from last year. They were wriiten for Arduino-like boards.
 
+currently ready:
+creating log file and data storage file - tested
+writing data into csv file, not tested
+wrtiting logs, not tested
+
+data storage - ready
+
+TO DO:
+
+connect sensors
+read data from sensors
+process data
+
+write code logic
