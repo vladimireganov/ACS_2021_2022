@@ -31,6 +31,7 @@ THE SOFTWARE.
 */
 
 //#include<piDuino.h>
+#include "Core.h"
 #include "Wire.h"
 #include "SPI.h"
 

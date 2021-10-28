@@ -9,6 +9,7 @@
 #define RESET 0x1E          // soft reset command
 
 #include "piDuino.h"
+#include "Core.h"
 
 class MS5607
 {
