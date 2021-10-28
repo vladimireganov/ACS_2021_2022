@@ -5,7 +5,7 @@
 */
 
 #include "Core.h"
-#include "math.h"
+#include <math.h>
 #include "MS5607.h"
 #include "Wire.h"
 
