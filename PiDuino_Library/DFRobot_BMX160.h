@@ -30,9 +30,9 @@ THE SOFTWARE.
 ===============================================
 */
 
-//#include<piDuino.h>
-#include "Wire.h"
-#include "SPI.h"
+#include<arduino.h>
+#include<Wire.h>
+#include<SPI.h>
 
 #define LITTLE_ENDIAN 1
 

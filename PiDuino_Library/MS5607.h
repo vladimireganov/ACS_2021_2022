@@ -8,7 +8,7 @@
 #define PROM_READ  0xA0     // prom read command
 #define RESET 0x1E          // soft reset command
 
-#include "piDuino.h"
+#include <piDuino.h>  //made include aruino.h fo include piDuino. This should make all arduino libraries ito piDunio
 
 class MS5607
 {

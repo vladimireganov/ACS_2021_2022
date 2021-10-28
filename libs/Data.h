@@ -1,11 +1,8 @@
 // class for data storage
 // currently stores raw data
 // TO DO
-// add raw data
+// add processed data
 // add functions for obtaining processed data
-
-// add includes for sensors
-
 
 class Data
 {
@@ -17,6 +14,7 @@ public:
 
     int iteration_time; // time
     float pressure;
+    //float altitude;
     float linear_acceleration_x;
     float linear_acceleration_y;
     float linear_acceleration_z;
@@ -30,13 +28,8 @@ public:
     float gravity_y;
     float gravity_z;
 
-    // section for processed data
-    //float altitude;
-
     Data(/* args */);
     ~Data();
-    void get_data();
-    void process_data();
 };
 
 Data::Data(/* args */)
@@ -45,12 +38,4 @@ Data::Data(/* args */)
 
 Data::~Data()
 {
-}
-
-void Data::get_data(){
-    // reading all the data
-}
-
-void Data::process_data(){
-    // getting processed data
 }
