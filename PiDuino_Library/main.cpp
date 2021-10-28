@@ -2,14 +2,12 @@
 
 #include <iostream>
 #include <fstream>
-#include "libs/File_write.h"
+#include "../libs/File_write.h"
 
-#include "PiDuino_Library/Serial.h"
-#include "PiDuino_Library/Core.h"
-#include "PiDuino_Library/SPI.h"
-#include "PiDuino_Library/piDuino.h"
-#include "PiDuino_Library/DFRobot_BMX160.h"
-#include "PiDuino_Library/MS5607.h"
+
+#include "piDuino.h"
+#include "DFRobot_BMX160.h"
+#include "MS5607.h"
 
 //#include "PiDuino_Library/DFRobot_BMX160.cpp"
 //#include "PiDuino_Library/MS5607.cpp"
