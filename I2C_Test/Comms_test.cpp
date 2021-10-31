@@ -41,6 +41,11 @@ printf("Failed to read from the i2c bus.\n");
 }
 else
 {
+    //added simple read register from broadcom library for pi
+    char buff[]={registerAddress};
+    bcm2835_i2c_write(buf, 1); //bcm is broadcom library for rasberry pi
+    bcm2835_i2c_read(buf, 1);
+    ////////////////////////////////////
 printf("Data read: %s\n", buffer);
 }
 
