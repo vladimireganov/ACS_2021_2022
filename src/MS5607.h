@@ -8,7 +8,8 @@
 #define PROM_READ  0xA0     // prom read command
 #define RESET 0x1E          // soft reset command
 
-#include <Arduino.h>
+#include "piDuino.h"
+#include "Core.h"
 
 class MS5607
 {
