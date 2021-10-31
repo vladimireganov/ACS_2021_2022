@@ -7,7 +7,26 @@
 #include <fcntl.h>				//Needed for I2C port
 #include <sys/ioctl.h>			//Needed for I2C port
 #include <linux/i2c-dev.h>		//Needed for I2C port
-
+There's a i2c-dev header in the Linux userspace. I can't remember if this header is shipped with the lm-sensors package, or if it will need to be installed from source. I'd check your distro's package repository. xGoat has a nice article covering preparation & usage.
+/*
+#include <linux/i2c-dev.h>
+*************************
+  Including i2c-dev header will allow the following I2C SMBus functions
+  - i2c_smbus_access
+  - i2c_smbus_write_quick
+  - i2c_smbus_read_byte
+  - i2c_smbus_write_byte
+  - i2c_smbus_read_byte_data
+  - i2c_smbus_write_byte_data
+  - i2c_smbus_read_word_data
+  - i2c_smbus_write_word_data
+  - i2c_smbus_process_call
+  - i2c_smbus_read_block_data
+  - i2c_smbus_write_block_data
+  - i2c_smbus_read_i2c_block_data
+  - i2c_smbus_write_i2c_block_data
+  - i2c_smbus_block_process_call
+*/
 
 int file_i2c;
 int length;
