@@ -74,5 +74,5 @@ int main(void) {
         printf("Failed to write to the i2c bus.\n");
 
     }
-
+return 0
 }
