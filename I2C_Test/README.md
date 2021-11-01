@@ -72,7 +72,29 @@ Handles the SMBus read_i2c_block_data command
 I2C_FUNC_SMBUS_WRITE_I2C_BLOCK
 Handles the SMBus write_i2c_block_data command
 
-
-
-
 *******************************************
+    Acces Adapter from Userspace program
+*******************************************
+If you try to access an adapter from a userspace program,
+ you will have to use the /dev interface.
+ You will still have to check whether the functionality you need is supported,
+ of course. This is done using the I2C_FUNCS ioctl. 
+  An example, adapted from the i2cdetect program, is below:
+  -----------------------------------------------
+ int file;
+ if (file = open("/dev/i2c-0", O_RDWR) < 0) {
+       /* Some kind of error handling */
+       exit(1);
+ }
+ if (ioctl(file, I2C_FUNCS, &funcs) < 0) {
+       /* Some kind of error handling */
+       exit(1);
+ }
+ if (!(funcs & I2C_FUNC_SMBUS_QUICK)) {
+       /* Oops, the needed functionality (SMBus write_quick function) is
+          not available! */
+       exit(1);
+ }
+ /* Now it is safe to use the SMBus write_quick command */
+ --------------------------------------------
+ ******************************************* 
