@@ -9,13 +9,6 @@
 #include <linux/i2c-dev.h>		//Needed for I2C port
 //There's a i2c-dev header in the Linux userspace. I can't remember if this header is shipped with the lm-sensors package, or if it will need to be installed from source. I'd check your distro's package repository. xGoat has a nice article covering preparation & usage.
 
-
-/*
- * Other important headers that we may like to use
-    #include <i2c_smbus_read_byte_data>
-    #include <i2c_smbus_write_byte_data>
-*/
-
 /*
 #include <linux/i2c-dev.h> //already in use
 *************************
