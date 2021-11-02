@@ -28,7 +28,7 @@ while not bmx.begin():
 
 def main():
     
-    #test = data
+    # test = data()
 
     f = file_work()
     f.start_files()
@@ -36,10 +36,12 @@ def main():
         temperature = sensor.getDigitalTemperature()
         pressure = sensor.getDigitalPressure()
         converted = sensor.convertPressureTemperature(pressure, temperature)
+        proper_temp = sensor.getTemperature()
         print("pressure = ", pressure)
         print("pressure in milibar = ", converted)
-        print("temperature = ", sensor.getTemperature())
-        print(sensor.getMetricAltitude(converted, sensor.inHgToHectoPascal(30.06)), "\n")
+        print("temperature = ", proper_temp)
+        altitude = sensor.getMetricAltitude(converted, sensor.inHgToHectoPascal(30.06))
+        print(altitude, "\n")
         # print(sensor.getMetricAltitude(converted, sensor.inHgToHectoPascal(29.95)))
         bmx_data = bmx.get_all_data()
         
@@ -48,6 +50,10 @@ def main():
         print("accel x: {0:.2f} m/s^2, y: {1:.2f} m/s^2, z: {2:.2f} m/s^2".format(bmx_data[6],bmx_data[7],bmx_data[8]))
         print("\n")
         time.sleep(1)
+        f.data.update_bmx(bmx_data)
+        f.data.update_ms(proper_temp, converted ,altitude)
+        f.data.update_iter()
+        f.write_data()
 
 if __name__ == "__main__":
     main()
