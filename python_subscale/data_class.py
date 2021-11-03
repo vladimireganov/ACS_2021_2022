@@ -1,8 +1,7 @@
 
 
 
-from select import select
-
+import time
 
 class data:
 
@@ -29,7 +28,7 @@ class data:
         
         self.iterator = -1 #; // number of iteration
 
-        self.iteration_time = 0#; // time
+        self.iteration_time = time.time()   #; // time
         self.pressure = 0
         self.linear_acceleration_x = 0
         self.linear_acceleration_y = 0
@@ -62,3 +61,4 @@ class data:
     
     def update_iter(self):
         self.iterator = self.iterator + 1
+

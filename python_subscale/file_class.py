@@ -1,6 +1,7 @@
 
 from data_class import data
 
+
 class file_work:
     def __init__(self):
         self.log_f = open("log.txt", "x")
@@ -11,7 +12,16 @@ class file_work:
         self.data_f.write("iterator,iteration_time,pressure,linear_acceleration_x,linear_acceleration_y,linear_acceleration_z,gyroscope_x,gyroscope_y,gyroscope_z,acceleration_x,acceleration_y,acceleration_z,gravity_x,gravity_y,gravity_z\n")
         self.data_f.flush()
         self.log_f.flush()
-        
+    
+    def end_files(self):
+        self.data_f.flush()
+        self.log_f.flush()
+        self.data_f.close()
+        self.log_f.close()
+
+    def write_log(self,log):
+        self.log_f.write(log)
+        self.log_f.flush()
         
     
     def write_data(self):

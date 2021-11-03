@@ -32,6 +32,7 @@ def main():
 
     f = file_work()
     f.start_files()
+    start_time = time.time()
     while True:
         temperature = sensor.getDigitalTemperature()
         pressure = sensor.getDigitalPressure()
@@ -52,8 +53,10 @@ def main():
         time.sleep(1)
         f.data.update_bmx(bmx_data)
         f.data.update_ms(proper_temp, converted ,altitude)
+        f.data.iteration_time = time.time() - start_time
         f.data.update_iter()
         f.write_data()
-
+        
+    f.end_files()
 if __name__ == "__main__":
     main()
