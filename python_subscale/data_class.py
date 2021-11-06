@@ -43,6 +43,8 @@ class data:
         self.gravity_y = 0
         self.gravity_z = 0
         self.altitude = 0.0
+        self.temperatue =0.0
+        
     
     def update_bmx(self,bmx):
 
