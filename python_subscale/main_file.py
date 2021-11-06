@@ -50,7 +50,7 @@ def main():
         print("gyro  x: {0:.2f} g, y: {1:.2f} g, z: {2:.2f} g".format(bmx_data[3],bmx_data[4],bmx_data[5]))
         print("accel x: {0:.2f} m/s^2, y: {1:.2f} m/s^2, z: {2:.2f} m/s^2".format(bmx_data[6],bmx_data[7],bmx_data[8]))
         print("\n")
-        time.sleep(1)
+        # time.sleep(1)
         f.data.update_bmx(bmx_data)
         f.data.update_ms(proper_temp, converted ,altitude)
         f.data.iteration_time = time.time() - start_time
