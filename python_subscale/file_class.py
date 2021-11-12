@@ -9,7 +9,7 @@ class file_work:
         self.data = data()
     def start_files(self):
         self.log_f.write("log file sucessfully created\n")
-        self.data_f.write("iterator,iteration_time,pressure,linear_acceleration_x,linear_acceleration_y,linear_acceleration_z,gyroscope_x,gyroscope_y,gyroscope_z,acceleration_x,acceleration_y,acceleration_z,gravity_x,gravity_y,gravity_z\n")
+        self.data_f.write("iterator,iteration_time,pressure,temperatue,altitude,gyroscope_x,gyroscope_y,gyroscope_z,acceleration_x,acceleration_y,acceleration_z\n")
         self.data_f.flush()
         self.log_f.flush()
     

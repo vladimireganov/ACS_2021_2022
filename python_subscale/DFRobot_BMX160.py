@@ -1,3 +1,19 @@
+'''
+ MIT License
+ Copyright (C) <2019> <@DFRobot luoyufeng>
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ software and associated documentation files (the "Software"), to deal in the Software
+ without restriction, including without limitation the rights to use, copy, modify,
+ merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so.
+ The above copyright notice and this permission notice shall be included in all copies or
+ substantial portions of the Software.
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+'''
 import sys
 sys.path.append('../')
 import smbus
@@ -107,6 +123,8 @@ class BMX160:
             self.write_bmx_reg(self._BMX160_COMMAND_REG_ADDR, 0x19);
             time.sleep(0.01);
             self.set_magn_conf();
+            time.sleep(0.01);
+            self.write_bmx_reg(self._BMX160_ACCEL_RANGE_ADDR,0xC)
             return True
 
     def set_low_power(self):
@@ -159,29 +177,29 @@ class BMX160:
 
     def set_gyro_range(self, bits):
         if bits == 0:
-            self.gyroRange = self._BMX160_GYRO_SENSITIVITY_125DPS
+            self.gyroRange = self.BMX160_GYRO_SENSITIVITY_125DPS
         elif bits == 1:
-            self.gyroRange = self._BMX160_GYRO_SENSITIVITY_250DPS
+            self.gyroRange = self.BMX160_GYRO_SENSITIVITY_250DPS
         elif bits == 2:
-            self.gyroRange = self._BMX160_GYRO_SENSITIVITY_500DPS
+            self.gyroRange = self.BMX160_GYRO_SENSITIVITY_500DPS
         elif bits == 3:
-            self.gyroRange = self._BMX160_GYRO_SENSITIVITY_1000DPS
+            self.gyroRange = self.BMX160_GYRO_SENSITIVITY_1000DPS
         elif bits == 4:
-            self.gyroRange = self._BMX160_GYRO_SENSITIVITY_2000DPS
+            self.gyroRange = self.BMX160_GYRO_SENSITIVITY_2000DPS
         else:
-            self.gyroRange = self._BMX160_GYRO_SENSITIVITY_250DPS
+            self.gyroRange = self.BMX160_GYRO_SENSITIVITY_250DPS
 
     def set_accel_range(self, bits):
         if bits == 0:
-            self.accelRange = self._BMX160_ACCEL_MG_LSB_2G
+            self.accelRange = self.BMX160_ACCEL_MG_LSB_2G
         elif bits == 1:
-            self.accelRange = self._BMX160_ACCEL_MG_LSB_4G
+            self.accelRange = self.BMX160_ACCEL_MG_LSB_4G
         elif bits == 2:
-            self.accelRange = self._BMX160_ACCEL_MG_LSB_8G
+            self.accelRange = self.BMX160_ACCEL_MG_LSB_8G
         elif bits == 3:
-            self.accelRange = self._BMX160_ACCEL_MG_LSB_16G
+            self.accelRange = self.BMX160_ACCEL_MG_LSB_16G
         else:
-            self.accelRange = self._BMX160_ACCEL_MG_LSB_2G
+            self.accelRange = self.BMX160_ACCEL_MG_LSB_2G
 
     def get_all_data(self):
 
