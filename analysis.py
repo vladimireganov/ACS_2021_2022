@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 import math
 
-df = pd.read_csv("data.csv",sep=",")
+df = pd.read_csv("python_subscale/data.scv",sep=",")
 ####initial decribing of data
 print (df)
 print (df.shape)

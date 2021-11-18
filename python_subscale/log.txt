@@ -1,0 +1,4 @@
+log file sucessfully created
+[44196, 39742, 27233, 24017, 32212, 27946]
+starting data collection
+1620490747.216874
