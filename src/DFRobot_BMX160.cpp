@@ -1,34 +1,8 @@
-/*
-===============================================
-bmx160 magnetometer/accelerometer/gyroscope library for Intel(R) Curie(TM) devices.
-Copyright (c) 2015 Intel Corporation.  All rights reserved.
-
-Based on MPU6050 Arduino library provided by Jeff Rowberg as part of his
-excellent I2Cdev device library: https://github.com/jrowberg/i2cdevlib
-
-===============================================
-I2Cdev device library code is placed under the MIT license
-Copyright (c) 2012 Jeff Rowberg
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-===============================================
-*/
+#include <unistd.h>				//Needed for I2C port
+#include <fcntl.h>				//Needed for I2C port
+#include <sys/ioctl.h>			//Needed for I2C port
+#include <linux/i2c-dev.h>		//Needed for I2C port
+#include <i2c/smbus.h>
 #include "DFRobot_BMX160.h"
 
 DFRobot_BMX160::DFRobot_BMX160()
@@ -57,7 +31,17 @@ const uint8_t int_mask_lookup_table[13] = {
 
 bool DFRobot_BMX160::begin()
 {
-    Wire.begin();
+   // Wire.begin();
+    int RPI_I2C_bus;
+    int adapter_nr = 1; //adapter number for I2C bus on RPI
+    char filename[20];
+
+    snprintf(filename, 19, "/dev/i2c-%d", adapter_nr);
+    RPI_I2C_bus = open(filename, O_RDWR);
+    if (RPI_I2C_bus < 0) {
+        /* ERROR HANDLING; you can check errno to see what went wrong */
+        exit(1);
+    }
     if (scan() == true){
         softReset();
         writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x11);
@@ -252,7 +236,7 @@ int8_t DFRobot_BMX160::readBmxReg(uint8_t reg)
     uint8_t buf[1] = {0};
     
     readReg(reg, buf, sizeof(buf));
-    return buf[1];
+    return buf[0];
 }
 
 void DFRobot_BMX160::writeBmxReg(uint8_t reg, uint8_t value)
@@ -263,17 +247,56 @@ void DFRobot_BMX160::writeBmxReg(uint8_t reg, uint8_t value)
 
 void DFRobot_BMX160::writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 {
-    Wire.begin();
+    if (ioctl(RPI_I2C_bus, I2C_SLAVE, _addr) < 0) {
+        fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
+        exit(1);
+    }
+
+    for(uint16_t i = 0; i < len; i ++) {
+
+        if (i2c_write_byte_data(RPI_I2C_bus, reg, pBuf[i]) < 0) {
+
+
+            fprintf("failure to write on register %d", reg)
+            exit(1)
+        }
+
+        else {
+            reg++;
+        }
+
+
+    /* Wire.begin();
     Wire.beginTransmission(_addr);
     Wire.write(reg);
     for(uint16_t i = 0; i < len; i ++)
         Wire.write(pBuf[i]);
     Wire.endTransmission();
+    */
 }
 
 void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 {
-    Wire.begin();
+    if (ioctl(RPI_I2C_bus, I2C_SLAVE, _addr) < 0) {
+        fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
+        exit(1);
+    }
+    ;
+    for(uint16_t i = 0; i < len; i ++) {
+
+        pBuf[i] = i2c_read_byte_data(RPI_I2C_bus, reg)
+
+        if (pBuf[i] < 0) {
+
+         fprintf("failure to read on register %d", reg)
+         exit(1)
+        }
+
+    else {
+            reg++;
+        }
+    }
+    /*
     Wire.beginTransmission(_addr);
     Wire.write(reg);
     if(Wire.endTransmission() != 0)
@@ -283,13 +306,20 @@ void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
         pBuf[i] = Wire.read();
     }
     Wire.endTransmission();
+    */
+
+
 }
 
 bool DFRobot_BMX160::scan()
 {
-    Wire.beginTransmission(_addr);
-    if (Wire.endTransmission() == 0){
-        return true;
+    //Wire.beginTransmission(_addr);
+    if (ioctl(RPI_I2C_bus, I2C_SLAVE, _addr) < 0) {
+        fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
+        exit(1);
     }
-    return false;
+    if (i2c_smbus_read_byte(RPI_I2C_bus) < 0){
+        return false;
+    }
+    return true;
 }
