@@ -4,10 +4,15 @@
   Company: Uravu Labs
 */
 
-#include "Core.h"
+//#include "Core.h"
 #include <math.h>
 #include "MS5607.h"
-#include "Wire.h"
+#include <unistd.h>				//Needed for I2C port
+#include <fcntl.h>				//Needed for I2C port
+#include <sys/ioctl.h>			//Needed for I2C port
+#include <linux/i2c-dev.h>		//Needed for I2C port
+#include <i2c/smbus.h>
+//#include "Wire.h"
 
 MS5607::MS5607(){
 
@@ -19,14 +24,24 @@ MS5607::MS5607(short address){
 
 // Initialise coefficient by reading calibration data
 char MS5607::begin(){
-  Wire.begin();
+  //Wire.begin();
+    int RPI_I2C_bus;
+    int adapter_nr = 1; //adapter number for I2C bus on RPI
+    char filename[20];
+
+    snprintf(filename, 19, "/dev/i2c-%d", adapter_nr);
+    RPI_I2C_bus = open(filename, O_RDWR);
+    if (RPI_I2C_bus < 0) {
+        /* ERROR HANDLING; you can check errno to see what went wrong */
+        exit(1);
+    }
   return(readCalibration());
 }
 
 char MS5607::resetDevice(void){
-  Wire.beginTransmission(MS5607_ADDR);
-  Wire.write(RESET);
-  char error = Wire.endTransmission();
+  //Wire.beginTransmission(MS5607_ADDR);
+  //Wire.write(RESET);
+  //char error = Wire.endTransmission();
   if(error == 0){
     delay(3);     // wait for internal register reload
     return(1);
@@ -63,18 +78,17 @@ char MS5607::readUInt_16(char address, unsigned int &value){
 // read number of bytes over i2c
 char MS5607::readBytes(unsigned char *values, char length){
 	char x;
+    //Wire.beginTransmission(MS5607_ADDR);
+    //Wire.write(values[0]);
 
-	Wire.beginTransmission(MS5607_ADDR);
-  Wire.write(values[0]);
-
-	char error = Wire.endTransmission();
-	if (error == 0)
-	{
-		Wire.requestFrom(MS5607_ADDR,length);
-		while(!Wire.available()) ; // wait until bytes are ready
+	//char error = Wire.endTransmission();
+	//if (error == 0)
+	//{
+	//	Wire.requestFrom(MS5607_ADDR,length);
+		//while(!Wire.available()) ; // wait until bytes are ready
 		for(x=0;x<length;x++)
 		{
-			values[x] = Wire.read();
+	//		values[x] = Wire.read();
 		}
 		return(1);
 	}
@@ -83,9 +97,9 @@ char MS5607::readBytes(unsigned char *values, char length){
 
 // send command to start measurement
 char MS5607::startMeasurment(void){
-  Wire.beginTransmission(MS5607_ADDR);
-  Wire.write(R_ADC);
-  char error = Wire.endTransmission();
+  //Wire.beginTransmission(MS5607_ADDR);
+  //Wire.write(R_ADC);
+  //char error = Wire.endTransmission();
   if(error == 0){
     delay(3);
     return(1);
@@ -94,9 +108,9 @@ char MS5607::startMeasurment(void){
 
 // send command to start conversion of temp/pressure
 char MS5607::startConversion(char CMD){
-  Wire.beginTransmission(MS5607_ADDR);
-  Wire.write(CMD);
-  char error = Wire.endTransmission();
+  //Wire.beginTransmission(MS5607_ADDR);
+  //Wire.write(CMD);
+  //char error = Wire.endTransmission();
   if(error == 0){
     delay(Conv_Delay);
     return(1);
@@ -121,8 +135,8 @@ char MS5607::readDigitalValue(void){
 char MS5607::getDigitalValue(unsigned long &value){
   char x, length = 3;
   unsigned char data[3];
-    Wire.requestFrom(MS5607_ADDR,length);
-    while(!Wire.available()) ; // wait until bytes are ready
+  //  Wire.requestFrom(MS5607_ADDR,length);
+  //  while(!Wire.available()) ; // wait until bytes are ready
     for(x=0;x<length;x++)
     {
       data[x] = Wire.read();
