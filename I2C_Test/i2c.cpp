@@ -17,6 +17,7 @@ typedef unsigned char   u8;
 
 // Global file descriptor used to talk to the I2C bus:
 int i2c_fd = -1;
+
 // Default RPi B device name for the I2C bus exposed on GPIO2,3 pins (GPIO2=SDA, GPIO3=SCL):
 const char *i2c_fname = "/dev/i2c-1";
 
@@ -29,11 +30,13 @@ int i2c_init(void) {
         return -1;
     }
 
-    // NOTE we do not call ioctl with I2C_SLAVE here because we always use the I2C_RDWR ioctl operation to do
-    // writes, reads, and combined write-reads. I2C_SLAVE would be used to set the I2C slave address to communicate
-    // with. With I2C_RDWR operation, you specify the slave address every time. There is no need to use normal write()
-    // or read() syscalls with an I2C device which does not support SMBUS protocol. I2C_RDWR is much better especially
-    // for reading device registers which requires a write first before reading the response.
+    /*
+     * NOTE we do not call ioctl with I2C_SLAVE here because we always use the I2C_RDWR ioctl operation to do
+     * writes, reads, and combined write-reads. I2C_SLAVE would be used to set the I2C slave address to communicate
+     * with. With I2C_RDWR operation, you specify the slave address every time. There is no need to use normal write()
+     * or read() syscalls with an I2C device which does not support SMBUS protocol. I2C_RDWR is much better especially
+     * for reading device registers which requires a write first before reading the response.
+     */
 
     return i2c_fd;
 }
