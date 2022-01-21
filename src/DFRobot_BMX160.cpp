@@ -322,4 +322,12 @@ bool DFRobot_BMX160::scan()
         return false;
     }
     return true;
+
+    //if getAllData command is called for BMX160
+    bool DFRobot_BMX160::getAllData()
+    {
+        begin(); //initiates
+
+    }
+}
 }
