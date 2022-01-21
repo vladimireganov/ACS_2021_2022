@@ -327,7 +327,7 @@ bool DFRobot_BMX160::scan()
     bool DFRobot_BMX160::getAllData()
     {
         begin(); //initiates
-
+        //unfinished
     }
     return true;
 }
