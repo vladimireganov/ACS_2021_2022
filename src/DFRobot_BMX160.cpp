@@ -329,5 +329,6 @@ bool DFRobot_BMX160::scan()
         begin(); //initiates
 
     }
+    return true;
 }
 }

@@ -360,5 +360,4 @@ uint8_t WireLinux::endTransmission()
     return ret;
 }
 
-
 WireLinux Wire = WireLinux();
