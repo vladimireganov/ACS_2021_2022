@@ -35,13 +35,14 @@ bool DFRobot_BMX160::begin()
     int RPI_I2C_bus;
     int adapter_nr = 1; //adapter number for I2C bus on RPI
     char filename[20];
-
+/*
     snprintf(filename, 19, "/dev/i2c-%d", adapter_nr);
     RPI_I2C_bus = open(filename, O_RDWR);
     if (RPI_I2C_bus < 0) {
-        /* ERROR HANDLING; you can check errno to see what went wrong */
+
         exit(1);
     }
+*/
     if (scan() == true){
         softReset();
         writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x11);
@@ -254,7 +255,7 @@ void DFRobot_BMX160::writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 
     for(uint16_t i = 0; i < len; i ++) {
 
-        if (i2c_write_byte_data(RPI_I2C_bus, reg, pBuf[i]) < 0) {
+        if (i2c_smbus_write_byte_data(RPI_I2C_bus, reg, pBuf[i]) < 0) {
 
 
             fprintf("failure to write on register %d", reg);
@@ -283,7 +284,7 @@ void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
     }
     for(uint16_t i = 0; i < len; i ++) {
 
-        pBuf[i] = i2c_read_byte_data(RPI_I2C_bus, reg)
+        pBuf[i] = i2c_smbus_read_byte_data(RPI_I2C_bus, reg)
 
         if (pBuf[i] < 0) {
 
