@@ -1,8 +1,7 @@
-//
-// Created by jacob on 10/31/2021.
-// i2c library for raspberry pi (1)
-//testing push
-//bobby testing push
+/*Created by jacob on 10/31/2021.
+i2c library for raspberry pi (1)
+*/
+
 #include "i2c.h"
 #include <stdio.h>
 #include <string.h>
