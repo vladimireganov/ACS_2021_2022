@@ -7,8 +7,7 @@
 #include <unistd.h>				//Needed for I2C port
 #include <fcntl.h>				//Needed for I2C port
 #include <sys/ioctl.h>			//Needed for I2C port
-#include <linux/i2c-dev.h>      //Needed for I2C port
-#include <linux/i2c.h>
+#include "i2c-dev_smbus.h"      //Needed for I2C port
 #include "DFRobot_BMX160.h"
 
 DFRobot_BMX160::DFRobot_BMX160(int bus_file, char addr)
@@ -288,7 +287,7 @@ void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
     }
     for(uint16_t i = 0; i < len; i ++) {
 
-        pBuf[i] = i2c_smbus_read_byte_data(i2c_bus, reg)
+        pBuf[i] = i2c_smbus_read_byte_data(i2c_bus, reg);
 
         if (pBuf[i] < 0) {
 
@@ -296,7 +295,7 @@ void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
             exit(1);
         }
 
-    else {
+        else {
             reg++;
         }
     }
