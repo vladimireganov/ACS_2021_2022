@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <stdio.h>
+#include <dos.h>
 #include <errno.h>
 #include <stdint.h>
 #include <unistd.h>				//Needed for I2C port
