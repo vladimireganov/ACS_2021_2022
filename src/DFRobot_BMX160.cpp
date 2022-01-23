@@ -8,8 +8,10 @@
 #include <linux/i2c-dev.h>		//Needed for I2C port
 #include "DFRobot_BMX160.h"
 
-DFRobot_BMX160::DFRobot_BMX160()
+DFRobot_BMX160::DFRobot_BMX160(int bus_file, char addr)
 {
+  my_addr = addr;
+  i2c_bus = bus_file;
   Obmx160 = (struct bmx160Dev *)malloc(sizeof(struct bmx160Dev));
   Oaccel = (struct bmx160SensorData*)malloc(sizeof(struct bmx160SensorData));
   Ogyro = (struct bmx160SensorData*)malloc(sizeof(struct bmx160SensorData));
@@ -34,10 +36,7 @@ const uint8_t int_mask_lookup_table[13] = {
 
 bool DFRobot_BMX160::begin()
 {
-   // Wire.begin();
-    int RPI_I2C_bus;
-    int adapter_nr = 1; //adapter number for I2C bus on RPI
-    char filename[20];
+
 /*
     snprintf(filename, 19, "/dev/i2c-%d", adapter_nr);
     RPI_I2C_bus = open(filename, O_RDWR);
@@ -46,7 +45,7 @@ bool DFRobot_BMX160::begin()
         exit(1);
     }
 */
-    if (scan() == true){
+    if (scan()){
         softReset();
         writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x11);
         delay(50);
@@ -251,14 +250,14 @@ void DFRobot_BMX160::writeBmxReg(uint8_t reg, uint8_t value)
 
 void DFRobot_BMX160::writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 {
-    if (ioctl(RPI_I2C_bus, I2C_SLAVE, _addr) < 0) {
+    if (ioctl(i2c_bus, I2C_SLAVE, my_addr) < 0) {
         fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
         exit(1);
     }
 
     for(uint16_t i = 0; i < len; i ++) {
 
-        if (i2c_smbus_write_byte_data(RPI_I2C_bus, reg, pBuf[i]) < 0) {
+        if (i2c_smbus_write_byte_data(i2c_bus, reg, pBuf[i]) < 0) {
 
 
             fprintf("failure to write on register %d", reg);
@@ -281,13 +280,13 @@ void DFRobot_BMX160::writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 
 void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 {
-    if (ioctl(RPI_I2C_bus, I2C_SLAVE, _addr) < 0) {
+    if (ioctl(i2c_bus, I2C_SLAVE, my_addr) < 0) {
         fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
         exit(1);
     }
     for(uint16_t i = 0; i < len; i ++) {
 
-        pBuf[i] = i2c_smbus_read_byte_data(RPI_I2C_bus, reg)
+        pBuf[i] = i2c_smbus_read_byte_data(i2c_bus, reg)
 
         if (pBuf[i] < 0) {
 
@@ -317,11 +316,11 @@ void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 bool DFRobot_BMX160::scan()
 {
     //Wire.beginTransmission(_addr);
-    if (ioctl(RPI_I2C_bus, I2C_SLAVE, _addr) < 0) {
+    if (ioctl(i2c_bus, I2C_SLAVE, my_addr) < 0) {
         fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
         exit(1);
     }
-    if (i2c_smbus_read_byte(RPI_I2C_bus) < 0){
+    if (i2c_smbus_read_byte(i2c_bus) < 0){
         return false;
     }
     return true;

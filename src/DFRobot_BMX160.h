@@ -1200,11 +1200,11 @@ typedef enum{
 
 class DFRobot_BMX160{
   public:
-    DFRobot_BMX160();
+    DFRobot_BMX160(int bus_file, char addr);
     
     /*
-     * @brief set the i2c addr and init the i2c.
-     * @return ture means success
+     * @brief do a quick device read to check communication and configure device registers
+     * @return true means success
      */
     bool begin();
     
@@ -1229,7 +1229,7 @@ class DFRobot_BMX160{
     void   defaultParamSettg(struct bmx160Dev *dev);
     float accelRange = BMX160_ACCEL_MG_LSB_2G * 10;
     float gyroRange = BMX160_GYRO_SENSITIVITY_250DPS;
-    uint8_t _addr = 0x68;
+    //uint8_t _addr = 0x68;
     void setMagnConf();
     struct bmx160Dev* Obmx160;
 
