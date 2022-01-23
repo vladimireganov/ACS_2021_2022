@@ -2,9 +2,10 @@
 
 #include <iostream>
 #include <fstream>
+#include <fcntl.h>
 #include "File_write.h"
 #include "DFRobot_BMX160.h"
-#include "MS5607.h"
+
 
 
 
@@ -27,8 +28,8 @@ int main(){
 
 
 
-    RPI_I2C_bus = open(filename, O_RDWR); // open bus
-    if (RPI_I2C_bus < 0) {
+    RPI_I2C_BUS = open(filename, O_RDWR); // open bus
+    if (RPI_BUS_BUS < 0) {
 
         exit(1);
 
