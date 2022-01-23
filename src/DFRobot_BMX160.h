@@ -1230,6 +1230,8 @@ class DFRobot_BMX160{
     float accelRange = BMX160_ACCEL_MG_LSB_2G * 10;
     float gyroRange = BMX160_GYRO_SENSITIVITY_250DPS;
     //uint8_t _addr = 0x68;
+    char my_addr;
+    int i2c_bus;
     void setMagnConf();
     struct bmx160Dev* Obmx160;
 

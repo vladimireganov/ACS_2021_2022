@@ -11,6 +11,7 @@
 
 DFRobot_BMX160::DFRobot_BMX160(int bus_file, char addr)
 {
+
   my_addr = addr;
   i2c_bus = bus_file;
   Obmx160 = (struct bmx160Dev *)malloc(sizeof(struct bmx160Dev));
