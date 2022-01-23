@@ -13,10 +13,7 @@ using namespace std;
 
 Data flight_data; // creating class to store data
 
-int RPI_I2C_BUS;
-int adapter_nr = 1; /* default for raspberry pi */
-char filename[20];
-snprintf(filename, 19, "/dev/i2c-%d", adapter_nr); // creating file path to open bus during init
+
 
 
 int main(){
@@ -26,17 +23,21 @@ int main(){
     file.create_log_file();
     file.create_table_names();
 
+    int RPI_I2C_BUS;
+    int adapter_nr = 1; /* default for raspberry pi */
+    char filename[20];
+    snprintf(filename, 19, "/dev/i2c-%d", adapter_nr); // creating file path to open bus during init
 
 
     RPI_I2C_BUS = open(filename, O_RDWR); // open bus
-    if (RPI_BUS_BUS < 0) {
+    if (RPI_I2C_BUS < 0) {
 
         exit(1);
 
     }
 
     
-    DFRobot_BMX160 bmx160 = DFRobot_BMX160::DFRobot_BMX160(RPI_I2C_BUS, x68);
+    DFRobot_BMX160 bmx160(RPI_I2C_BUS, 0x68);
     bmx160SensorData Omagn, Ogyro, Oaccel;
     // create file
     // activate sensors 
