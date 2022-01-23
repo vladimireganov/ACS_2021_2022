@@ -80,7 +80,7 @@ int main(){
         cout << "m/s^2\n";
 
         cout << "\n";
-        delay(100);
+        usleep(100000);
     }
     
     
