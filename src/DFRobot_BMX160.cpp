@@ -259,8 +259,7 @@ void DFRobot_BMX160::writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 
         if (i2c_smbus_write_byte_data(i2c_bus, reg, pBuf[i]) < 0) {
 
-
-            fprintf("failure to write on register %d", reg);
+            fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
             exit(1);
         }
 
@@ -290,8 +289,8 @@ void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 
         if (pBuf[i] < 0) {
 
-         fprintf("failure to read on register %d", reg)
-         exit(1)
+            fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
+            exit(1);
         }
 
     else {
