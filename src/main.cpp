@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <fcntl.h>
+#include <ioctl.h>
+#include <unistd.h>
 #include "File_write.h"
 #include "DFRobot_BMX160.h"
 
@@ -97,6 +99,6 @@ int main(){
     
     // closing everything
     file.close_files();
-    close(filename);
+
     return 0;
 }
