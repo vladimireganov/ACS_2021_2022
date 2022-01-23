@@ -3,20 +3,19 @@
 #include <iostream>
 #include <fstream>
 #include "File_write.h"
-
-#include "Serial.h"
-#include "Core.h"
-#include "SPI.h"
-#include "piDuino.h"
 #include "DFRobot_BMX160.h"
 #include "MS5607.h"
 
-//#include "PiDuino_Library/DFRobot_BMX160.cpp"
-//#include "PiDuino_Library/MS5607.cpp"
+
 
 using namespace std;
 
 Data flight_data; // creating class to store data
+
+int RPI_I2C_BUS;
+int adapter_nr = 1; /* default for raspberry pi */
+char filename[20];
+snprintf(filename, 19, "/dev/i2c-%d", adapter_nr); // creating file path to open bus during init
 
 
 int main(){
@@ -25,8 +24,18 @@ int main(){
     file.connect_data(flight_data);
     file.create_log_file();
     file.create_table_names();
+
+
+
+    RPI_I2C_bus = open(filename, O_RDWR); // open bus
+    if (RPI_I2C_bus < 0) {
+
+        exit(1);
+
+    }
+
     
-    DFRobot_BMX160 bmx160;
+    DFRobot_BMX160 bmx160 = DFRobot_BMX160::DFRobot_BMX160(RPI_I2C_BUS, x68);
     bmx160SensorData Omagn, Ogyro, Oaccel;
     // create file
     // activate sensors 
@@ -86,6 +95,6 @@ int main(){
     
     // closing everything
     file.close_files();
-
+    close(filename);
     return 0;
 }
