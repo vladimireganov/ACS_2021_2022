@@ -335,4 +335,3 @@ bool DFRobot_BMX160::scan()
     }
     return true;
 }
-}
