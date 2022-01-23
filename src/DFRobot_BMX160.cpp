@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <stdio.h>
-#include <time.h>
+#include <chrono>
 #include <string.h>
 #include <errno.h>
 #include <stdint.h>

@@ -1245,3 +1245,4 @@ class DFRobot_BMX160{
     bool scan();
 };
 
+void delay(long millis) {};
