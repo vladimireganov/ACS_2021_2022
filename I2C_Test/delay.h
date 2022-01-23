@@ -3,12 +3,12 @@
 //
 
 #include <chrono>
-using namespace std:chrono
+using namespace std:chrono;
 
 void delay(long millis) {
 
     long finished = millis;
-    long elapsed = 0
+    long elapsed = 0;
     std::chrono::time_point<std::chrono::steady_clock> t1 = std::chrono::steady_clock::now();
     std::chrono::time_point<std::chrono::steady_clock> t2;
     do {
