@@ -8,7 +8,7 @@
 #include <sys/ioctl.h>			//Needed for I2C port
 #include "i2c-dev_smbus.h"      //Needed for I2C port
 #include "DFRobot_BMX160.h"
-#include "delay.cpp"
+
 
 DFRobot_BMX160::DFRobot_BMX160(int bus_file, char addr)
 {
@@ -51,13 +51,13 @@ bool DFRobot_BMX160::begin()
     if (scan()){
         softReset();
         writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x11);
-        delay(50);
+        usleep(50000);
         /* Set gyro to normal mode */
         writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x15);
-        delay(100);
+        usleep(100000);
         /* Set mag to normal mode */
         writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x19);
-        delay(10);
+        usleep(10000);
         setMagnConf();
         return true;
     }
@@ -67,32 +67,32 @@ bool DFRobot_BMX160::begin()
 
 void DFRobot_BMX160::setLowPower(){
     softReset();
-    delay(100);
+    usleep(100000);
     setMagnConf();
-    delay(100);
+    usleep(100000);
     writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x12);
-    delay(100);
+    usleep(100000);
     /* Set gyro to normal mode */
     writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x17);
-    delay(100);
+    usleep(100000);
     /* Set mag to normal mode */
     writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x1B);
-    delay(100);
+    usleep(100000);
 }
 
 void DFRobot_BMX160::wakeUp(){
     softReset();
-    delay(100);
+    usleep(100000);
     setMagnConf();
-    delay(100);
+    usleep(100000);
     writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x11);
-    delay(100);
+    usleep(100000);
     /* Set gyro to normal mode */
     writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x15);
-    delay(100);
+    usleep(100000);
     /* Set mag to normal mode */
     writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x19);
-    delay(100);
+    usleep(100000);
 }
 
 bool DFRobot_BMX160::softReset()
@@ -116,7 +116,7 @@ int8_t DFRobot_BMX160::softReset(struct bmx160Dev *dev)
     rslt = BMX160_E_NULL_PTR;
   }
   writeBmxReg(BMX160_COMMAND_REG_ADDR, data);
-  delay(BMX160_SOFT_RESET_DELAY_MS);
+  usleep(BMX160_SOFT_RESET_DELAY_MS*1000);
   if (rslt == BMX160_OK){
     DFRobot_BMX160::defaultParamSettg(dev);
   }  
@@ -144,7 +144,7 @@ void DFRobot_BMX160::defaultParamSettg(struct bmx160Dev *dev)
 void DFRobot_BMX160::setMagnConf()
 {
     writeBmxReg(BMX160_MAGN_IF_0_ADDR, 0x80);
-    delay(50);
+    usleep(50000);
     // Sleep mode
     writeBmxReg(BMX160_MAGN_IF_3_ADDR, 0x01);
     writeBmxReg(BMX160_MAGN_IF_2_ADDR, 0x4B);
@@ -160,7 +160,7 @@ void DFRobot_BMX160::setMagnConf()
     writeBmxReg(BMX160_MAGN_IF_1_ADDR, 0x42);
     writeBmxReg(BMX160_MAGN_CONFIG_ADDR, 0x08);
     writeBmxReg(BMX160_MAGN_IF_0_ADDR, 0x03);
-    delay(50);
+    usleep(50000);
 }
 
 void DFRobot_BMX160::setGyroRange(eGyroRange_t bits){
