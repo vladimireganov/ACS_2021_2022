@@ -3,7 +3,7 @@
 //
 
 #include <chrono>
-using namespace std:chrono;
+using namespace std::chrono;
 
 void delay(long millis) {
 
@@ -14,7 +14,7 @@ void delay(long millis) {
     do {
 
         t2 = std::chrono::steady_clock::now();
-        elapsed = std::chrono:duration_cast<milliseconds>(t2 - t1).count();
+        elapsed = std::chrono::duration_cast<milliseconds>(t2 - t1).count();
 
 
     }
