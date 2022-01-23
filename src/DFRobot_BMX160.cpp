@@ -6,7 +6,7 @@
 #include <fcntl.h>				//Needed for I2C port
 #include <sys/ioctl.h>			//Needed for I2C port
 #include <linux/i2c-dev.h>      //Needed for I2C port
-#include <i2c/smbus.h>
+#include <linux/i2c.h>
 #include "DFRobot_BMX160.h"
 
 DFRobot_BMX160::DFRobot_BMX160(int bus_file, char addr)
