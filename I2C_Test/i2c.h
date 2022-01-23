@@ -1069,15 +1069,4 @@ static inline struct i2c_client *i2c_acpi_new_device(struct device *dev,
 }
 
 #endif /* _LINUX_I2C_H */
-© 2022 GitHub, Inc.
-Terms
-        Privacy
-Security
-        Status
-Docs
-        Contact GitHub
-        Pricing
-API
-        Training
-Blog
-        About
+
