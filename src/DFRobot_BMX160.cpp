@@ -8,7 +8,7 @@
 #include <sys/ioctl.h>			//Needed for I2C port
 #include "i2c-dev_smbus.h"      //Needed for I2C port
 #include "DFRobot_BMX160.h"
-#include "delay.h"
+#include "delay.cpp"
 
 DFRobot_BMX160::DFRobot_BMX160(int bus_file, char addr)
 {
