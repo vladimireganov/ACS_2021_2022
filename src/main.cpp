@@ -52,7 +52,7 @@ int main(){
         while(1);
     }
     bmx160.wakeUp();
-    cout << "Hello World";// debug
+    cout << "Awake";// debug
     for (int i = 0; i < 25; i++)
     {
 
