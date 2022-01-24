@@ -34,7 +34,7 @@ int main(){
     RPI_I2C_BUS = open(filename, O_RDWR); // open bus
     if (RPI_I2C_BUS < 0) {
 
-        //exit(1);
+        //exit(1); //dont use
         return 0;
     }
 
@@ -82,6 +82,7 @@ int main(){
         cout << "m/s^2\n";
 
         cout << "\n";
+        cout << "Completed printing all Data\n"; //output letting user know all data has finished printing
         usleep(100000);
     }
 
