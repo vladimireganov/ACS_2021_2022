@@ -35,7 +35,7 @@ int main(){
     if (RPI_I2C_BUS < 0) {
 
         //exit(1);
-        return;
+        return 0;
     }
 
     
