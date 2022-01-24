@@ -34,8 +34,8 @@ int main(){
     RPI_I2C_BUS = open(filename, O_RDWR); // open bus
     if (RPI_I2C_BUS < 0) {
 
-        exit(1);
-
+        //exit(1);
+        return;
     }
 
     
