@@ -46,7 +46,7 @@ int main(){
 
     //Serial.begin(115200);
     //delay(100);
-    if (bmx160.begin(0)){ //if begin == false
+    if (bmx160.begin() == false){ //if begin == false
         //Serial.println("init false");
         cout << "init false";
         while(1);
