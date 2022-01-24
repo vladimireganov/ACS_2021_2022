@@ -269,7 +269,7 @@ void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 {
     if (ioctl(i2c_bus, I2C_SLAVE, my_addr) < 0) {
         fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
-        return 0;
+
     }
     for(uint16_t i = 0; i < len; i ++) {
 
@@ -278,7 +278,7 @@ void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
         if (pBuf[i] < 0) {
 
             fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
-            return 0;
+
         }
 
         else {
@@ -294,7 +294,6 @@ bool DFRobot_BMX160::scan()
 
     if (ioctl(i2c_bus, I2C_SLAVE, my_addr) < 0) {
         fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
-        return 0;
     }
     if (i2c_smbus_read_byte(i2c_bus) < 0){
 
