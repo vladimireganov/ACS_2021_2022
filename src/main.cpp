@@ -19,6 +19,7 @@ Data flight_data; // creating class to store data
 
 int main(){
     // section for init
+    cout << "begging of main"; //for testing
     File_write file;
     file.connect_data(flight_data);
     file.create_log_file();
