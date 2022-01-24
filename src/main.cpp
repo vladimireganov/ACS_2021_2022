@@ -46,7 +46,7 @@ int main(){
 
     //Serial.begin(115200);
     //delay(100);
-    if (bmx160.begin() != true){
+    if (bmx160.begin(0)){ //if begin == false
         //Serial.println("init false");
         cout << "init false";
         while(1);
@@ -55,7 +55,7 @@ int main(){
     cout << "Hello World";// debug
     for (int i = 0; i < 25; i++)
     {
-       
+
         bmx160.getAllData(&Omagn, &Ogyro, &Oaccel);
 
   /* Display the magnetometer results (magn is magnetometer in uTesla) */
@@ -64,7 +64,7 @@ int main(){
         cout << "Y: "; cout << Omagn.y << "  ";
         cout << "Z: "; cout << Omagn.z << "  ";
         cout << "uT\n";
-        
+
 
   /* Display the gyroscope results (gyroscope data is in g) */
         cout << "G ";
@@ -72,7 +72,7 @@ int main(){
         cout << "Y: "; cout << Ogyro.y << "  ";
         cout << "Z: "; cout << Ogyro.z << "  ";
         cout << "g\n";
-  
+
   /* Display the accelerometer results (accelerometer data is in m/s^2) */
         cout << "A ";
         cout << "X: "; cout << Oaccel.x << "  ";
@@ -83,19 +83,19 @@ int main(){
         cout << "\n";
         usleep(100000);
     }
-    
-    
-    
-    
+
+
+
+
     //section for waiting from radio command that rocket is ready for launch
 
     // section for main code
     // use while loop until landed
-    
-    
-    
-    
-    
+
+
+
+
+
     // closing everything
     file.close_files();
 
