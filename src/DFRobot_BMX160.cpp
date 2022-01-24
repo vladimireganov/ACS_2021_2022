@@ -40,14 +40,6 @@ const uint8_t int_mask_lookup_table[13] = {
 bool DFRobot_BMX160::begin()
 {
 
-/*
-    snprintf(filename, 19, "/dev/i2c-%d", adapter_nr);
-    RPI_I2C_bus = open(filename, O_RDWR);
-    if (RPI_I2C_bus < 0) {
-
-        exit(1);
-    }
-*/
     if (scan()){
         softReset();
         writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x11);
@@ -270,20 +262,14 @@ void DFRobot_BMX160::writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
     }
 
 
-    /* Wire.begin();
-    Wire.beginTransmission(_addr);
-    Wire.write(reg);
-    for(uint16_t i = 0; i < len; i ++)
-        Wire.write(pBuf[i]);
-    Wire.endTransmission();
-    */
+
 }
 
 void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 {
     if (ioctl(i2c_bus, I2C_SLAVE, my_addr) < 0) {
         fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
-        exit(1);
+        return 0;
     }
     for(uint16_t i = 0; i < len; i ++) {
 
@@ -292,34 +278,23 @@ void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
         if (pBuf[i] < 0) {
 
             fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
-            exit(1);
+            return 0;
         }
 
         else {
             reg++;
         }
     }
-    /*
-    Wire.beginTransmission(_addr);
-    Wire.write(reg);
-    if(Wire.endTransmission() != 0)
-        return;
-    Wire.requestFrom(_addr, (uint8_t) len);
-    for(uint16_t i = 0; i < len; i ++) {
-        pBuf[i] = Wire.read();
-    }
-    Wire.endTransmission();
-    */
 
 
 }
 
 bool DFRobot_BMX160::scan()
 {
-    //Wire.beginTransmission(_addr);
+
     if (ioctl(i2c_bus, I2C_SLAVE, my_addr) < 0) {
         fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
-        exit(1);
+        return 0;
     }
     if (i2c_smbus_read_byte(i2c_bus) < 0){
 

@@ -19,7 +19,7 @@ Data flight_data; // creating class to store data
 
 int main(){
     // section for init
-    cout << "start of main\n" << endl; //for testing
+
     File_write file;
     file.connect_data(flight_data);
     file.create_log_file();
@@ -51,10 +51,9 @@ int main(){
         //Serial.println("init false");
         cout << "init false\n";
         while(1);
-        cout << "In loop\n"; //continuously prints that you are in a loop
+
     }
     bmx160.wakeUp();
-    cout << "Hello World";// debug
     for (int i = 0; i < 25; i++)
     {
 
