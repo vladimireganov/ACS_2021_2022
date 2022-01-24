@@ -19,7 +19,6 @@ Data flight_data; // creating class to store data
 
 int main(){
     // section for init
-    cout << "begging of main"; //for testing
     File_write file;
     file.connect_data(flight_data);
     file.create_log_file();
@@ -47,13 +46,13 @@ int main(){
 
     //Serial.begin(115200);
     //delay(100);
-    if (bmx160.begin() == false){ //if begin == false
+    if (bmx160.begin(0)){ //if begin == false
         //Serial.println("init false");
         cout << "init false";
         while(1);
     }
     bmx160.wakeUp();
-    cout << "Awake";// debug
+    cout << "Hello World";// debug
     for (int i = 0; i < 25; i++)
     {
 
