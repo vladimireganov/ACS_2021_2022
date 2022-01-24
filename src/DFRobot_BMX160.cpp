@@ -322,6 +322,7 @@ bool DFRobot_BMX160::scan()
         exit(1);
     }
     if (i2c_smbus_read_byte(i2c_bus) < 0){
+
         return false;
     }
     return true;

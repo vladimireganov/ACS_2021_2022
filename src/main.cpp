@@ -38,7 +38,7 @@ int main(){
     }
 
     
-    DFRobot_BMX160 bmx160(RPI_I2C_BUS, 0x68);
+    DFRobot_BMX160 bmx160(RPI_I2C_BUS, 0x69);
     bmx160SensorData Omagn, Ogyro, Oaccel;
     // create file
     // activate sensors 
