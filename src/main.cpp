@@ -49,7 +49,7 @@ int main(){
     //delay(100);
     if (bmx160.begin() == false){ //if begin == false
         //Serial.println("init false");
-        cout << "init false";
+        cout << "init false\n";
         while(1);
     }
     bmx160.wakeUp();
