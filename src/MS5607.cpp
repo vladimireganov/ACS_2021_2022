@@ -34,10 +34,17 @@ char MS5607::resetDevice(void){
   //Wire.beginTransmission(MS5607_ADDR);
   //Wire.write(RESET);
   //char error = Wire.endTransmission();
-  if(error == 0){
-    delay(3);     // wait for internal register reload
-    return(1);
-  }else{return(0);}
+    if (ioctl(i2c_bus, I2C_SLAVE, MS5607_ADDR) < 0) {
+        fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
+        return 0;
+    }
+
+    if (i2c_smbus_write_byte(i2c_bus, RESET ) < 0){
+        return 0;
+    }
+    else{usleep(3000);
+        return(1);}
+
 }
 
 // read calibration data from PROM
@@ -161,9 +168,14 @@ char MS5607::getDigitalValue(unsigned long &value){
   unsigned char data[3];
   //  Wire.requestFrom(MS5607_ADDR,length);
   //  while(!Wire.available()) ; // wait until bytes are ready
+
+    if (ioctl(i2c_bus, I2C_SLAVE, MS5607_ADDR) < 0) {
+        fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
+        return 0;
+    }
     for(x=0;x<length;x++)
     {
-      data[x] = Wire.read();
+      data[x] = i2c_smbus_read_byte(i2c_bus);
     }
     value = (unsigned long)data[0]*1<<16|(unsigned long)data[1]*1<<8|(unsigned long)data[2];
     return(1);
