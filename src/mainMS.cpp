@@ -61,7 +61,7 @@ int main(){
         P_val = ms5607.getPressure();
         H_val = ms5607.getAltitude();
     }else{
-        cout("Error in reading digital value in sensor!");
+        cout << "Error in reading digital value in sensor! \n";
     }
 
     cout << "Temperature :  ";
