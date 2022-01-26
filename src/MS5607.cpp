@@ -4,36 +4,28 @@
   Company: Uravu Labs
 */
 
-//#include "Core.h"
+
 #include <math.h>
 #include "MS5607.h"
 #include <unistd.h>				//Needed for I2C port
 #include <fcntl.h>				//Needed for I2C port
 #include <sys/ioctl.h>			//Needed for I2C port
 #include <linux/i2c-dev.h>		//Needed for I2C port
-#include <i2c/smbus.h>
-//#include "Wire.h"
+
+
 
 MS5607::MS5607(){
 
 }
 
-MS5607::MS5607(short address){
+MS5607::MS5607(int bus_file, short address){
   this->MS5607_ADDR = address;
+  i2c_bus = bus_file;
 }
 
 // Initialise coefficient by reading calibration data
 char MS5607::begin(){
-  //Wire.begin();
-    int RPI_I2C_bus;
-    int adapter_nr = 1; //adapter number for I2C bus on RPI
-    char filename[20];
 
-    snprintf(filename, 19, "/dev/i2c-%d", adapter_nr);
-    RPI_I2C_bus = open(filename, O_RDWR);
-    if (RPI_I2C_bus < 0) {
-        /* ERROR HANDLING; you can check errno to see what went wrong */
-        exit(1);
     }
   return(readCalibration());
 }
@@ -78,16 +70,24 @@ char MS5607::readUInt_16(char address, unsigned int &value){
 // read number of bytes over i2c
 char MS5607::readBytes(unsigned char *values, char length){
 	char x;
+    char reg = values[0];
+    if (ioctl(i2c_bus, I2C_SLAVE, MS5607_ADDR) < 0) {
+        fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
+    return 0;
+    }
     //Wire.beginTransmission(MS5607_ADDR);
     //Wire.write(values[0]);
-
 	//char error = Wire.endTransmission();
 	//if (error == 0)
 	//{
 	//	Wire.requestFrom(MS5607_ADDR,length);
-		//while(!Wire.available()) ; // wait until bytes are ready
-		for(x=0;x<length;x++)
+		//while(!Wire.available()) ; // wait until bytes are read
+
+
+
+    for(x=0;x<length;x++)
 		{
+            values[x] = i2c_smbus_read_byte_data(i2c_bus,reg)
 	//		values[x] = Wire.read();
 		}
 		return(1);
@@ -100,10 +100,21 @@ char MS5607::startMeasurment(void){
   //Wire.beginTransmission(MS5607_ADDR);
   //Wire.write(R_ADC);
   //char error = Wire.endTransmission();
+    if (ioctl(i2c_bus, I2C_SLAVE, MS5607_ADDR) < 0) {
+        fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
+        return 0;
+    }
+
+  if (i2c_smbus_write_byte(i2c_bus, R_ADC ) < 0){
+      return 0;
+  }
+  else{usleep(3000);
+      return(1);}
+  /*
   if(error == 0){
-    delay(3);
+    usleep(3000);
     return(1);
-  }else{return(0);}
+  }else{return(0);} */
 }
 
 // send command to start conversion of temp/pressure
@@ -111,10 +122,23 @@ char MS5607::startConversion(char CMD){
   //Wire.beginTransmission(MS5607_ADDR);
   //Wire.write(CMD);
   //char error = Wire.endTransmission();
+
+    if (ioctl(i2c_bus, I2C_SLAVE, MS5607_ADDR) < 0) {
+        fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror (errno));
+        return 0;
+    }
+
+    if (i2c_smbus_write_byte(i2c_bus, CMD ) < 0){
+        return 0;
+    }
+    else{usleep(1000*Conv_Delay);
+        return(1);}
+  /*
   if(error == 0){
     delay(Conv_Delay);
     return(1);
   }else{return(0);}
+   */
 }
 
 // read raw digital values of temp & pressure from MS5607
