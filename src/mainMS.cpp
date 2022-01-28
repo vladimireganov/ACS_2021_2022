@@ -63,8 +63,8 @@ int main(){
     cout << T_val;
     cout << " C"; cout << "\n";
     cout << "Pressure    :  ";
-    cout << P_val; cout << "\n";
-    cout << " mBar";
+    cout << P_val;
+    cout << " mBar"; cout << "\n";
     cout << "Altitude    :  ";
     cout << H_val;
     cout << " meter"; cout << "\n";
