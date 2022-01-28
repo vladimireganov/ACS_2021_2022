@@ -50,7 +50,7 @@ int main(){
         while(1);
 
     }
-    for (int i = 0; i<10; i++}) {
+    for (int i = 0; i<10; i++) {
         if(ms5607.readDigitalValue()){
         T_val = ms5607.getTemperature();
         P_val = ms5607.getPressure();
