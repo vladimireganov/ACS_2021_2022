@@ -60,14 +60,14 @@ int main(){
     }
 
     cout << "Temperature :  ";
-    cout << T_val; cout << "\n";
-    cout << " C";
+    cout << T_val;
+    cout << " C"; cout << "\n";
     cout << "Pressure    :  ";
     cout << P_val; cout << "\n";
     cout << " mBar";
     cout << "Altitude    :  ";
-    cout << H_val; cout << "\n";
-    cout << " meter";
+    cout << H_val;
+    cout << " meter"; cout << "\n";
 
     //delay(1000);
 
