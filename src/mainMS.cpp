@@ -61,13 +61,13 @@ int main(){
     }
 
     cout << "Temperature :  ";
-    cout << T_val;
+    cout << T_val; cout << "\n";
     cout << " C";
     cout << "Pressure    :  ";
-    cout << P_val;
+    cout << P_val; cout << "\n";
     cout << " mBar";
     cout << "Altitude    :  ";
-    cout << H_val;
+    cout << H_val; cout << "\n";
     cout << " meter";
 
     //delay(1000);
