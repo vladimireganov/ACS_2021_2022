@@ -72,7 +72,7 @@ int main(){
         H_val;
         cout << " meter"; cout << "\n";
 
-        sleep(1)
+        sleep(1);
 }
 
 
