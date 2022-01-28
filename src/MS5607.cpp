@@ -103,8 +103,7 @@ char MS5607::readBytes(unsigned char *values, char length){
 		}
 		return(1);
 	}
-	return(0);
-}
+
 
 // send command to start measurement
 char MS5607::startMeasurment(void){
