@@ -4,7 +4,11 @@
   Company: Uravu Labs
 */
 
-
+#include <cstdlib>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <stdint.h>
 #include <math.h>
 #include "MS5607.h"
 #include <unistd.h>				//Needed for I2C port
@@ -94,7 +98,7 @@ char MS5607::readBytes(unsigned char *values, char length){
 
     for(x=0;x<length;x++)
 		{
-            values[x] = i2c_smbus_read_byte_data(i2c_bus,reg)
+            values[x] = i2c_smbus_read_byte_data(i2c_bus,reg);
 	//		values[x] = Wire.read();
 		}
 		return(1);
