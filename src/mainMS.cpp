@@ -50,27 +50,30 @@ int main(){
         while(1);
 
     }
-
-    if(ms5607.readDigitalValue()){
+    for (int i = 0; i<10; i++}) {
+        if(ms5607.readDigitalValue()){
         T_val = ms5607.getTemperature();
         P_val = ms5607.getPressure();
         H_val = ms5607.getAltitude();
-    }else{
+        }else{
         cout << "Error in reading digital value in sensor! \n";
-    }
+        }
 
-    cout << "Temperature :  ";
-    cout << T_val;
-    cout << " C"; cout << "\n";
-    cout << "Pressure    :  ";
-    cout << P_val;
-    cout << " mBar"; cout << "\n";
-    cout << "Altitude    :  ";
-    cout << H_val;
-    cout << " meter"; cout << "\n";
+        cout << "Temperature :  ";
+        cout <<
+        T_val;
+        cout << " C"; cout << "\n";
+        cout << "Pressure    :  ";
+        cout <<
+        P_val;
+        cout << " mBar"; cout << "\n";
+        cout << "Altitude    :  ";
+        cout <<
+        H_val;
+        cout << " meter"; cout << "\n";
 
-    //delay(1000);
-
+        sleep(1)
+}
 
 
 
