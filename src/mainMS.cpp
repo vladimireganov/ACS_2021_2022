@@ -12,7 +12,7 @@
 
 using namespace std;
 
-Data flight_data; // creating class to store data
+
 
 
 
@@ -22,10 +22,6 @@ int main(){
 
     float P_val,T_val,H_val;
 
-    File_write file;
-    file.connect_data(flight_data);
-    file.create_log_file();
-    file.create_table_names();
 
     int RPI_I2C_BUS;
     int adapter_nr = 1; /* default for raspberry pi */
@@ -89,7 +85,7 @@ int main(){
 
 
     // closing everything
-    file.close_files();
+
 
     return 0;
 }
