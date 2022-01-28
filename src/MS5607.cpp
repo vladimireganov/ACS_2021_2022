@@ -26,7 +26,7 @@ MS5607::MS5607(int bus_file, short address){
 // Initialise coefficient by reading calibration data
 char MS5607::begin(){
 
-    }
+
   return(readCalibration());
 }
 
