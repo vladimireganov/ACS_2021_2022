@@ -69,10 +69,10 @@ int main() {
     close(serial_port);
 */
     Serial.begin(9600, SERIAL_8N1);
-    Serial.println("Hello!");
     Serial.setTimeout(10000);
     std::string test = Serial.readString();
     Serial.println(test);
+    Serial.println("Hello!");
     Serial.end();
     return 0;
 }
