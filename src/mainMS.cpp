@@ -6,21 +6,12 @@
 #include <unistd.h>
 #include "MS5607.h"
 
-
-
-
 using namespace std;
-
-
-
-
-
 
 int main(){
     // section for init
 
     float P_val,T_val,H_val;
-
 
     int RPI_I2C_BUS;
     int adapter_nr = 1; /* default for raspberry pi */
@@ -34,7 +25,6 @@ int main(){
         //exit(1); //dont use
         return 0;
     }
-
     
     MS5607 ms5607(RPI_I2C_BUS, 0x76);
 
@@ -54,7 +44,7 @@ int main(){
         if(ms5607.readDigitalValue()){
         T_val = ms5607.getTemperature();
         P_val = ms5607.getPressure();
-        H_val = ms5607.getAltitude();
+        H_val = ms5607.getAltitude(128); //added address 128
         }else{
         cout << "Error in reading digital value in sensor! \n";
         }
@@ -75,19 +65,13 @@ int main(){
         sleep(1);
 }
 
-
-
     //section for waiting from radio command that rocket is ready for launch
 
     // section for main code
     // use while loop until landed
 
 
-
-
-
     // closing everything
-
 
     return 0;
 }
