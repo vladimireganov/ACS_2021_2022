@@ -16,10 +16,13 @@ void ServoOff() {
 
 
 void SetAngle(int angle) {	
-	if (angle == 0) {
+	if (angle <= 0) {
 		gpioHardwarePWM(gpio, freq, 135000);
 	}
-	else {		
+	else if (angle>= 45){
+        gpioHardwarePWM(gpio, freq, 245835);
+    }
+    else {
 		int cyc=angle*2463+135000;
 		gpioHardwarePWM(gpio, freq, cyc);
 
