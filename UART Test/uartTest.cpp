@@ -70,7 +70,7 @@ int main() {
 */
     Serial.begin(9600, SERIAL_8N1);
     Serial.println("Hello!");
-    Serial.setTimeout(10000);
+    Serial.setTimeout(100000);
     std::string test = Serial.readString();
     Serial.println(test);
     Serial.end();
