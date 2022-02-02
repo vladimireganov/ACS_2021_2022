@@ -44,7 +44,7 @@ int main(){
         if(ms5607.readDigitalValue()){
         T_val = ms5607.getTemperature();
         P_val = ms5607.getPressure();
-        H_val = ms5607.getAltitude(128); //added address 128
+        H_val = ms5607.getAltitude();
         }else{
         cout << "Error in reading digital value in sensor! \n";
         }
