@@ -9,6 +9,8 @@
 #include <termios.h>		//Used for UART -> Contains POSIX terminal control definitions
 #include <errno.h>           //Error integer and strerror() function
 #include "SerialLinux.h"
+#include <iostream>
+
 int main() {
 /*
     //open the serial port
@@ -69,9 +71,14 @@ int main() {
     close(serial_port);
 */
     Serial.begin(9600, SERIAL_8N1);
-    Serial.println("Hello!");
-    Serial.setTimeout(100000);
-    std::string test = Serial.readString();
+    Serial.setTimeout(1000);
+    std::string test = "";
+    while( (test.compare("Rocket")) ) {
+        test = "";
+        test = Serial.readString();
+    }
+    Serial.println("Armed!");
+    //std::cout << test;
     Serial.println(test);
     Serial.end();
     return 0;
