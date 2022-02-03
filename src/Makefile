@@ -1,5 +1,5 @@
 
-objects = main.o  MS5607.o DFRobot_BMX160.o
+objects = main.o  MS5607.o DFRobot_BMX160.o SerialLinux.o
 
 main : $(objects)
 	g++ -o main $(objects)
@@ -12,3 +12,6 @@ MS5607.o: MS5607.cpp MS5607.h
 
 DFRobot_BMX160.o: DFRobot_BMX160.cpp DFRobot_BMX160.h
 	g++ -c DFRobot_BMX160.cpp
+
+SerialLinux.o: SerialLinux.cpp SerialLinux.h
+	g++ -c SerialLinux.cpp

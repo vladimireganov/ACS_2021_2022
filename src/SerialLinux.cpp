@@ -24,16 +24,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
-#include <cstring>
 #include <time.h>
 #include <termios.h>
-#include <ctype.h>
 #include <sys/ioctl.h>
 #include <stdarg.h>
-//#include <linux/types.h>
 
 #include "SerialLinux.h"
-#include <iostream>
 
 // All functions of unistd.h must be called like this: unistd::the_function()
 namespace unistd {
@@ -310,14 +306,11 @@ std::string SerialLinux::readString() {
     clock_gettime(CLOCK_REALTIME, &time1);
     do {
         if (available()) {
-            //std::cout << "Reading char: " << unistd::read(fd,&c,1) << "\n";
-            //fprintf(stderr, "%s(): read error: %s\n", __func__, strerror(errno));
             unistd::read(fd,&c,1);
             ret += (char)c;
         }
         clock_gettime(CLOCK_REALTIME, &time2);
         if (timeDiffmillis(time1,time2) > timeOut) {
-            //std::cout << ret << "\n";
             break;
         }
     } while (c >= 0);
