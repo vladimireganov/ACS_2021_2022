@@ -19,11 +19,22 @@ Data flight_data; // creating class to store data
 
 int main(){
     // section for init
+    /////////////       SERIAL INITIALIZATION       ////////////////
+    Serial.begin(9600, SERIAL_8N1);
 
+    ///////////////     File Creation       /////////////
     File_write file;
     file.connect_data(flight_data);
     file.create_log_file();
     file.create_table_names();
+    Serial.println("File created");
+
+    //////////////      GPIO Output to force BMP388 to SPI Mode     //////////
+
+    //whatever code here!
+    Serial.println("BMP388 in SPI Mode!");
+
+    /////////////       I2C Bus Startup     /////////////
 
     int RPI_I2C_BUS;
     int adapter_nr = 1; /* default for raspberry pi */
@@ -37,8 +48,12 @@ int main(){
         //exit(1); //dont use
         return 0;
     }
+    Serial.println("I2C Bus Opened!");
+    //some way to print visible devices on the i2c-bus? Should have 0x68, 0x69, 0x76, 0x77
 
-    
+
+    //////////////      BMX160 Initialization      /////////////////
+
     DFRobot_BMX160 bmx160(RPI_I2C_BUS, 0x69);
     bmx160SensorData Omagn, Ogyro, Oaccel;
     // create file
@@ -54,6 +69,10 @@ int main(){
 
     }
     bmx160.wakeUp();
+
+    Serial.println("BMX160 0x69 Initialized");
+
+    //////////////      REMOVE SOON - BMX160 TESTING        //////////////
     for (int i = 0; i < 25; i++)
     {
 
@@ -86,12 +105,21 @@ int main(){
         usleep(100000);
     }
 
+    //////////////      MS5607 Initialization       /////////////////
 
 
+    Serial.println("MS5607 0x76 Initialized!");
 
     //section for waiting from radio command that rocket is ready for launch
-
+    std::string wait = "";
+    while (wait.compare("START COMMAND") != 0){
+        wait = "";
+        wait = Serial.readString();
+    }
     // section for main code
+
+
+
     // use while loop until landed
 
 
@@ -99,6 +127,7 @@ int main(){
 
 
     // closing everything
+    Serial.end();
     file.close_files();
 
     return 0;
