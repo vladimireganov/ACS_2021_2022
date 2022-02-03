@@ -24,19 +24,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
-#include <cstring>
 #include <time.h>
 #include <termios.h>
-#include <ctype.h>
 #include <sys/ioctl.h>
 #include <stdarg.h>
-//#include <linux/types.h>
 
 #include "SerialLinux.h"
 
 // All functions of unistd.h must be called like this: unistd::the_function()
 namespace unistd {
-    #include <unistd.h>
+#include <unistd.h>
 };
 
 
@@ -60,7 +57,7 @@ SerialLinux::SerialLinux()
 
 void SerialLinux::begin(int baud, unsigned char config)
 {
-     begin((const char *)SERIAL_DRIVER_NAME, baud, config);
+    begin((const char *)SERIAL_DRIVER_NAME, baud, config);
 }
 
 // Sets the data rate in bits per second (baud) for serial data transmission
@@ -75,7 +72,7 @@ void SerialLinux::begin(const char *serialPort, int baud, unsigned char config)
     // Open Serial port
     if ((fd = open(serialPort, O_RDWR | O_NOCTTY | O_NONBLOCK)) == -1) {
         fprintf(stderr,"%s(): Unable to open the serial port %s: %s\n",
-            __func__, serialPort, strerror (errno));
+                __func__, serialPort, strerror (errno));
         exit(1);
     }
 
@@ -84,7 +81,7 @@ void SerialLinux::begin(const char *serialPort, int baud, unsigned char config)
     fd_file = fdopen(fd,"r+");
     flags = fcntl( fileno(fd_file), F_GETFL );
     fcntl(fileno(fd_file), F_SETFL, flags | O_NONBLOCK);
-    
+
 
     // Set Serial options: baudRate/speed, data size and parity.
 
@@ -164,7 +161,7 @@ void SerialLinux::begin(const char *serialPort, int baud, unsigned char config)
     options.c_oflag &= ~OPOST;
 
     tcsetattr (fd, TCSANOW, &options);
-    
+
 }
 
 
@@ -183,7 +180,7 @@ int SerialLinux::available()
     int nbytes = 0;
     if (ioctl(fd, FIONREAD, &nbytes) < 0)  {
         fprintf(stderr, "%s(): serial get available bytes error: %s \n",
-            __func__, strerror (errno));
+                __func__, strerror (errno));
         exit(1);
     }
     return nbytes;
@@ -253,18 +250,18 @@ size_t SerialLinux::println(const std::string &s)
 // Followed by a new line
 size_t SerialLinux::println(const char c[])
 {
-  size_t n = print(c);
-  n += println();
-  return n;
+    size_t n = print(c);
+    n += println();
+    return n;
 }
 
 // Prints one character to the serial port as human-readable ASCII text.
 // Followed by a new line
 size_t SerialLinux::println(char c)
 {
-  size_t n = print(c);
-  n += println();
-  return n;
+    size_t n = print(c);
+    n += println();
+    return n;
 }
 
 //-------READS---------//
@@ -302,24 +299,23 @@ size_t SerialLinux::readBytes(char buffer[], size_t length)
 }
 
 std::string SerialLinux::readString() {
-    
+
     std::string ret = "";
     timespec time1, time2;
     char c = 0;
-        clock_gettime(CLOCK_REALTIME, &time1);
-        do {
-            if (available()) {
-                unistd::read(fd,&c,1);
-                ret += (char)c;
-            }
-            clock_gettime(CLOCK_REALTIME, &time2);
-            if (timeDiffmillis(time1,time2) > timeOut) {
-                std:printf("readString() timed out!\n");
-                break;
-            }
-        } while (c >= 0);
-        return ret;
-    
+    clock_gettime(CLOCK_REALTIME, &time1);
+    do {
+        if (available()) {
+            unistd::read(fd,&c,1);
+            ret += (char)c;
+        }
+        clock_gettime(CLOCK_REALTIME, &time2);
+        if (timeDiffmillis(time1,time2) > timeOut) {
+            break;
+        }
+    } while (c >= 0);
+    return ret;
+
 }
 
 
