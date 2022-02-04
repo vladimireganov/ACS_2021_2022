@@ -41,7 +41,7 @@ int init_Bus(){
 
 int begin_Sensors(){
 
-    RPI_I2C_BUS = init_Bus();
+    int RPI_I2C_BUS = init_Bus();
 
     if (RPI_I2C_BUS < 0) {
 

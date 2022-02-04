@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <fstream>
+#include <iostream>
 #include <fcntl.h>
 #include <pigpio.h>
 #include "DFRobot_BMX160.h"
