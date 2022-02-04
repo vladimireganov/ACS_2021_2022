@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include "File_write.h"
 #include "DFRobot_BMX160.h"
+#include "MS5607.h"
 
 
 
@@ -54,21 +55,39 @@ int main(){
 
     //////////////      BMX160 Initialization      /////////////////
 
-    DFRobot_BMX160 bmx160(RPI_I2C_BUS, 0x69);
-    bmx160SensorData Omagn, Ogyro, Oaccel;
+    DFRobot_BMX160 bmx160_1(RPI_I2C_BUS, 0x68);
+    bmx160SensorData1 Omagn, Ogyro, Oaccel;
     // create file
     // activate sensors 
     // log everything is good, else log error and exit program
 
     //Serial.begin(115200);
     //delay(100);
-    if (bmx160.begin() == false){ //if begin == false
+    if (bmx160_1.begin() == false){ //if begin == false
         //Serial.println("init false");
-        cout << "init false\n";
-        while(1);
+        cout << "68 init false\n";
+        //while(1);
 
     }
-    bmx160.wakeUp();
+    bmx160_1.wakeUp();
+
+    Serial.println("BMX160 0x68 Initialized");
+
+    DFRobot_BMX160 bmx160_2(RPI_I2C_BUS, 0x69);
+    bmx160SensorData1 Omagn, Ogyro, Oaccel;
+    // create file
+    // activate sensors
+    // log everything is good, else log error and exit program
+
+    //Serial.begin(115200);
+    //delay(100);
+    if (bmx160_2.begin() == false){ //if begin == false
+        //Serial.println("init false");
+        cout << "69 init false\n";
+        //while(1);
+
+    }
+    bmx160_2.wakeUp();
 
     Serial.println("BMX160 0x69 Initialized");
 
@@ -106,9 +125,52 @@ int main(){
     }
 
     //////////////      MS5607 Initialization       /////////////////
+    MS5607 ms5607_1(RPI_I2C_BUS, 0x76);
+    if (ms5607_1.begin() == false){ //if begin == false
+        //Serial.println("init false");
+        cout << "76 init false\n";
+        while(1);
 
-
+    }
     Serial.println("MS5607 0x76 Initialized!");
+
+    MS5607 ms5607_2(RPI_I2C_BUS, 0x77);
+    if (ms5607_2.begin() == false){ //if begin == false
+        //Serial.println("init false");
+        cout << "77 init false\n";
+        while(1);
+
+    }
+    Serial.println("MS5607 0x77 Initialized!");
+
+    //////////////         MS5607 TESTING            //////////////////
+
+    float P_val,T_val,H_val;
+
+    for (int i = 0; i<10; i++) {
+        if(ms5607_1.readDigitalValue()){
+            T_val = ms5607_1.getTemperature();
+            P_val = ms5607_1.getPressure();
+            H_val = ms5607_1.getAltitude();
+        }else{
+            cout << "Error in reading digital value in sensor! \n";
+        }
+
+        cout << "Temperature :  ";
+        cout <<
+             T_val;
+        cout << " C"; cout << "\n";
+        cout << "Pressure    :  ";
+        cout <<
+             P_val;
+        cout << " mBar"; cout << "\n";
+        cout << "Altitude    :  ";
+        cout <<
+             H_val;
+        cout << " meter"; cout << "\n";
+
+        sleep(1);
+    }
 
     //section for waiting from radio command that rocket is ready for launch
     std::string wait = "";

@@ -11,17 +11,7 @@ int init_GPIO() {
 
 }
 
-void shift_bmx_Addr(){
 
-    gpioSetMode(SPI_PIN, PI_OUTPUT);
-
-    for (int i = 0; i < 2; i++) {
-
-        gpioWrite(SPI_PIN, 1);
-        gpioDelay(DELAY);
-        gpioWrite(SPI_PIN, 0);
-        gpioDelay(DELAY);
-    }
 
 
 }
@@ -51,7 +41,7 @@ int begin_Sensors(){
     }
 
     DFRobot_BMX160 bmx160(RPI_I2C_BUS, BMX_ADDR1);
-    bmx160SensorData Omagn, Ogyro, Oaccel;
+
 
     if (bmx160.begin() == false){ //if begin == false
         std::cout << "bmx comm fail\n";
@@ -67,5 +57,5 @@ int begin_Sensors(){
         //while(1);
     return 0;
     }
-    return 1;
+    return RPI_I2C_BUS;
 }

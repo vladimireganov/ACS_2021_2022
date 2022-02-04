@@ -6,13 +6,18 @@
 
 int main() {
 
-   if (init_GPIO()) {
+   init_GPIO();
 
-       shift_bmx_Addr();
 
-   }
 
-   begin_Sensors();
+
+
+  if( i2c_bus = begin_Sensors()) {
+
+
+
+
+  }
 
    return 0;
 
