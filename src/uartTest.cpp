@@ -8,7 +8,7 @@ int main() {
     Serial.begin(9600, SERIAL_8N1);
     Serial.setTimeout(1000);
     std::string test = "";
-    while( (test.compare("Rocket")) ) {
+    while( (test.compare("Rocket")) != 0 ) {
         test = "";
         test = Serial.readString();
     }
