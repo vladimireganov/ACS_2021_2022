@@ -45,7 +45,7 @@ int begin_Sensors(){
 
     if (RPI_I2C_BUS < 0) {
 
-        std::cout << "init fail\n"
+        std::cout << "init fail\n";
         //exit(1); //dont use
         return 0;
     }
@@ -63,7 +63,7 @@ int begin_Sensors(){
 
     if (ms5607.begin() == false){ //if begin == false
         //Serial.println("init false");
-        //cout << "ms comm fail\n";
+        std::cout << "ms comm fail\n";
         //while(1);
     return 0;
     }
