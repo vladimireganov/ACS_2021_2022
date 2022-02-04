@@ -39,7 +39,7 @@ int init_Bus(){
     return RPI_I2C_BUS;
 }
 
-int beginSensors(){
+int begin_Sensors(){
 
     RPI_I2C_BUS = init_Bus();
 

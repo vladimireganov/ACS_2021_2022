@@ -12,7 +12,7 @@ int main() {
 
    }
 
-   beginSensors();
+   begin_Sensors();
 
    return 0;
 
