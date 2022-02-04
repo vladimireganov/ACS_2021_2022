@@ -21,18 +21,8 @@
 #ifndef SerialLinux_h
 #define SerialLinux_h
 
-#include <errno.h>
-#include <fcntl.h>
 #include <stdint.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string>
-#include <cstring>
-#include <time.h>
-#include <termios.h>
-#include <ctype.h>
-#include <sys/ioctl.h>
-#include <stdarg.h>
+#include "WString.h"
 
 
 /////////////////////////////////////////////
@@ -49,7 +39,7 @@
 // e.g SERIAL_ABC
 // A= data (5 bits, 6 bits, 7 bits, 8 bits)
 // B= parity (None, Even, Odd)
-// C= stop bits (1 bit, 2 bits)
+// C= stop bits (1 bit, 2 bits) 
 #define SERIAL_5N1 0x00
 #define SERIAL_6N1 0x02
 #define SERIAL_7N1 0x04
@@ -76,7 +66,7 @@
 #define SERIAL_8O2 0x3E
 
 // A char not found in a valid ASCII numeric field
-#define NO_IGNORE_CHAR  '\x01'
+#define NO_IGNORE_CHAR  '\x01' 
 
 // Serial Driver name (user can change it)
 extern char SERIAL_DRIVER_NAME[];
@@ -85,34 +75,55 @@ extern char SERIAL_DRIVER_NAME[];
 class SerialLinux {
 
 private:
-    int fd;
-    FILE * fd_file;
-    long timeOut;
-    long timeDiffmillis(timespec start, timespec end);
+	int fd;
+	FILE * fd_file;
+	long timeOut;
+	timespec timeDiff(timespec start, timespec end);
+	int timedPeek();
+	int peekNextDigit(bool detectDecimal);
+	long timeDiffmillis(timespec start, timespec end);
+	char * int2bin(int n);
 
 public:
-    SerialLinux();
-    void begin(int baud, unsigned char config = SERIAL_8N1);
-    void begin(const char *serialPort, int baud, unsigned char config = SERIAL_8N1);
-    void end();
-    int available();
-    void flush();
-    size_t print(const std::string &s);
-    size_t print(const char str[]);
-    size_t print(char c);
-    size_t println(void);
-    size_t println(const std::string &s);
-    size_t println(const char c[]);
-    size_t println(char c);
-    size_t printf(const char *fmt, ... );
-    int read();
-    size_t readBytes(char buffer[], size_t length);
-    std::string readString();
-    void setTimeout(long millis);
-    size_t write(uint8_t c);
-    size_t write(const char *str);
-    operator bool() { return (fd == -1) ? false : true; }
-    
+	SerialLinux();
+	void begin(int baud, unsigned char config = SERIAL_8N1);
+	void begin(const char *serialPort, int baud, unsigned char config = SERIAL_8N1);
+	void end();
+	int available();
+	int availableForWrite();
+	bool find(const char *target);
+	bool findUntil(const char *target, const char *terminator);
+	void flush();
+	long parseInt() { return parseInt(NO_IGNORE_CHAR); };
+	long parseInt(char ignore);
+	float parseFloat();
+	int peek();
+	size_t print(const String &s);
+	size_t print(const char str[]);
+	size_t print(char c);
+	size_t print(unsigned char b, int base);
+	size_t print(int n, int base);
+	size_t print(unsigned int n, int base);
+	size_t println(void);
+	size_t println(const String &s);
+	size_t println(const char c[]);
+	size_t println(char c);
+	size_t println(unsigned char b, int base);
+	size_t println(int num, int base);
+	size_t println(unsigned int num, int base);
+	size_t printf(const char *fmt, ... );
+	int read();
+	size_t readBytes(char buffer[], size_t length);
+	size_t readBytesUntil(char terminator, char buffer[], size_t length);
+	String readString();
+	String readStringUntil(char terminator);
+	size_t readStringCommand(char terminator, char buffer[], size_t length);
+	void setTimeout(long millis);
+	size_t write(uint8_t c);
+	size_t write(const char *str);
+	size_t write(char *buffer, size_t size);
+	operator bool() { return (fd == -1) ? false : true; }
+	
 };
 
 

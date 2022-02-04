@@ -112,7 +112,7 @@ public:
     size_t write(uint8_t c);
     size_t write(const char *str);
     operator bool() { return (fd == -1) ? false : true; }
-    
+
 };
 
 
