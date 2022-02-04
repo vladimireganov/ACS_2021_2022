@@ -45,7 +45,7 @@ int begin_Sensors(){
 
     if (RPI_I2C_BUS < 0) {
 
-        //cout << "init fail\n"
+        std::cout << "init fail\n"
         //exit(1); //dont use
         return 0;
     }
@@ -54,7 +54,7 @@ int begin_Sensors(){
     bmx160SensorData Omagn, Ogyro, Oaccel;
 
     if (bmx160.begin() == false){ //if begin == false
-        //cout << "bmx comm fail\n";
+        std::cout << "bmx comm fail\n";
         //while(1);
     return 0;
     }
