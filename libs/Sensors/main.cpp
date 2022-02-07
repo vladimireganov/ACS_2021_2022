@@ -91,7 +91,7 @@ int main(){
         cout << "m/s^2\n";
 
         cout << "\n";
-        cout << "Completed printing all Data\n"; //output letting user know all data has finished printing
+
         usleep(100000);
     }
 
@@ -103,7 +103,7 @@ int main(){
         while(1);
 
     }
-    cout << "MS5607 0x76 Initialized!";
+    cout << "MS5607 0x76 Initialized!\n";
 
 
 
@@ -137,7 +137,7 @@ int main(){
     }
 
 
-
+    cout << "Completed printing all Data\n"; //output letting user know all data has finished printing
 
 
 
