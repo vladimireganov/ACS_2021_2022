@@ -21,6 +21,7 @@ Data flight_data; // creating class to store data
 int main(){
     // section for init
     /////////////       SERIAL INITIALIZATION       ////////////////
+    gpioInitialise();
     Serial.begin(9600, SERIAL_8N1);
 
     ///////////////     File Creation       /////////////
@@ -191,6 +192,7 @@ int main(){
     // closing everything
     Serial.end();
     file.close_files();
+    gpioTerminate();
 
     return 0;
 }

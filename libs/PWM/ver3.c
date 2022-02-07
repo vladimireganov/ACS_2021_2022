@@ -6,9 +6,6 @@ gcc -Wall -pthread -o ver2 ver2.c -lpigpio
 sudo ./ver2
 */
   
-void InitServo(){
-	gpioInitialise();
-}
 
 void ServoOff() {
 	gpioPWM(18,0);
