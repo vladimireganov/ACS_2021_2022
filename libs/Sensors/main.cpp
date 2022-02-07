@@ -109,6 +109,7 @@ int main(){
 
     //////////////         MS5607 TESTING            //////////////////
 
+    ms5607_1.setOSR(256);
     float P_val,T_val,H_val;
 
     for (int i = 0; i<10; i++) {
