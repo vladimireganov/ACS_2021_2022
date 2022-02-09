@@ -1,5 +1,5 @@
 
-objects = main.o  MS5607.o DFRobot_BMX160.o SerialLinux.o
+objects = main.o  MS5607.o DFRobot_BMX160.o
 
 main : $(objects)
 	g++ -o main $(objects)
