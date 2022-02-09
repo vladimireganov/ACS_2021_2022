@@ -4,7 +4,6 @@
 #include <fstream>
 #include <fcntl.h>
 #include <unistd.h>
-#include "File_write.h"
 #include "DFRobot_BMX160.h"
 #include "MS5607.h"
 
@@ -44,7 +43,7 @@ int main(){
     //////////////      BMX160 Initialization      /////////////////
 
     DFRobot_BMX160 bmx160_1(RPI_I2C_BUS, 0x68);
-    bmx160SensorData1 Omagn, Ogyro, Oaccel;
+    bmx160SensorData Omagn, Ogyro, Oaccel;
     // create file
     // activate sensors 
     // log everything is good, else log error and exit program
@@ -67,7 +66,7 @@ int main(){
     for (int i = 0; i < 5; i++)
     {
 
-        bmx160.getAllData(&Omagn, &Ogyro, &Oaccel);
+        bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
 
   /* Display the magnetometer results (magn is magnetometer in uTesla) */
         cout << "M ";
@@ -92,7 +91,7 @@ int main(){
         cout << "m/s^2\n";
 
         cout << "\n";
-        cout << "Completed printing all Data\n"; //output letting user know all data has finished printing
+
         usleep(100000);
     }
 
@@ -104,12 +103,13 @@ int main(){
         while(1);
 
     }
-    cout << "MS5607 0x76 Initialized!";
+    cout << "MS5607 0x76 Initialized!\n";
 
 
 
     //////////////         MS5607 TESTING            //////////////////
 
+    ms5607_1.setOSR(256);
     float P_val,T_val,H_val;
 
     for (int i = 0; i<10; i++) {
@@ -138,7 +138,7 @@ int main(){
     }
 
 
-
+    cout << "Completed printing all Data\n"; //output letting user know all data has finished printing
 
 
 
