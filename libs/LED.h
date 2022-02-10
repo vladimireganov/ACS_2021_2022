@@ -11,7 +11,7 @@
 #include <signal.h>
 #include <pigpio.h>
 
-#define gpio 23
+#define BUZZ_PIN 23
 
 void buzzOn();
 void buzzOff();
