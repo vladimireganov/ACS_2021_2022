@@ -12,6 +12,8 @@
 #include <pigpio.h>
 
 #define BUZZ_PIN 23
+#define pi_LOW 0
+#define pi_HI 1
 
 void buzzOn();
 void buzzOff();
