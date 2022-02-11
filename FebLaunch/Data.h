@@ -17,6 +17,7 @@ public:
 
     int iteration_time; // time
     float pressure;
+    float temperature;
     float linear_acceleration_x;
     float linear_acceleration_y;
     float linear_acceleration_z;
@@ -26,6 +27,9 @@ public:
     float acceleration_x;
     float acceleration_y;
     float acceleration_z;
+    float magnetometer_x;
+    float magnetometer_y;
+    float magnetometer_z;
     float gravity_x;
     float gravity_y;
     float gravity_z;

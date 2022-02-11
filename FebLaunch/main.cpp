@@ -60,14 +60,6 @@ int main(){
     bmx160_1.setAccelRange(eAccelRange_16G);
     bmx160_1.setGyroRange(eGyroRange_1000DPS);
 
-    // call for data with
-    bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
-
-    //then extract coordinates with
-    int magnX = Omagn.x;
-    int magnY = Omagn.y;
-    //etc....
-
 
     //////////////      MS5607 Initialization       /////////////////
     MS5607 ms5607_1(RPI_I2C_BUS, 0x76);
@@ -77,16 +69,16 @@ int main(){
         while(1);
 
     }
-    ms5607_1.setOSR(256)            //set the oversampling ratio to minimum for device
+    ms5607_1.setOSR(256);            //set the oversampling ratio to minimum for device
 
 
     //handle data as below
-    float P_val,T_val,H_val;
+    float pressure,temperature,altitude;
 
     if(ms5607_1.readDigitalValue()){
-        T_val = ms5607_1.getTemperature();
-        P_val = ms5607_1.getPressure();
-        H_val = ms5607_1.getAltitude();    //getAltitude() has calls to getTemp() and getPres() to calculate
+        temperature = ms5607_1.getTemperature();
+        pressure = ms5607_1.getPressure();
+        altitude = ms5607_1.getAltitude();    //getAltitude() has calls to getTemp() and getPres() to calculate
     }else{                                          // and return the Altitude. See MS5607.cpp for more.
         cout << "Error in reading digital value in sensor! \n";
     }
@@ -97,12 +89,42 @@ int main(){
     /////////               FLIGHT CODE HERE                ///////////////
     ///////////////////////////////////////////////////////////////////////
 
+    int iterator = 0;
 
+    while (true)
+    {
+        // call for data with
+        bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
 
+        //then extract coordinates with
+        int magnX = Omagn.x;
+        int magnY = Omagn.y;
+        //etc....
 
+        if(ms5607_1.readDigitalValue()){
+            temperature = ms5607_1.getTemperature();
+            pressure = ms5607_1.getPressure();
+        }
 
+        flight_data.iterator = iterator++;
+        flight_data.iteration_time = 0.0;
+        flight_data.pressure = pressure;
+        flight_data.temperature = temperature;
 
+        flight_data.acceleration_x = Oaccel.x;
+        flight_data.acceleration_y = Oaccel.y;
+        flight_data.acceleration_z = Oaccel.z;
 
+        flight_data.gyroscope_x = Ogyro.x;
+        flight_data.gyroscope_y = Ogyro.y;
+        flight_data.gyroscope_z = Ogyro.z;
+
+        flight_data.magnetometer_x = Omagn.x;
+        flight_data.magnetometer_y = Omagn.y;
+        flight_data.magnetometer_z = Omagn.z;
+
+        file.save_data();
+    }
 
     //////////////////  closing everything   /////////////////////////
 
