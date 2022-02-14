@@ -158,6 +158,33 @@ int commFailTest(){
     buzzOff();
 
 
+    ///////////         TESTING SERVO               //////////////
+
+    cout<<"Testing Servos!\n";
+
+    SetAngle(0);
+    cout<<"0 degrees\n";
+    sleep(5);
+    SetAngle(10);
+    cout<<"10 degrees\n";
+    sleep(5);
+    SetAngle(20);
+    cout<<"20 degrees\n";
+    sleep(5);
+    SetAngle(30);
+    cout<<"30 degrees\n";
+    sleep(5);
+    SetAngle(45);
+    cout<<"45 degrees\n";
+    sleep(5);
+    SetAngle(-90);
+    cout<<"set to -90, defaults to 0 degrees\n";
+    sleep(5);
+    SetAngle(135);
+    cout<<"set to 135, defaults to 45 degrees\n";
+    sleep(5);
+
+
 
     ////////    TESTING BMX160 Communications and Test Scheme       ////////
 
