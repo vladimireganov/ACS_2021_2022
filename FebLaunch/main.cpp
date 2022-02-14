@@ -67,6 +67,19 @@ int main(){
     int magnX = Omagn.x;
     int magnY = Omagn.y;
     //etc....
+    DFRobot_BMX160 bmx160_2(RPI_I2C_BUS, 0x69);
+    // create file
+    // activate sensors
+    // log everything is good, else log error and exit program
+
+    if (bmx160_2.begin() == false){ //if begin == false
+
+        cout << "69 init false\n";
+
+    }
+    bmx160_2.wakeUp();
+    bmx160_2.setAccelRange(eAccelRange_16G);
+    bmx160_2.setGyroRange(eGyroRange_1000DPS);
 
 
     //////////////      MS5607 Initialization       /////////////////
@@ -79,6 +92,14 @@ int main(){
     }
     ms5607_1.setOSR(256)            //set the oversampling ratio to minimum for device
 
+    MS5607 ms5607_2(RPI_I2C_BUS, 0x77);
+    if (ms5607_2.begin() == false){ //if begin == false
+        //Serial.println("init false");
+        cout << "77 init false\n";
+        while(1);
+
+    }
+    ms5607_2.setOSR(256)            //set the oversampling ratio to minimum for device
 
     //handle data as below
     float P_val,T_val,H_val;
