@@ -7,6 +7,6 @@ testmain : $(objects)
 testmain.o: testmain.c 
 	g++ -c testmain.c 
 
-ver3.o: ver3.c ver3.h
+ver3.o: PWM.c PWM.h
 	g++ -c ver3.c 
 
