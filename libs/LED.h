@@ -12,8 +12,11 @@
 #include <pigpio.h>
 
 #define BUZZ_PIN 23
+#define BUTTON_PIN 24
 #define pi_LOW 0
 #define pi_HI 1
 
 void buzzOn();
 void buzzOff();
+
+int readButton();

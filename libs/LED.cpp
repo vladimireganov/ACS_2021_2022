@@ -14,3 +14,12 @@ void buzzOff() {
     }
     gpioWrite(BUZZ_PIN,pi_LOW);    //set pin to output 0 V
 }
+
+int readButton() {
+    if (gpioGetMode(BUTTON_PIN) != PI_INPUT) {
+        gpioSetMode(BUTTON_PIN, PI_INPUT);
+    }
+
+    return gpioRead(BUTTON_PIN);
+
+}
