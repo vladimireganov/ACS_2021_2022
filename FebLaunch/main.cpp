@@ -42,6 +42,10 @@ int main(){
         return 0;
     }
 
+    ///////////         SERIAL INITIALIZATION       //////////////
+
+    Serial.begin(9600,SERIAL_8N1);
+
 
     //////////////      BMX160 Initialization      /////////////////
 
@@ -54,6 +58,7 @@ int main(){
     if (bmx160_1.begin() == false){ //if begin == false
 
         cout << "68 init false\n";
+        while(1);
 
     }
     bmx160_1.wakeUp();
@@ -63,10 +68,6 @@ int main(){
     // call for data with
     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
 
-    //then extract coordinates with
-    int magnX = Omagn.x;
-    int magnY = Omagn.y;
-    //etc....
     DFRobot_BMX160 bmx160_2(RPI_I2C_BUS, 0x69);
     // create file
     // activate sensors
@@ -75,6 +76,7 @@ int main(){
     if (bmx160_2.begin() == false){ //if begin == false
 
         cout << "69 init false\n";
+        while(1);
 
     }
     bmx160_2.wakeUp();
@@ -110,6 +112,7 @@ int main(){
         H_val = ms5607_1.getAltitude();    //getAltitude() has calls to getTemp() and getPres() to calculate
     }else{                                          // and return the Altitude. See MS5607.cpp for more.
         cout << "Error in reading digital value in sensor! \n";
+        while(1);
     }
 
 
