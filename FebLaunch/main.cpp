@@ -129,6 +129,36 @@ int commFailTest(){
     /////////               TEST CODE HERE                ///////////////
     ///////////////////////////////////////////////////////////////////////
 
+
+    /////////               TESTING RADIO               ///////////////
+
+    Serial.println("Hello World!\n");
+    Serial.setTimeout(1000);
+    std::string test = "";
+    while( (test.compare("Rocket")) != 0 ) {
+        test = "";
+        test = Serial.readString();
+    }
+    Serial.println("Armed!\n");
+    std::cout << test << "\n";
+
+    /////////           TESTING BUZZER/LED             //////////////
+
+    buzzOn();
+    sleep(2);
+    buzzOff();
+
+    //////////            TESTING BUTTON               /////////////
+
+    cout << "Press button! \n";
+    while(!readButton());
+    cout << "BEEP!\n"
+    buzzOn();
+    sleep(2);
+    buzzOff();
+
+
+
     ////////    TESTING BMX160 Communications and Test Scheme       ////////
 
     while(bmx160_1.scan()) {
@@ -212,6 +242,9 @@ int commFailTest(){
             while(!bmx160_2.begin());
             sleep(10);
 */
+
+
+  //////////      MS5607 Comm Test and Failures       ///////////////
 
             while(ms5607_1.readDigitalValue()) {
                 H_val = ms5607_1.getAltitude();
