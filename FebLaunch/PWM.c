@@ -1,5 +1,5 @@
 
-#include "ver3.h"
+#include "PWM.h"
 
 /*
 gcc -Wall -pthread -o ver2 ver2.c -lpigpio
@@ -8,7 +8,7 @@ sudo ./ver2
   
 
 void ServoOff() {
-	gpioPWM(18,0);
+	gpioPWM(PWM_PIN,0);
 }
 
 

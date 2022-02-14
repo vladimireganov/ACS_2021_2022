@@ -4,7 +4,7 @@
 #include <pigpio.h>
 
  
-#define gpio 18
+#define PWM_PIN 18
 #define dCycle0 135000		//13.5% is zero point 0degrees, 80% is max, 270degrees
 #define freq 333		//135 355 575 795
 
