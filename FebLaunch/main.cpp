@@ -18,7 +18,7 @@ Data flight_data; // creating class to store data
 
 
 
-int main(){
+int commFailTest(){
     // section for init
 
     ///////////////     File Creation       /////////////
@@ -45,6 +45,14 @@ int main(){
     ///////////         SERIAL INITIALIZATION       //////////////
 
     Serial.begin(9600,SERIAL_8N1);
+
+    //////////          SERVO AND BUZZER/LED INIT   /////////////
+
+    if( gpioInitiazlise() >= 0) {
+        cout << "GPIO Init Fail\n";
+        while(1);
+    }
+
 
 
     //////////////      BMX160 Initialization      /////////////////
@@ -118,12 +126,139 @@ int main(){
 
 
     ///////////////////////////////////////////////////////////////////////
-    /////////               FLIGHT CODE HERE                ///////////////
+    /////////               TEST CODE HERE                ///////////////
     ///////////////////////////////////////////////////////////////////////
 
 
+    /////////               TESTING RADIO               ///////////////
+
+    Serial.println("Hello World!\n");
+    Serial.setTimeout(1000);
+    std::string test = "";
+    while( (test.compare("Rocket")) != 0 ) {
+        test = "";
+        test = Serial.readString();
+    }
+    Serial.println("Armed!\n");
+    std::cout << test << "\n";
+
+    /////////           TESTING BUZZER/LED             //////////////
+
+    buzzOn();
+    sleep(2);
+    buzzOff();
+
+    //////////            TESTING BUTTON               /////////////
+
+    cout << "Press button! \n";
+    while(!readButton());
+    cout << "BEEP!\n"
+    buzzOn();
+    sleep(2);
+    buzzOff();
 
 
+
+    ////////    TESTING BMX160 Communications and Test Scheme       ////////
+
+    while(bmx160_1.scan()) {
+
+        bmx160_1.getAllData(&Omagn,&gyro,&Oaccel);
+        cout << "\nBMX160_1 Data\n";
+        for (int i = 0; i < 25; i++)
+        {
+
+            bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
+
+        // Display the magnetometer results (magn is magnetometer in uTesla)
+        cout << "M ";
+        cout << "X: "; cout << Omagn.x << "  ";
+        cout << "Y: "; cout << Omagn.y << "  ";
+        cout << "Z: "; cout << Omagn.z << "  ";
+        cout << "uT\n";
+
+
+        // Display the gyroscope results (gyroscope data is in g)
+        cout << "G ";
+        cout << "X: "; cout << Ogyro.x << "  ";
+        cout << "Y: "; cout << Ogyro.y << "  ";
+        cout << "Z: "; cout << Ogyro.z << "  ";
+        cout << "g\n";
+
+        // Display the accelerometer results (accelerometer data is in m/s^2)
+        cout << "A ";
+        cout << "X: "; cout << Oaccel.x << "  ";
+        cout << "Y: "; cout << Oaccel.y << "  ";
+        cout << "Z: "; cout << Oaccel.z << "  ";
+        cout << "m/s^2\n";
+
+        cout << "\n";
+        usleep(100000);
+        }
+
+        cout << "BMX160_1 Comm Failure! Using BMX160_2!\n";
+
+        while(bmx160_2.scan()) {
+
+            bmx160_1.getAllData(&Omagn,&gyro,&Oaccel);
+            cout << "\nBMX160_2 Data\n";
+            for (int i = 0; i < 25; i++)
+            {
+
+                bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
+
+                // Display the magnetometer results (magn is magnetometer in uTesla)
+                cout << "M ";
+                cout << "X: "; cout << Omagn.x << "  ";
+                cout << "Y: "; cout << Omagn.y << "  ";
+                cout << "Z: "; cout << Omagn.z << "  ";
+                cout << "uT\n";
+
+
+                // Display the gyroscope results (gyroscope data is in g)
+                cout << "G ";
+                cout << "X: "; cout << Ogyro.x << "  ";
+                cout << "Y: "; cout << Ogyro.y << "  ";
+                cout << "Z: "; cout << Ogyro.z << "  ";
+                cout << "g\n";
+
+                // Display the accelerometer results (accelerometer data is in m/s^2)
+                cout << "A ";
+                cout << "X: "; cout << Oaccel.x << "  ";
+                cout << "Y: "; cout << Oaccel.y << "  ";
+                cout << "Z: "; cout << Oaccel.z << "  ";
+                cout << "m/s^2\n";
+
+                cout << "\n";
+                usleep(100000);
+            }
+
+            cout << "BMX160_2 Comm Failure!\n";
+  /*
+            cout << "Please reconnect BMX160_1\n";
+            while(!bmx160_1.begin());
+            sleep(10);
+            cout <<"Please reconnect BMX160_2\n";
+            while(!bmx160_2.begin());
+            sleep(10);
+*/
+
+
+  //////////      MS5607 Comm Test and Failures       ///////////////
+
+            while(ms5607_1.readDigitalValue()) {
+                H_val = ms5607_1.getAltitude();
+                cout << "MS5607_1 Altitude: " << H_val << "\n";
+            }
+
+            cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
+
+            while(ms5607_2.readDigitalValue()) {
+                H_val = ms5607_2.getAltitude();
+                cout << "MS5607_2 Altitude: " << H_val << "\n";
+            }
+
+            cout << "MS5607_2 Comm Failure! DYing!\n";
 
 
 
@@ -131,6 +266,9 @@ int main(){
     //////////////////  closing everything   /////////////////////////
 
     file.close_files();
+    Serial.end();
+    gpioTerminate();
+    close(RPI_I2C_BUS);
 
     return 0;
 }

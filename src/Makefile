@@ -4,7 +4,7 @@ objects = main.o  MS5607.o DFRobot_BMX160.o SerialLinux.o
 main : $(objects)
 	g++ -o main $(objects)
 
-main.o: main.cpp 
+main.o: commFailTest.cpp
 	g++ -c main.cpp
 
 MS5607.o: MS5607.cpp MS5607.h
