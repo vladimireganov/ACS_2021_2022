@@ -191,7 +191,7 @@ int commFailTest() {
 
     ////////    TESTING BMX160 Communications and Test Scheme       ////////
 
-    while (bmx160_1.scan()) {
+    while (bmx160_1.pubScan()) {
 
         bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
         cout << "\nBMX160_1 Data\n";
@@ -236,7 +236,7 @@ int commFailTest() {
 
         cout << "BMX160_1 Comm Failure! Using BMX160_2!\n";
 
-        while (bmx160_2.scan()) {
+        while (bmx160_2.pubScan()) {
 
             bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
             cout << "\nBMX160_2 Data\n";
