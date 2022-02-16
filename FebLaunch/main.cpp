@@ -51,7 +51,7 @@ int commFailTest() {
 
     //////////          SERVO AND BUZZER/LED INIT   /////////////
 
-    if (gpioInitiazlise() >= 0) {
+    if (gpioInitialise() >= 0) {
         cout << "GPIO Init Fail\n";
         while (1);
     }
@@ -103,7 +103,7 @@ int commFailTest() {
         while (1);
 
     }
-    ms5607_1.setOSR(256)            //set the oversampling ratio to minimum for device
+    ms5607_1.setOSR(256);            //set the oversampling ratio to minimum for device
 
     MS5607 ms5607_2(RPI_I2C_BUS, 0x77);
     if (ms5607_2.begin() == false) { //if begin == false
@@ -155,7 +155,7 @@ int commFailTest() {
 
     cout << "Press button! \n";
     while (!readButton());
-    cout << "BEEP!\n"
+    cout << "BEEP!\n";
     buzzOn();
     sleep(2);
     buzzOff();
