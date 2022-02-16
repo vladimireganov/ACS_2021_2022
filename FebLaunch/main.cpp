@@ -112,7 +112,7 @@ int commFailTest() {
         while (1);
 
     }
-    ms5607_2.setOSR(256)            //set the oversampling ratio to minimum for device
+    ms5607_2.setOSR(256);            //set the oversampling ratio to minimum for device
 
     //handle data as below
     float P_val, T_val, H_val;
