@@ -1207,6 +1207,7 @@ class DFRobot_BMX160{
      * @return true means success
      */
     bool begin();
+    bool pubScan();
     
     void setGyroRange(eGyroRange_t bits);
     void setAccelRange(eAccelRange_t bits);
@@ -1223,6 +1224,7 @@ class DFRobot_BMX160{
     bool softReset();
     void setLowPower();
     void wakeUp();
+
     
   private:
     int8_t softReset(struct bmx160Dev *dev);

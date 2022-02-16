@@ -303,3 +303,10 @@ bool DFRobot_BMX160::scan()
 
 
 }
+
+bool DFRobot_BMX160::pubScan() {
+
+    return scan();
+
+
+}
