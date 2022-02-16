@@ -21,7 +21,7 @@ Data flight_data; // creating class to store data
 
 
 
-int commFailTest() {
+int main() {
     // section for init
 
     ///////////////     File Creation       /////////////
