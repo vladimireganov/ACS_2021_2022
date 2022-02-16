@@ -7,6 +7,9 @@
 #include "File_write.h"
 #include "DFRobot_BMX160.h"
 #include "MS5607.h"
+#include "PWM.h"
+#include "SerialLinux.h"
+#include "LED.h"
 
 
 
