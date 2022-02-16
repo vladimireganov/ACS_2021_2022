@@ -193,7 +193,7 @@ int commFailTest() {
 
     while (bmx160_1.scan()) {
 
-        bmx160_1.getAllData(&Omagn, &gyro, &Oaccel);
+        bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
         cout << "\nBMX160_1 Data\n";
         for (int i = 0; i < 25; i++) {
 
@@ -238,7 +238,7 @@ int commFailTest() {
 
         while (bmx160_2.scan()) {
 
-            bmx160_1.getAllData(&Omagn, &gyro, &Oaccel);
+            bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
             cout << "\nBMX160_2 Data\n";
             for (int i = 0; i < 25; i++) {
 
