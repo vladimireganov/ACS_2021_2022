@@ -51,7 +51,7 @@ int main() {
 
     //////////          SERVO AND BUZZER/LED INIT   /////////////
 
-    if (gpioInitialise() >= 0) {
+    if (gpioInitialise() <= 0) {
         cout << "GPIO Init Fail\n";
         while (1);
     }
