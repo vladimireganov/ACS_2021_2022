@@ -228,9 +228,9 @@ int main() {
         cout << "m/s^2\n";
 
         cout << "\n";
-        usleep(1000);
+        usleep(1000000);
+    }
     while (bmx160_1.pubScan()) {
-        }
     }
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     cout << "\nBMX160_2 Data\n";
@@ -269,10 +269,9 @@ int main() {
         cout << "m/s^2\n";
 
         cout << "\n";
-        usleep(1000);
-
+        usleep(1000000);
+    }
     while (bmx160_2.pubScan()) {
-        }
     }
 
             cout << "BMX160_2 Comm Failure!\n";
