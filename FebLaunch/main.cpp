@@ -132,7 +132,7 @@ int main() {
     /////////               TEST CODE HERE                ///////////////
     ///////////////////////////////////////////////////////////////////////
 
-
+/*
     /////////               TESTING RADIO               ///////////////
     cout<<"Testing Serial Port to Radio \n";
     Serial.println("Hello World!\n");
@@ -144,7 +144,7 @@ int main() {
     }
     Serial.println("Armed!\n");
     std::cout << test << "\n";
-
+*/
     /////////           TESTING BUZZER/LED             //////////////
     cout << "BEEP!\n";
     buzzOn();
