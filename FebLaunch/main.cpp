@@ -73,7 +73,7 @@ int main() {
 
     }
     bmx160_1.wakeUp();
-    bmx160_1.setAccelRange(eAccelRange_16G);
+    //bmx160_1.setAccelRange(eAccelRange_16G);
     bmx160_1.setGyroRange(eGyroRange_1000DPS);
 
     // call for data with
