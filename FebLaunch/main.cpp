@@ -233,51 +233,52 @@ int main() {
             cout << "\n";
             usleep(100000);
         }
+    }
 
         cout << "BMX160_1 Comm Failure! Using BMX160_2!\n";
 
-        while (bmx160_2.pubScan()) {
+    while (bmx160_2.pubScan()) {
+
+        bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
+        cout << "\nBMX160_2 Data\n";
+        for (int i = 0; i < 25; i++) {
 
             bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
-            cout << "\nBMX160_2 Data\n";
-            for (int i = 0; i < 25; i++) {
 
-                bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
+            // Display the magnetometer results (magn is magnetometer in uTesla)
+            cout << "M ";
+            cout << "X: ";
+            cout << Omagn.x << "  ";
+            cout << "Y: ";
+            cout << Omagn.y << "  ";
+            cout << "Z: ";
+            cout << Omagn.z << "  ";
+            cout << "uT\n";
 
-                // Display the magnetometer results (magn is magnetometer in uTesla)
-                cout << "M ";
-                cout << "X: ";
-                cout << Omagn.x << "  ";
-                cout << "Y: ";
-                cout << Omagn.y << "  ";
-                cout << "Z: ";
-                cout << Omagn.z << "  ";
-                cout << "uT\n";
+            // Display the gyroscope results (gyroscope data is in g)
+            cout << "G ";
+            cout << "X: ";
+            cout << Ogyro.x << "  ";
+            cout << "Y: ";
+            cout << Ogyro.y << "  ";
+            cout << "Z: ";
+            cout << Ogyro.z << "  ";
+            cout << "g\n";
 
+            // Display the accelerometer results (accelerometer data is in m/s^2)
+            cout << "A ";
+            cout << "X: ";
+            cout << Oaccel.x << "  ";
+            cout << "Y: ";
+            cout << Oaccel.y << "  ";
+            cout << "Z: ";
+            cout << Oaccel.z << "  ";
+            cout << "m/s^2\n";
 
-                // Display the gyroscope results (gyroscope data is in g)
-                cout << "G ";
-                cout << "X: ";
-                cout << Ogyro.x << "  ";
-                cout << "Y: ";
-                cout << Ogyro.y << "  ";
-                cout << "Z: ";
-                cout << Ogyro.z << "  ";
-                cout << "g\n";
-
-                // Display the accelerometer results (accelerometer data is in m/s^2)
-                cout << "A ";
-                cout << "X: ";
-                cout << Oaccel.x << "  ";
-                cout << "Y: ";
-                cout << Oaccel.y << "  ";
-                cout << "Z: ";
-                cout << Oaccel.z << "  ";
-                cout << "m/s^2\n";
-
-                cout << "\n";
-                usleep(100000);
-            }
+            cout << "\n";
+            usleep(100000);
+        }
+    }
 
             cout << "BMX160_2 Comm Failure!\n";
             /*
@@ -318,5 +319,3 @@ int main() {
 
             return 0;
         }
-    }
-}
