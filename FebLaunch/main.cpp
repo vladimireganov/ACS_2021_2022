@@ -33,6 +33,8 @@ int main() {
 
     /////////////       I2C Bus Startup     /////////////
 
+
+    disBMP();
     int RPI_I2C_BUS;
     int adapter_nr = 1; /* default for raspberry pi */
     char filename[20];
@@ -55,7 +57,6 @@ int main() {
         cout << "GPIO Init Fail\n";
         while (1);
     }
-    disBMP();
 
 
 
