@@ -42,7 +42,7 @@ namespace unistd {
 //          SerialLinux class (UART)       //
 ////////////////////////////////////////////
 
-char SERIAL_DRIVER_NAME[128] = "/dev/ttyS0";
+char SERIAL_DRIVER_NAME[128] = "/dev/serial0";
 
 ////  Public methods ////
 
