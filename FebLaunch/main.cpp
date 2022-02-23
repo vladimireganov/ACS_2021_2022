@@ -140,7 +140,7 @@ int main() {
     sleep(2);
    /* cout<<"Testing Serial Port Read from Radio. Waiting until arm command \"Rocket\" is received.\n";
     Serial.setTimeout(1000);
-    std::string test = "";
+    std::string test = "THIS Is Not THE right PAssWoRd!";
     while ((test.compare("Rocket")) != 0) {
         test = "";
         test = Serial.readString();
