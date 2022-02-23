@@ -135,8 +135,10 @@ int main() {
 
 
     /////////               TESTING RADIO               ///////////////
-    cout<<"Testing Serial Port to Radio \n";
+    cout<<"Testing Serial Port Write to Radio. Writing \"Hello World!\" \n";
     Serial.println("Hello World!\n");
+    sleep(2);
+   /* cout<<"Testing Serial Port Read from Radio. Waiting until arm command \"Rocket\" is received.\n";
     Serial.setTimeout(1000);
     std::string test = "";
     while ((test.compare("Rocket")) != 0) {
@@ -144,7 +146,7 @@ int main() {
         test = Serial.readString();
     }
     Serial.println("Armed!\n");
-    std::cout << test << "\n";
+    std::cout << test << "\n";*/
 
     /////////           TESTING BUZZER/LED             //////////////
     cout << "BEEP!\n";
@@ -168,25 +170,25 @@ int main() {
 
     SetAngle(0);
     cout << "0 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(10);
     cout << "10 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(20);
     cout << "20 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(30);
     cout << "30 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(45);
     cout << "45 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(-90);
     cout << "set to -90, defaults to 0 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(135);
     cout << "set to 135, defaults to 45 degrees\n";
-    sleep(5);
+    sleep(2);
 
 
 
@@ -231,8 +233,10 @@ int main() {
         cout << "\n";
         usleep(1000000);
     }
-    while (bmx160_1.pubScan()) {
+   /* while (bmx160_1.pubScan()) {      //to be used when sensor can be physically disconnected
     }
+    cout << "BMX160_1 Comm Failure!\n";*/
+
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     cout << "\nBMX160_2 Data\n";
     for (int i = 0; i < 10; i++) {
@@ -272,45 +276,38 @@ int main() {
         cout << "\n";
         usleep(1000000);
     }
-    while (bmx160_2.pubScan()) {
+    /*while (bmx160_2.pubScan()) {      // to be used when sensor can be physically disconnected
     }
 
-            cout << "BMX160_2 Comm Failure!\n";
-            /*
-                      cout << "Please reconnect BMX160_1\n";
-                      while(!bmx160_1.begin());
-                      sleep(10);
-                      cout <<"Please reconnect BMX160_2\n";
-                      while(!bmx160_2.begin());
-                      sleep(10);
-          */
+            cout << "BMX160_2 Comm Failure!\n";*/
 
 
             //////////      MS5607 Comm Test and Failures       ///////////////
-
-            while (ms5607_1.readDigitalValue()) {
+            cout<<"MS5607_1 Data!\n\n";
+            for (int x=0; x<10; x++) {
+                ms5607_1.readDigitalValue();
                 H_val = ms5607_1.getAltitude();
                 cout << "MS5607_1 Altitude: " << H_val << "\n";
             }
-
-            cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
-
-            while (ms5607_2.readDigitalValue()) {
+          /*  while(!ms5607_1.readDigitalValue()) {     //to be used when sensor can be physically disconnected
+            }
+            cout << "MS5607_1 Comm Failure! Using MS5607_2! \n"; */
+            cout<<"MS5607_2 Data!\n\n";
+            for (int x=0; x<10; x++) {
+                ms5607_2.readDigitalValue();
                 H_val = ms5607_2.getAltitude();
                 cout << "MS5607_2 Altitude: " << H_val << "\n";
             }
-
-            cout << "MS5607_2 Comm Failure! DYing!\n";
-
-
-
+        /*  while(!ms5607_2.readDigitalValue()) {     //to be used when sensor can be physically disconnected
+            }
+      cout << "MS5607_2 Comm Failure! \n"; */
 
             //////////////////  closing everything   /////////////////////////
 
+            cout << "Closing all comm buses and terminating GPIO.\n"
             file.close_files();
             Serial.end();
             gpioTerminate();
             close(RPI_I2C_BUS);
-
             return 0;
-        }
+}
