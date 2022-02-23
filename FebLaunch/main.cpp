@@ -30,11 +30,18 @@ int main() {
     file.create_log_file();
     file.create_table_names();
 
+    //////////          SERVO, BUZZER/LED INIT AND BMP388 DISABLE  /////////////
+
+    if (gpioInitialise() < 0) {
+        cout << "GPIO Init Fail\n";
+        while (1);
+    }
+    disBMP();
 
     /////////////       I2C Bus Startup     /////////////
 
 
-    disBMP();
+
     int RPI_I2C_BUS;
     int adapter_nr = 1; /* default for raspberry pi */
     char filename[20];
@@ -50,14 +57,6 @@ int main() {
     ///////////         SERIAL INITIALIZATION       //////////////
 
     Serial.begin(9600, SERIAL_8N1);
-
-    //////////          SERVO, BUZZER/LED INIT AND BMP388 DISABLE  /////////////
-
-    if (gpioInitialise() < 0) {
-        cout << "GPIO Init Fail\n";
-        while (1);
-    }
-
 
 
     //////////////      BMX160 Initialization      /////////////////
