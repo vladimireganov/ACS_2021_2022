@@ -13,10 +13,13 @@
 
 #define BUZZ_PIN 23
 #define BUTTON_PIN 24
+#define BMP_PIN 27
 #define pi_LOW 0
 #define pi_HI 1
+#define GPIO_DOWN 2
 
 void buzzOn();
 void buzzOff();
 
 int readButton();
+void disBMP();

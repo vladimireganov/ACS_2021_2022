@@ -33,6 +33,8 @@ int main() {
 
     /////////////       I2C Bus Startup     /////////////
 
+
+    disBMP();
     int RPI_I2C_BUS;
     int adapter_nr = 1; /* default for raspberry pi */
     char filename[20];
@@ -49,7 +51,7 @@ int main() {
 
     Serial.begin(9600, SERIAL_8N1);
 
-    //////////          SERVO AND BUZZER/LED INIT   /////////////
+    //////////          SERVO, BUZZER/LED INIT AND BMP388 DISABLE  /////////////
 
     if (gpioInitialise() < 0) {
         cout << "GPIO Init Fail\n";
