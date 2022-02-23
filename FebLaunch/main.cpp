@@ -304,7 +304,7 @@ int main() {
 
             //////////////////  closing everything   /////////////////////////
 
-            cout << "Closing all comm buses and terminating GPIO.\n"
+            cout << "Closing all comm buses and terminating GPIO.\n";
             file.close_files();
             Serial.end();
             gpioTerminate();
