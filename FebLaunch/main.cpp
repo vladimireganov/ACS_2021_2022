@@ -311,7 +311,7 @@ int main() {
         //to test for data collisions with BMP388//
         short C1, C2, C3, C4, C5, C6;
     ms5607_1.readPublicConfig(&C1,&C2,&C3,&C4,&C5,&C6);
-    cout << C1 << " " << C2 << " " << C3 << " " << C4 << " " << C5 << " " << C6 << " ";
+    cout << C1 << " " << C2 << " " << C3 << " " << C4 << " " << C5 << " " << C6 << "\n\n";
 
             //////////////////  closing everything   /////////////////////////
 
