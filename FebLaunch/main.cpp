@@ -74,7 +74,7 @@ int main() {
 
     }
     bmx160_1.wakeUp();
-    //bmx160_1.setAccelRange(eAccelRange_16G);
+    bmx160_1.setAccelRange(eAccelRange_2G);
     bmx160_1.setGyroRange(eGyroRange_1000DPS);
 
     // call for data with
@@ -92,7 +92,7 @@ int main() {
 
     }
     bmx160_2.wakeUp();
-    bmx160_2.setAccelRange(eAccelRange_16G);
+    bmx160_2.setAccelRange(eAccelRange_2G);
     bmx160_2.setGyroRange(eGyroRange_1000DPS);
 
 
@@ -104,7 +104,7 @@ int main() {
         while (1);
 
     }
-    ms5607_1.setOSR(256);            //set the oversampling ratio to minimum for device
+    //ms5607_1.setOSR(256);            //set the oversampling ratio to minimum for device
 
     MS5607 ms5607_2(RPI_I2C_BUS, 0x77);
     if (ms5607_2.begin() == false) { //if begin == false
@@ -113,7 +113,7 @@ int main() {
         while (1);
 
     }
-    ms5607_2.setOSR(256);            //set the oversampling ratio to minimum for device
+    //ms5607_2.setOSR(256);            //set the oversampling ratio to minimum for device
 
     //handle data as below
     float P_val, T_val, H_val;
@@ -286,8 +286,9 @@ int main() {
             cout<<"MS5607_1 Data!\n\n";
             for (int x=0; x<10; x++) {
                 ms5607_1.readDigitalValue();
-                H_val = ms5607_1.getAltitude();
-                cout << "MS5607_1 Altitude: " << H_val << "\n";
+                cout << "MS5607_1 Temperature: " << ms5607_1.getTemperature() << "\n";
+                cout << "MS5607_1 Pressure: " << ms5607_1.getPressure() << "\n";
+                cout << "MS5607_1 Altitude: " << ms5607_1.getAltitude() << "\n\n";
             }
           /*  while(!ms5607_1.readDigitalValue()) {     //to be used when sensor can be physically disconnected
             }
@@ -295,8 +296,9 @@ int main() {
             cout<<"MS5607_2 Data!\n\n";
             for (int x=0; x<10; x++) {
                 ms5607_2.readDigitalValue();
-                H_val = ms5607_2.getAltitude();
-                cout << "MS5607_2 Altitude: " << H_val << "\n";
+                cout << "MS5607_2 Temperature: " << ms5607_2.getTemperature() << "\n";
+                cout << "MS5607_2 Pressure: " << ms5607_2.getPressure() << "\n";
+                cout << "MS5607_2 Altitude: " << ms5607_2.getAltitude() << "\n\n";
             }
         /*  while(!ms5607_2.readDigitalValue()) {     //to be used when sensor can be physically disconnected
             }
@@ -305,6 +307,7 @@ int main() {
             //////////////////  closing everything   /////////////////////////
 
             cout << "Closing all comm buses and terminating GPIO.\n";
+            ServoOff();
             file.close_files();
             Serial.end();
             gpioTerminate();
