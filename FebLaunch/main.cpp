@@ -231,7 +231,7 @@ int main() {
         cout << "m/s^2\n";
 
         cout << "\n";
-        usleep(1000000);
+        usleep(500000);
     }
    /* while (bmx160_1.pubScan()) {      //to be used when sensor can be physically disconnected
     }
@@ -274,7 +274,7 @@ int main() {
         cout << "m/s^2\n";
 
         cout << "\n";
-        usleep(1000000);
+        usleep(500000);
     }
     /*while (bmx160_2.pubScan()) {      // to be used when sensor can be physically disconnected
     }
@@ -284,21 +284,23 @@ int main() {
 
             //////////      MS5607 Comm Test and Failures       ///////////////
             cout<<"MS5607_1 Data!\n\n";
-            for (int x=0; x<80; x++) {
+            for (int x=0; x<25; x++) {
                 ms5607_1.readDigitalValue();
                 cout << "MS5607_1 Temperature: " << ms5607_1.getTemperature() << "\n";
                 cout << "MS5607_1 Pressure: " << ms5607_1.getPressure() << "\n";
                 cout << "MS5607_1 Altitude: " << ms5607_1.getAltitude() << "\n\n";
+                usleep(500000);
             }
           /*  while(!ms5607_1.readDigitalValue()) {     //to be used when sensor can be physically disconnected
             }
             cout << "MS5607_1 Comm Failure! Using MS5607_2! \n"; */
             cout<<"MS5607_2 Data!\n\n";
-            for (int x=0; x<80; x++) {
+            for (int x=0; x<25; x++) {
                 ms5607_2.readDigitalValue();
                 cout << "MS5607_2 Temperature: " << ms5607_2.getTemperature() << "\n";
                 cout << "MS5607_2 Pressure: " << ms5607_2.getPressure() << "\n";
                 cout << "MS5607_2 Altitude: " << ms5607_2.getAltitude() << "\n\n";
+                usleep(500000);
             }
         /*  while(!ms5607_2.readDigitalValue()) {     //to be used when sensor can be physically disconnected
             }
