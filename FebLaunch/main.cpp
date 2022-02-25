@@ -74,7 +74,7 @@ int main() {
 
     }
     bmx160_1.wakeUp();
-    bmx160_1.setAccelRange(eAccelRange_2G);
+    bmx160_1.setAccelRange(eAccelRange_16G);
     bmx160_1.setGyroRange(eGyroRange_1000DPS);
 
     // call for data with
@@ -92,7 +92,7 @@ int main() {
 
     }
     bmx160_2.wakeUp();
-    bmx160_2.setAccelRange(eAccelRange_2G);
+    bmx160_2.setAccelRange(eAccelRange_16G);
     bmx160_2.setGyroRange(eGyroRange_1000DPS);
 
 
@@ -305,6 +305,13 @@ int main() {
         /*  while(!ms5607_2.readDigitalValue()) {     //to be used when sensor can be physically disconnected
             }
       cout << "MS5607_2 Comm Failure! \n"; */
+
+
+        /////////////       READ CALIBRATION OF MS5607_1        /////////////
+        //to test for data collisions with BMP388//
+        short C1, C2, C3, C4, C5, C6;
+    ms5607_1.readPublicConfig(&C1,&C2,&C3,&C4,&C5,&C6);
+    cout << C1 << " " << C2 << " " << C3 << " " << C4 << " " << C5 << " " << C6 << " ";
 
             //////////////////  closing everything   /////////////////////////
 

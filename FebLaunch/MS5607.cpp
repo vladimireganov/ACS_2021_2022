@@ -64,6 +64,18 @@ char MS5607::readCalibration(){
     return (1);
   }else{return(0);}
 }
+char MS5607::readPublicConfig(short *add0, short *add1, short *add2, short *add3, short *add4, short *add5) {
+    if(resetDevice() &&
+       readUInt_16(PROM_READ+2, &add0) &&
+       readUInt_16(PROM_READ+4, &add1) &&
+       readUInt_16(PROM_READ+6, &add2) &&
+       readUInt_16(PROM_READ+8, &add3) &&
+       readUInt_16(PROM_READ+10, &add4) &&
+       readUInt_16(PROM_READ+12, &add5)
+            ){
+        return (1);
+    }else{return(0);}
+}
 
 // convert raw data into unsigned int
 char MS5607::readUInt_16(char address, unsigned int &value){
