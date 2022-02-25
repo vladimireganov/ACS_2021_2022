@@ -21,7 +21,7 @@ class MS5607
     float getPressure(void);
     char readDigitalValue(void);
     float getAltitude(void);
-    void readPublicConfig(short *add0,short *add1,short *add2,short *add3,short *add4,short *add5,short *add6);
+    void readPublicConfig(short *add0,short *add1,short *add2,short *add3,short *add4,short *add5);
 
   private:
     const float P0 = 1013.25;      // Reference to sea level (atmosphere pressure; 1 atm)
