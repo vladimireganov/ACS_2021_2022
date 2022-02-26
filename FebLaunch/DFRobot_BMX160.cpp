@@ -255,6 +255,9 @@ void DFRobot_BMX160::getAllData(struct bmx160SensorData *magn, struct bmx160Sens
         magn->x = ((int16_t) ((data[1] << 8) | data[0])) * BMX160_MAGN_UT_LSB;
         magn->y = ((int16_t) ((data[3] << 8) | data[2])) * BMX160_MAGN_UT_LSB;
         magn->z = ((int16_t) ((data[5] << 8) | data[4])) * BMX160_MAGN_UT_LSB;
+        // magn->x *= BMX160_MAGN_UT_LSB;
+        // magn->y *= BMX160_MAGN_UT_LSB;
+        // magn->z *= BMX160_MAGN_UT_LSB;
     }
     if(gyro){
         gyro->x = ((int16_t) ((data[9] << 8) | data[8])) * gyroRange;
