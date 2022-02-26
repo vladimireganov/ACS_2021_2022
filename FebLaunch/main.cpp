@@ -133,7 +133,7 @@ int main() {
     /////////               TEST CODE HERE                ///////////////
     ///////////////////////////////////////////////////////////////////////
 
-/*
+
     /////////               TESTING RADIO               ///////////////
     cout<<"Testing Serial Port to Radio \n";
     Serial.println("Hello World!\n");
@@ -145,7 +145,7 @@ int main() {
     }
     Serial.println("Armed!\n");
     std::cout << test << "\n";
-*/
+
     /////////           TESTING BUZZER/LED             //////////////
     cout << "BEEP!\n";
     buzzOn();
@@ -291,7 +291,6 @@ int main() {
             while (ms5607_1.readDigitalValue()) {
                 H_val = ms5607_1.getAltitude();
                 cout << "MS5607_1 Altitude: " << H_val << "\n";
-                sleep(1);
             }
 
             cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
@@ -299,7 +298,6 @@ int main() {
             while (ms5607_2.readDigitalValue()) {
                 H_val = ms5607_2.getAltitude();
                 cout << "MS5607_2 Altitude: " << H_val << "\n";
-                sleep(1);
             }
 
             cout << "MS5607_2 Comm Failure! DYing!\n";
