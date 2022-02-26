@@ -86,8 +86,7 @@ int main() {
 
     //set the oversampling ratio to minimum for device
     ms5607_1.setOSR(256);
-
-
+    
     while(true) {
         // Collect altimeter data
         if (ms5607_1.readDigitalValue()) {
@@ -135,5 +134,8 @@ int main() {
                 // Disable Servo if current relative altitude less than 100 m
             }
         }
+
+        // log data
+        file.save_data();
     }
 }
