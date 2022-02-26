@@ -56,7 +56,7 @@ int main() {
 
     ///////////         SERIAL INITIALIZATION       //////////////
 
-    Serial.begin(9600, SERIAL_8N1);
+    //Serial.begin(9600, SERIAL_8N1);
 
 
     //////////////      BMX160 Initialization      /////////////////
@@ -231,7 +231,8 @@ int main() {
         cout << "\n";
         usleep(1000000);
     }
-    /*while (bmx160_1.pubScan()) {
+    /*
+    while (bmx160_1.pubScan()) {
     }
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     cout << "\nBMX160_2 Data\n";
@@ -285,16 +286,16 @@ int main() {
                       sleep(10);
           */
 
-*/
+
             //////////      MS5607 Comm Test and Failures       ///////////////
 
             while (ms5607_1.readDigitalValue()) {
                 H_val = ms5607_1.getAltitude();
                 cout << "MS5607_1 Altitude: " << H_val << "\n";
             }
-
-            cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
 /*
+            cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
+
             while (ms5607_2.readDigitalValue()) {
                 H_val = ms5607_2.getAltitude();
                 cout << "MS5607_2 Altitude: " << H_val << "\n";
