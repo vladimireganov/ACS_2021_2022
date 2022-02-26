@@ -74,8 +74,10 @@ int main() {
 
     }
     bmx160_1.wakeUp();
-    //bmx160_1.setAccelRange(eAccelRange_16G);
+    bmx160_1.setAccelRange(eAccelRange_16G);
+    bmx160_1.setAccelODR(eAccelODR_1600Hz);
     bmx160_1.setGyroRange(eGyroRange_1000DPS);
+    bmx160_1.setGyroORD(eGyroODR_3200Hz);
 
     // call for data with
     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
@@ -168,25 +170,25 @@ int main() {
 
     SetAngle(0);
     cout << "0 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(10);
     cout << "10 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(20);
     cout << "20 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(30);
     cout << "30 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(45);
     cout << "45 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(-90);
     cout << "set to -90, defaults to 0 degrees\n";
-    sleep(5);
+    sleep(2);
     SetAngle(135);
     cout << "set to 135, defaults to 45 degrees\n";
-    sleep(5);
+    sleep(2);
 
 
 
@@ -229,7 +231,7 @@ int main() {
         cout << "m/s^2\n";
 
         cout << "\n";
-        usleep(1000000);
+        usleep(500000);
     }
     /*
     while (bmx160_1.pubScan()) {
@@ -290,9 +292,10 @@ int main() {
             //////////      MS5607 Comm Test and Failures       ///////////////
 
             for (int i = 0; i < 10; i++) {
-                H_val = ms5607_1.getAltitude();
-                cout << "MS5607_1 Altitude: " << H_val << "\n";
-                sleep(1);
+                cout << "MS5607_1 Altitude: " << ms5607_1.getAltitude() << "\n";
+                cout << "MS5607_1 Temperature: " << ms5607_1.getTemperature() << "\n";
+                cout << "MS5607_1 Pressure: " << ms5607_1.getPressure() << "\n\n";
+                usleep(500000);
             }
 /*
             cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
