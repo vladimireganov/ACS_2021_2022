@@ -104,7 +104,7 @@ int main() {
 
         // record time
         clock_gettime(CLOCK_REALTIME, &gettime_now);
-        flight_data.current_time = gettime_now.tv_sec;
+        flight_data.current_time = gettime_now.tv_nsec;
 
         // process raw data to derived data
         flight_data.process_data();

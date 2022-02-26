@@ -16,7 +16,7 @@ class Data
 {
 private:
     /* data */
-    time_t previous_time;
+    long previous_time;
     float previous_relative_altitude;
 
     void calculate_altitude(float* pressure, float* altitude);
@@ -29,7 +29,7 @@ private:
 public:
     int iterator; // number of iteration
 
-    time_t current_time; // time
+    long current_time; // time
 
     // altimeter data
     float pressure;
