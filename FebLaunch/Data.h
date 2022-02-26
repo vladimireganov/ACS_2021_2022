@@ -112,7 +112,7 @@ void Data::process_data() {
     this->calculate_relative_altitude(&altitude, &ground_altitude, &relative_altitude);
     this->calculate_vertical_velocity(&relative_altitude, &previous_relative_altitude, &elapsed_time, &vertical_velocity);
     this->calculate_net_acceleration(&acceleration_x, &acceleration_y, &acceleration_z, &net_acceleration);
-    this->calculate_vertical_acceleration(&acceleration_x, &acceleration_y, &acceleration_z, &vertical_acceleration)
+    this->calculate_vertical_acceleration(&acceleration_x, &acceleration_y, &acceleration_z, &vertical_acceleration);
 
     // update previous values
     this->previous_time = this->current_time;
