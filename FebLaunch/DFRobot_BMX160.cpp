@@ -252,9 +252,9 @@ void DFRobot_BMX160::getAllData(struct bmx160SensorData *magn, struct bmx160Sens
     // put your main code here, to run repeatedly:
     readReg(BMX160_MAG_DATA_ADDR, data, 23);
     if(magn){
-        magn->x = ((int16_t) ((data[1] << 8) | data[0])) * BMX160_MAGN_UT_LSB;
-        magn->y = ((int16_t) ((data[3] << 8) | data[2])) * BMX160_MAGN_UT_LSB;
-        magn->z = ((int16_t) ((data[5] << 8) | data[4])) * BMX160_MAGN_UT_LSB;
+        magn->x = (float)((int16_t) ((data[1] << 8) | data[0])) * BMX160_MAGN_UT_LSB;
+        magn->y = (float)((int16_t) ((data[3] << 8) | data[2])) * BMX160_MAGN_UT_LSB;
+        magn->z = (float)((int16_t) ((data[5] << 8) | data[4])) * BMX160_MAGN_UT_LSB;
         // magn->x *= BMX160_MAGN_UT_LSB;
         // magn->y *= BMX160_MAGN_UT_LSB;
         // magn->z *= BMX160_MAGN_UT_LSB;
