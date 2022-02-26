@@ -85,7 +85,7 @@ int main() {
     }
 
     //set the oversampling ratio to minimum for device
-    ms5607_1.setOSR(256);
+    ms5607_1.setOSR(4096);
     
     while(true) {
         // Collect altimeter data
