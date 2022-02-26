@@ -163,7 +163,7 @@ void DFRobot_BMX160::setGyroODR(eGyroODR_t bits) {
         case eGyroODR_100Hz:
             writeBmxReg(BMX160_GYRO_CONFIG_ADDR,BMX160_GYRO_ODR_100HZ);
             break;
-        case eGyroODR_1600Hz
+        case eGyroODR_1600Hz:
             writeBmxReg(BMX160_GYRO_CONFIG_ADDR,BMX160_GYRO_ODR_1600HZ);
             break;
         case eGyroODR_3200Hz:
@@ -182,7 +182,7 @@ void DFRobot_BMX160::setAccelODR(eAccelODR_t bits) {
         case eAccelODR_800Hz:
             writeBmxReg(BMX160_ACCEL_CONFIG_ADDR,BMX160_ACCEL_ODR_800HZ);
             break;
-        case eAccelODR_1600Hz
+        case eAccelODR_1600Hz:
             writeBmxReg(BMX160_ACCEL_CONFIG_ADDR,BMX160_ACCEL_ODR_1600HZ);
             break;
         default:
@@ -200,23 +200,23 @@ void DFRobot_BMX160::setGyroRange(eGyroRange_t bits){
             break;
         case eGyroRange_250DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_250DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_250DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_250_DPS);
             break;
         case eGyroRange_500DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_500DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_500DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_500_DPS);
             break;
         case eGyroRange_1000DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_1000DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_1000DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_1000_DPS);
             break;
         case eGyroRange_2000DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_2000DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_2000DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_2000_DPS);
             break;
         default:
             gyroRange = BMX160_GYRO_SENSITIVITY_250DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_250DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_250_DPS);
             break;
     }
 }
