@@ -155,31 +155,68 @@ void DFRobot_BMX160::setMagnConf()
     usleep(50000);
 }
 
+void DFRobot_BMX160::setGyroODR(eGyroODR_t bits) {
+    switch (bits){
+        case eGyroODR_25Hz:
+            writeBmxReg(BMX160_GYRO_CONFIG_ADDR,BMX160_GYRO_ODR_25HZ);
+            break;
+        case eGyroODR_100Hz:
+            writeBmxReg(BMX160_GYRO_CONFIG_ADDR,BMX160_GYRO_ODR_100HZ);
+            break;
+        case eGyroODR_1600Hz
+            writeBmxReg(BMX160_GYRO_CONFIG_ADDR,BMX160_GYRO_ODR_1600HZ);
+            break;
+        case eGyroODR_3200Hz:
+            writeBmxReg(BMX160_GYRO_CONFIG_ADDR,(BMX160_GYRO_BW_NORMAL_MODE||BMX160_GYRO_ODR_3200HZ));
+            break;
+        default:
+            writeBmxReg(BMX160_GYRO_CONFIG_ADDR,BMX160_GYRO_ODR_100HZ);
+            break;
+    }
+}
+void DFRobot_BMX160::setAccelODR(eAccelODR_t bits) {
+    switch (bits){
+        case eAccelODR_100Hz:
+            writeBmxReg(BMX160_ACCEL_CONFIG_ADDR,BMX160_ACCEL_ODR_100HZ);
+            break;
+        case eAccelODR_800Hz:
+            writeBmxReg(BMX160_ACCEL_CONFIG_ADDR,BMX160_ACCEL_ODR_800HZ);
+            break;
+        case eAccelODR_1600Hz
+            writeBmxReg(BMX160_ACCEL_CONFIG_ADDR,BMX160_ACCEL_ODR_1600HZ);
+            break;
+        default:
+            writeBmxReg(BMX160_ACCEL_CONFIG_ADDR,BMX160_ACCEL_ODR_100HZ);
+            break;
+    }
+
+}
+
 void DFRobot_BMX160::setGyroRange(eGyroRange_t bits){
     switch (bits){
         case eGyroRange_125DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_125DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_125DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_125_DPS);
             break;
         case eGyroRange_250DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_250DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_250DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_250DPS);
             break;
         case eGyroRange_500DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_500DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_500DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_500DPS);
             break;
         case eGyroRange_1000DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_1000DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_1000DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_1000DPS);
             break;
         case eGyroRange_2000DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_2000DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_2000DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_2000DPS);
             break;
         default:
             gyroRange = BMX160_GYRO_SENSITIVITY_250DPS;
-            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_250DPS);
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_RANGE_250DPS);
             break;
     }
 }

@@ -364,33 +364,33 @@ THE SOFTWARE.
 #define BMX160_MAGN_UT_LSB      (0.3F)
 /* Output Data Rate settings */
 /* Accel Output data rate */
-#define BMX160_ACCEL_ODR_RESERVED         0x00
-#define BMX160_ACCEL_ODR_0_78HZ           0x01
-#define BMX160_ACCEL_ODR_1_56HZ           0x02
-#define BMX160_ACCEL_ODR_3_12HZ           0x03
-#define BMX160_ACCEL_ODR_6_25HZ           0x04
-#define BMX160_ACCEL_ODR_12_5HZ           0x05
-#define BMX160_ACCEL_ODR_25HZ             0x06
-#define BMX160_ACCEL_ODR_50HZ             0x07
-#define BMX160_ACCEL_ODR_100HZ            0x08
-#define BMX160_ACCEL_ODR_200HZ            0x09
-#define BMX160_ACCEL_ODR_400HZ            0x0A
-#define BMX160_ACCEL_ODR_800HZ            0x0B
-#define BMX160_ACCEL_ODR_1600HZ           0x0C
-#define BMX160_ACCEL_ODR_RESERVED0        0x0D
-#define BMX160_ACCEL_ODR_RESERVED1        0x0E
-#define BMX160_ACCEL_ODR_RESERVED2        0x0F
+#define BMX160_ACCEL_ODR_RESERVED         0x20
+#define BMX160_ACCEL_ODR_0_78HZ           0x21
+#define BMX160_ACCEL_ODR_1_56HZ           0x22
+#define BMX160_ACCEL_ODR_3_12HZ           0x23
+#define BMX160_ACCEL_ODR_6_25HZ           0x24
+#define BMX160_ACCEL_ODR_12_5HZ           0x25
+#define BMX160_ACCEL_ODR_25HZ             0x26
+#define BMX160_ACCEL_ODR_50HZ             0x27
+#define BMX160_ACCEL_ODR_100HZ            0x28
+#define BMX160_ACCEL_ODR_200HZ            0x29
+#define BMX160_ACCEL_ODR_400HZ            0x2A
+#define BMX160_ACCEL_ODR_800HZ            0x2B
+#define BMX160_ACCEL_ODR_1600HZ           0x2C
+#define BMX160_ACCEL_ODR_RESERVED0        0x2D
+#define BMX160_ACCEL_ODR_RESERVED1        0x2E
+#define BMX160_ACCEL_ODR_RESERVED2        0x2F
 
 /* Gyro Output data rate */
-#define BMX160_GYRO_ODR_RESERVED          0x00
-#define BMX160_GYRO_ODR_25HZ              0x06
-#define BMX160_GYRO_ODR_50HZ              0x07
-#define BMX160_GYRO_ODR_100HZ             0x08
-#define BMX160_GYRO_ODR_200HZ             0x09
-#define BMX160_GYRO_ODR_400HZ             0x0A
-#define BMX160_GYRO_ODR_800HZ             0x0B
-#define BMX160_GYRO_ODR_1600HZ            0x0C
-#define BMX160_GYRO_ODR_3200HZ            0x0D
+#define BMX160_GYRO_ODR_RESERVED          0x20
+#define BMX160_GYRO_ODR_25HZ              0x26
+#define BMX160_GYRO_ODR_50HZ              0x27
+#define BMX160_GYRO_ODR_100HZ             0x28
+#define BMX160_GYRO_ODR_200HZ             0x29
+#define BMX160_GYRO_ODR_400HZ             0x2A
+#define BMX160_GYRO_ODR_800HZ             0x2B
+#define BMX160_GYRO_ODR_1600HZ            0x2C
+#define BMX160_GYRO_ODR_3200HZ            0x2D
 
 /* Magnetometer sensor Output data rate */
 #define BMX160_MAGN_ODR_RESERVED         0x00
@@ -1192,11 +1192,24 @@ typedef enum{
 }eGyroRange_t;
 
 typedef enum{
+    eGyroODR_25Hz,
+    eGyroODR_100Hz,
+    eGyroODR_1600Hz,
+    eGyroODR_3200Hz
+}eGyroODR_t;
+
+typedef enum{
     eAccelRange_2G,
     eAccelRange_4G,
     eAccelRange_8G,
     eAccelRange_16G
 }eAccelRange_t;
+
+typedef enum{
+    eAccelODR_100Hz,
+    eAccelODR_800Hz,
+    eAccelODR_1600Hz
+}eAccelODR_t;
 
 class DFRobot_BMX160{
   public:
@@ -1210,7 +1223,9 @@ class DFRobot_BMX160{
     bool pubScan();
     
     void setGyroRange(eGyroRange_t bits);
+    void setGyroODR(eGyroODR_t bits);
     void setAccelRange(eAccelRange_t bits);
+    void setAccelODR(eAccelODR_t bits);
     
     /*
      * @brief get the magn, gyro and accel data 
