@@ -106,10 +106,6 @@ int main() {
         clock_gettime(CLOCK_REALTIME, &gettime_now);
         flight_data.current_time = gettime_now.tv_nsec / 1e6;
 
-        cout << "Mag x " << Omagn.x << endl;
-        cout << "Mag y " << Omagn.y << endl;
-        cout << "Mag z " << Omagn.z << endl;
-
         // process raw data to derived data
         flight_data.process_data();
 
