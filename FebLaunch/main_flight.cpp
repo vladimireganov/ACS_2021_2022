@@ -100,6 +100,8 @@ int main() {
         // collect imu data
         bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
         flight_data.set_acceleration_data((float)Oaccel.x, (float)Oaccel.y, (float)Oaccel.z);
+        flight_data.set_gyroscope_data((float)Oaccel.x, (float)Oaccel.y, (float)Oaccel.z);
+        flight_data.set_magnetometer_data((float)Oaccel.x, (float)Oaccel.y, (float)Oaccel.z);
 
         // record time
         clock_gettime(CLOCK_REALTIME, &gettime_now);

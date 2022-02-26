@@ -61,8 +61,8 @@ public:
     void get_data();
     void set_altimeter_data(float pressure, float temperature);
     void set_acceleration_data(float accel_x, float accel_y, float accel_z);
-    void set_gyroscope_data();
-    void set_magnetometer_data();
+    void set_gyroscope_data(float gyro_x, float gyro_y, float gyro_z);
+    void set_magnetometer_data(float mag_x, float mag_y, float mag_z);
     void process_data();
 };
 
