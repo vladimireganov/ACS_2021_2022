@@ -5,33 +5,42 @@
 // add functions for obtaining processed data
 
 // add includes for sensors
-
+#include <string.h>
 
 class Data
 {
 private:
     /* data */
+    int previous_time;
 
 public:
     int iterator; // number of iteration
 
-    int iteration_time; // time
+    int current_time; // time
+
+    // altimeter data
     float pressure;
-    float linear_acceleration_x;
-    float linear_acceleration_y;
-    float linear_acceleration_z;
-    float gyroscope_x;
-    float gyroscope_y;
-    float gyroscope_z;
+    float temperature;
+
+    // imu data
     float acceleration_x;
     float acceleration_y;
     float acceleration_z;
-    float gravity_x;
-    float gravity_y;
-    float gravity_z;
+    float gyroscope_x;
+    float gyroscope_y;
+    float gyroscope_z;
+    float magnetometer_x;
+    float magnetometer_y;
+    float amagnetometer_z;
 
     // section for processed data
-    //float altitude;
+    // altimeter derived data
+    float altitude;
+    float vertical_velocity;
+
+    // imu derived data
+    float vertical_acceleration;
+    float net_acceleration;
 
     Data(/* args */);
     ~Data();
