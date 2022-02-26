@@ -4,8 +4,8 @@ objects = main.o  MS5607.o DFRobot_BMX160.o PWM.o SerialLinux.o LED.o
 main : $(objects)
 	g++ -o main $(objects) -lpigpio
 
-main.o: main.cpp 
-	g++ -c main.cpp
+main.o: main_flight.cpp 
+	g++ -c main_flight.cpp
 
 MS5607.o: MS5607.cpp MS5607.h
 	g++ -c MS5607.cpp

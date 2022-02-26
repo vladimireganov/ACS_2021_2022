@@ -27,6 +27,7 @@ public:
     void create_table_names();
     void create_log_file();
     void log_error(string msg);
+    void log_info(string msg);
     void save_data();
     void close_files();
     Data* flight_data; // pointer to the data
@@ -49,26 +50,30 @@ void File_write::connect_data(Data& data){
 }
 
 void File_write::create_table_names(){ //prints name of the columns in the csv file
-    data_file.open(name_of_the_file);
+    if (!data_file.is_open()) {
+        data_file.open(name_of_the_file);
+    }
 
+    // raw data
     data_file << "iterator,";
-    data_file << "iteration_time,";
+    data_file << "time,";
     data_file << "pressure,";
-    data_file << "linear_acceleration_x,";
-    data_file << "linear_acceleration_y,";
-    data_file << "linear_acceleration_z,";
     data_file << "gyroscope_x,";
     data_file << "gyroscope_y,";
     data_file << "gyroscope_z,";
     data_file << "acceleration_x,";
     data_file << "acceleration_y,";
     data_file << "acceleration_z,";
-    data_file << "gravity_x,";
-    data_file << "gravity_y,";
-    data_file << "gravity_z\n";
-    data_file.flush();
+    data_file << "magnetometer_x,";
+    data_file << "magnetometer_y,";
+    data_file << "magnetometer_z,";
 
-    data_file.close();
+    // derived data
+    data_file << "altitude,";
+    data_file << "vertical_velocity,";
+    data_file << "vertical_acceleration,";
+    data_file << "net_acceleration\n";
+    data_file.flush();
 }
 
 
@@ -80,54 +85,49 @@ void File_write::create_log_file(){ // creates log file
 }
 
 void File_write::log_error(string msg){ // logs error to the log
-    log_file.open(log_file_name);
-    log_file << msg + "\n";
+    if(!log_file.is_open()) {
+        log_file.open(log_file_name);
+    }
+    log_file << "ERROR\t" + msg + "\n";
     data_file.flush();
     log_file.close();
 }
 
+void File_write::log_info(string msg){ // logs error to the log
+    if(!log_file.is_open()) {
+        log_file.open(log_file_name);
+    }
+    log_file << "INFO\t" + msg + "\n";
+    data_file.flush();
+}
+
 void File_write::save_data(){ // prints data into the file
-    data_file.open(name_of_the_file);
-    /*
-    int iterator; // number of iteration
+    if (!data_file.is_open()) {
+        data_file.open(name_of_the_file);
+    }
 
-    int iteration_time; // time
-    float pressure;
-    float linear_acceleration_x;
-    float linear_acceleration_y;
-    float linear_acceleration_z;
-    float gyroscope_x;
-    float gyroscope_y;
-    float gyroscope_z;
-    float acceleration_x;
-    float acceleration_y;
-    float acceleration_z;
-    float gravity_x;
-    float gravity_y;
-    float gravity_z;
-
-    */
     // raw data
     data_file << flight_data->iterator << ",";
-    data_file << flight_data->iteration_time << ",";
+    data_file << flight_data->current_time << ",";
     data_file << flight_data->pressure << ",";
-    data_file << flight_data->linear_acceleration_x << ",";
-    data_file << flight_data->linear_acceleration_y << ",";
-    data_file << flight_data->linear_acceleration_z << ",";
     data_file << flight_data->gyroscope_x << ",";
     data_file << flight_data->gyroscope_y << ",";
     data_file << flight_data->gyroscope_z << ",";
     data_file << flight_data->acceleration_x << ",";
     data_file << flight_data->acceleration_y << ",";
     data_file << flight_data->acceleration_z << ",";
-    data_file << flight_data->gravity_x << ",";
-    data_file << flight_data->gravity_y << ",";
-    data_file << flight_data->gravity_z << "\n";
+    data_file << flight_data->magnetometer_x << ",";
+    data_file << flight_data->magnetometer_y << ",";
+    data_file << flight_data->magnetometer_z << ",";
+    
 
     // processed data
+    data_file << flight_data->altitude << ",";
+    data_file << flight_data->vertical_velocity << ",";
+    data_file << flight_data->vertical_acceleration << ",";
+    data_file << flight_data->net_acceleration << "\n";
 
     data_file.flush();
-    data_file.close();
 }
 
 void File_write::close_files(){
