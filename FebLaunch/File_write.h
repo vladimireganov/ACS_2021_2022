@@ -58,6 +58,7 @@ void File_write::create_table_names(){ //prints name of the columns in the csv f
     data_file << "iterator,";
     data_file << "time,";
     data_file << "pressure,";
+    data_file << "temperature,";
     data_file << "gyroscope_x,";
     data_file << "gyroscope_y,";
     data_file << "gyroscope_z,";
@@ -111,6 +112,7 @@ void File_write::save_data(){ // prints data into the file
     data_file << flight_data->iterator << ",";
     data_file << flight_data->current_time << ",";
     data_file << flight_data->pressure << ",";
+    data_file << flight_data->temperature << ",";
     data_file << flight_data->gyroscope_x << ",";
     data_file << flight_data->gyroscope_y << ",";
     data_file << flight_data->gyroscope_z << ",";

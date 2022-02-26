@@ -90,7 +90,7 @@ int main() {
     while(true) {
         // Collect altimeter data
         if (ms5607_1.readDigitalValue()) {
-            flight_data.set_altimeter_data(ms5607_1.getTemperature(), ms5607_1.getPressure());
+            flight_data.set_altimeter_data(ms5607_1.getPressure(), ms5607_1.getTemperature());
 
         } else {
             cout << "Error in reading digital value in sensor! \n";
