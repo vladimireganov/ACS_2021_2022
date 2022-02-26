@@ -131,11 +131,11 @@ void Data::calculate_relative_altitude(float* altitude, float* ground_altitude, 
     *relative_altitude = *altitude - *ground_altitude;
 }
 
-void calculate_vertical_velocity(float* altitude, float* prev_altitude, float* elapsed_time, float * v_vel) {
+void Data::calculate_vertical_velocity(float* altitude, float* prev_altitude, float* elapsed_time, float * v_vel) {
     float delta_alt = *altitude - *prev_altitude;
     *v_vel = (float)(delta_alt / (*elapsed_time / 1e3));
 }
 
-void calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel) {
+void Data::calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel) {
     *net_accel = sqrt(pow(*acceleration_x,2)+ pow(*acceleration_y, 2) + pow(*acceleration_z, 2));
 }
