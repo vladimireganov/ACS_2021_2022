@@ -16,7 +16,7 @@ class Data
 {
 private:
     /* data */
-    float previous_time;
+    time_t previous_time;
     float previous_relative_altitude;
 
     void calculate_altitude(float* pressure, float* altitude);
@@ -28,7 +28,7 @@ private:
 public:
     int iterator; // number of iteration
 
-    float current_time; // time
+    time_t current_time; // time
 
     // altimeter data
     float pressure;
@@ -102,8 +102,9 @@ void Data::set_magnetometer_data(float mag_x, float mag_y, float mag_z) {
 }
 
 void Data::process_data() {
+    iterator++;
     // getting processed data
-    float elapsed_time = this->current_time - this->previous_time;
+    float elapsed_time = 0.01; // problem solved
 
     this->calculate_altitude(&pressure, &altitude);
     this->calculate_ground_altitude(&altitude, &ground_altitude);
