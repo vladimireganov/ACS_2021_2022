@@ -24,6 +24,7 @@ private:
     void calculate_relative_altitude(float* altitude, float* ground_altitude, float* relative_altitude);
     void calculate_vertical_velocity(float* altitude, float* prev_altitude, float* elapsed_time_millis, float * v_vel);
     void calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel);
+    void calculate_vertical_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * vertical_acceleration);
 
 public:
     int iterator; // number of iteration
@@ -111,7 +112,8 @@ void Data::process_data() {
     this->calculate_relative_altitude(&altitude, &ground_altitude, &relative_altitude);
     this->calculate_vertical_velocity(&relative_altitude, &previous_relative_altitude, &elapsed_time, &vertical_velocity);
     this->calculate_net_acceleration(&acceleration_x, &acceleration_y, &acceleration_z, &net_acceleration);
-    
+    this->calculate_vertical_acceleration(&acceleration_x, &acceleration_y, &acceleration_z, &vertical_acceleration)
+
     // update previous values
     this->previous_time = this->current_time;
     this->previous_relative_altitude = this->relative_altitude;
@@ -139,4 +141,8 @@ void Data::calculate_vertical_velocity(float* altitude, float* prev_altitude, fl
 
 void Data::calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel) {
     *net_accel = sqrt(pow(*acceleration_x,2)+ pow(*acceleration_y, 2) + pow(*acceleration_z, 2));
+}
+
+void Data::calculate_vertical_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * vertical_acceleration) {
+    *vertical_acceleration = *acceleration_z;
 }
