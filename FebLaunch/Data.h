@@ -77,7 +77,7 @@ Data::~Data()
 
 void Data::set_altimeter_data(float pressure, float temperature){
     // reading all the data
-    this->pressure = pressure;
+    this->pressure = pressure * 100;// mbar to pa
     this->temperature = temperature;
 }
 
