@@ -72,7 +72,8 @@ void File_write::create_table_names(){ //prints name of the columns in the csv f
     data_file << "altitude,";
     data_file << "vertical_velocity,";
     data_file << "vertical_acceleration,";
-    data_file << "net_acceleration\n";
+    data_file << "net_acceleration,";
+    data_file << "relative_altitude\n";
     data_file.flush();
 }
 
@@ -125,7 +126,8 @@ void File_write::save_data(){ // prints data into the file
     data_file << flight_data->altitude << ",";
     data_file << flight_data->vertical_velocity << ",";
     data_file << flight_data->vertical_acceleration << ",";
-    data_file << flight_data->net_acceleration << "\n";
+    data_file << flight_data->net_acceleration << ",";
+    data_file << flight_data->relative_altitude << "\n";
 
     data_file.flush();
 }
