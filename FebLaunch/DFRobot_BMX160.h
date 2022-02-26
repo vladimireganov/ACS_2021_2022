@@ -1245,6 +1245,7 @@ class DFRobot_BMX160{
     int8_t readBmxReg(uint8_t reg);
     void writeBmxReg(uint8_t reg, uint8_t value);
     bool scan();
+
 };
 
 

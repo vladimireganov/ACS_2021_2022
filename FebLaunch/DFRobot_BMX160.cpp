@@ -181,19 +181,24 @@ void DFRobot_BMX160::setGyroRange(eGyroRange_t bits){
 void DFRobot_BMX160::setAccelRange(eAccelRange_t bits){
     switch (bits){
         case eAccelRange_2G:
-            accelRange = BMX160_ACCEL_MG_LSB_2G * 10;
+            accelRange = BMX160_ACCEL_MG_LSB_2G * 9.8;
+            writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_2G);
             break;
         case eAccelRange_4G:
-            accelRange = BMX160_ACCEL_MG_LSB_4G * 10;
+            accelRange = BMX160_ACCEL_MG_LSB_4G * 9.8;
+            writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_4G);
             break;
         case eAccelRange_8G:
-            accelRange = BMX160_ACCEL_MG_LSB_8G * 10;
+            accelRange = BMX160_ACCEL_MG_LSB_8G * 9.8;
+            writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_8G);
             break;
         case eAccelRange_16G:
-            accelRange = BMX160_ACCEL_MG_LSB_16G * 10;
+            accelRange = BMX160_ACCEL_MG_LSB_16G * 9.8;
+            writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_16G);
             break;
         default:
-            accelRange = BMX160_ACCEL_MG_LSB_2G * 10;
+            accelRange = BMX160_ACCEL_MG_LSB_2G * 9.8;
+            writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_2G);
             break;
     }
 }
