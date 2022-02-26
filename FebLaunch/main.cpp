@@ -36,7 +36,7 @@ int main() {
         cout << "GPIO Init Fail\n";
         while (1);
     }
-    disBMP();
+    //disBMP();
 
     /////////////       I2C Bus Startup     /////////////
 
@@ -79,7 +79,7 @@ int main() {
 
     // call for data with
     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
-
+/*
     DFRobot_BMX160 bmx160_2(RPI_I2C_BUS, 0x69);
     // create file
     // activate sensors
@@ -94,7 +94,7 @@ int main() {
     bmx160_2.wakeUp();
     bmx160_2.setAccelRange(eAccelRange_16G);
     bmx160_2.setGyroRange(eGyroRange_1000DPS);
-
+*/
 
     //////////////      MS5607 Initialization       /////////////////
     MS5607 ms5607_1(RPI_I2C_BUS, 0x76);
@@ -105,7 +105,7 @@ int main() {
 
     }
     ms5607_1.setOSR(256);            //set the oversampling ratio to minimum for device
-
+/*
     MS5607 ms5607_2(RPI_I2C_BUS, 0x77);
     if (ms5607_2.begin() == false) { //if begin == false
         //Serial.println("init false");
@@ -114,7 +114,7 @@ int main() {
 
     }
     ms5607_2.setOSR(256);            //set the oversampling ratio to minimum for device
-
+*/
     //handle data as below
     float P_val, T_val, H_val;
 
@@ -133,7 +133,7 @@ int main() {
     /////////               TEST CODE HERE                ///////////////
     ///////////////////////////////////////////////////////////////////////
 
-
+/*
     /////////               TESTING RADIO               ///////////////
     cout<<"Testing Serial Port to Radio \n";
     Serial.println("Hello World!\n");
@@ -160,7 +160,7 @@ int main() {
     buzzOn();
     sleep(2);
     buzzOff();
-
+*/
 
     ///////////         TESTING SERVO               //////////////
 
@@ -231,7 +231,7 @@ int main() {
         cout << "\n";
         usleep(1000000);
     }
-    while (bmx160_1.pubScan()) {
+    /*while (bmx160_1.pubScan()) {
     }
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     cout << "\nBMX160_2 Data\n";
@@ -285,7 +285,7 @@ int main() {
                       sleep(10);
           */
 
-
+*/
             //////////      MS5607 Comm Test and Failures       ///////////////
 
             while (ms5607_1.readDigitalValue()) {
@@ -294,7 +294,7 @@ int main() {
             }
 
             cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
-
+/*
             while (ms5607_2.readDigitalValue()) {
                 H_val = ms5607_2.getAltitude();
                 cout << "MS5607_2 Altitude: " << H_val << "\n";
@@ -302,7 +302,7 @@ int main() {
 
             cout << "MS5607_2 Comm Failure! DYing!\n";
 
-
+*/
 
 
             //////////////////  closing everything   /////////////////////////
