@@ -289,7 +289,7 @@ int main() {
 
             //////////      MS5607 Comm Test and Failures       ///////////////
 
-            while (ms5607_1.readDigitalValue()) {
+            for (int i = 0; i < 10; i++) {
                 H_val = ms5607_1.getAltitude();
                 cout << "MS5607_1 Altitude: " << H_val << "\n";
                 sleep(1);
