@@ -13,7 +13,7 @@
 
 
 #include <chrono>
-// using namespace std::chrono;
+using namespace std::chrono;
  
 
 
@@ -312,21 +312,25 @@ int main() {
 
 */
     int x = 0;
+    int count = 0;
     // Use auto keyword to avoid typing long
     // type definitions to get the timepoint
     // at this instant use function now()
+    bmx160SensorData Omagn2, Ogyro2, Oaccel2;
     bmx160_1.setAccelRange(eAccelRange_16G);
     bmx160_1.setAccelODR(eAccelODR_1600Hz);
     bmx160_1.setGyroRange(eGyroRange_1000DPS);
     bmx160_1.setGyroODR(eGyroODR_3200Hz);
     sleep(2);
-
+    cout << "starting perf test" << endl;
+    x = 0;
+    cout << "count test" << endl;
     auto start = high_resolution_clock::now();
     while (x < 10000)
     {
-
-        bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
+        // ms5607_1.readDigitalValue();
         x++;
+        
         /* code */
     }
     auto stop = high_resolution_clock::now();
@@ -336,7 +340,52 @@ int main() {
     // To get the value of duration use the count()
     // member function on the duration object
     cout << duration.count() << endl;
-    cout << duration / x;
+    cout << count << endl;
+
+    cout << "bmx test" << endl;
+    // cout << bmx160_1.softReset();
+    // bmx160_1.wakeUp();
+    cout << "bmx ready" << endl;
+    x = 0;
+    start = high_resolution_clock::now();
+    while (x < 10000)
+    {
+        if (bmx160_1.drdy_acc()) {
+            bmx160_1.getAllData(&Omagn2, &Ogyro2, &Oaccel2);
+            x++;
+        }
+        
+        /* code */
+    }
+    stop = high_resolution_clock::now();
+
+    duration = duration_cast<microseconds>(stop - start);
+ 
+    // To get the value of duration use the count()
+    // member function on the duration object
+    cout << duration.count() << endl;
+    cout << count << endl;
+
+    x = 0;
+    cout << "ms5607 test" << endl;
+    start = high_resolution_clock::now();
+    while (x < 10000)
+    {
+        ms5607_1.readDigitalValue();
+        x++;
+        
+        /* code */
+    }
+    stop = high_resolution_clock::now();
+
+    duration = duration_cast<microseconds>(stop - start);
+ 
+    // To get the value of duration use the count()
+    // member function on the duration object
+    cout << duration.count() << endl;
+    cout << count << endl;
+
+    // cout << duration / x;
     
 
 
