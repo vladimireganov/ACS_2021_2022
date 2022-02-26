@@ -77,7 +77,7 @@ int main() {
     bmx160_1.setAccelRange(eAccelRange_16G);
     bmx160_1.setAccelODR(eAccelODR_1600Hz);
     bmx160_1.setGyroRange(eGyroRange_1000DPS);
-    bmx160_1.setGyroORD(eGyroODR_3200Hz);
+    bmx160_1.setGyroODR(eGyroODR_3200Hz);
 
     // call for data with
     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
