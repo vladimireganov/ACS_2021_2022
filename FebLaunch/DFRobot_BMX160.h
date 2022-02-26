@@ -783,11 +783,11 @@ struct bmx160Dev {
 //struct BMX160_sensor_data {
 struct bmx160SensorData {
   /*! X-axis sensor data */
-  float x;
+  int16_t x;
   /*! Y-axis sensor data */
-  float y;
+  int16_t y;
   /*! Z-axis sensor data */
-  float z;
+  int16_t z;
   /*! sensor time */
   uint32_t sensortime;
 };
