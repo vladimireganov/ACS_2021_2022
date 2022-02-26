@@ -159,21 +159,27 @@ void DFRobot_BMX160::setGyroRange(eGyroRange_t bits){
     switch (bits){
         case eGyroRange_125DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_125DPS;
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_125DPS);
             break;
         case eGyroRange_250DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_250DPS;
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_250DPS);
             break;
         case eGyroRange_500DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_500DPS;
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_500DPS);
             break;
         case eGyroRange_1000DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_1000DPS;
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_1000DPS);
             break;
         case eGyroRange_2000DPS:
             gyroRange = BMX160_GYRO_SENSITIVITY_2000DPS;
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_2000DPS);
             break;
         default:
             gyroRange = BMX160_GYRO_SENSITIVITY_250DPS;
+            writeBmxReg(BMX160_GYRO_RANGE_ADDR,BMX160_GYRO_SENSITIVITY_250DPS);
             break;
     }
 }
