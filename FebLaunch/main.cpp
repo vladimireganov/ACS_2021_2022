@@ -292,6 +292,7 @@ int main() {
             while (ms5607_1.readDigitalValue()) {
                 H_val = ms5607_1.getAltitude();
                 cout << "MS5607_1 Altitude: " << H_val << "\n";
+                sleep(1);
             }
 /*
             cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
