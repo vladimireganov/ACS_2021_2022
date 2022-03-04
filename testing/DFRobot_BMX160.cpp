@@ -360,5 +360,5 @@ bool DFRobot_BMX160::pubScan() {
 }
 
 bool DFRobot_BMX160::drdy_acc(){
-    return readBmxReg(0x1b) &&  64;
+    return readBmxReg(0x1b) &  64;
 }
