@@ -36,7 +36,7 @@ int main() {
         cout << "GPIO Init Fail\n";
         while (1);
     }
-    //disBMP();
+    disBMP();
 
     /////////////       I2C Bus Startup     /////////////
 
@@ -56,7 +56,7 @@ int main() {
 
     ///////////         SERIAL INITIALIZATION       //////////////
 
-    //Serial.begin(9600, SERIAL_8N1);
+    Serial.begin(9600, SERIAL_8N1);
 
 
     //////////////      BMX160 Initialization      /////////////////
