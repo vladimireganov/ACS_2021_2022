@@ -119,13 +119,13 @@ void DFRobot_BMX160::defaultParamSettg(struct bmx160Dev *dev)
 {
   // Initializing accel and gyro params with
   dev->gyroCfg.bw = BMX160_GYRO_BW_NORMAL_MODE;
-  dev->gyroCfg.odr = BMX160_GYRO_ODR_100HZ;
+  dev->gyroCfg.odr = BMX160_GYRO_ODR_1600HZ;
   dev->gyroCfg.power = BMX160_GYRO_SUSPEND_MODE;
   dev->gyroCfg.range = BMX160_GYRO_RANGE_2000_DPS;
   dev->accelCfg.bw = BMX160_ACCEL_BW_NORMAL_AVG4;
-  dev->accelCfg.odr = BMX160_ACCEL_ODR_100HZ;
+  dev->accelCfg.odr = BMX160_ACCEL_ODR_1600HZ;
   dev->accelCfg.power = BMX160_ACCEL_SUSPEND_MODE;
-  dev->accelCfg.range = BMX160_ACCEL_RANGE_2G;
+  dev->accelCfg.range = BMX160_ACCEL_RANGE_16G;
   
 
   dev->prevMagnCfg = dev->magnCfg;
@@ -150,7 +150,7 @@ void DFRobot_BMX160::setMagnConf()
     writeBmxReg(BMX160_MAGN_IF_3_ADDR, 0x02);
     writeBmxReg(BMX160_MAGN_IF_2_ADDR, 0x4C);
     writeBmxReg(BMX160_MAGN_IF_1_ADDR, 0x42);
-    writeBmxReg(BMX160_MAGN_CONFIG_ADDR, 0x08);
+    writeBmxReg(BMX160_MAGN_CONFIG_ADDR, 0x0B);
     writeBmxReg(BMX160_MAGN_IF_0_ADDR, 0x03);
     usleep(50000);
 }
@@ -167,7 +167,7 @@ void DFRobot_BMX160::setGyroODR(eGyroODR_t bits) {
             writeBmxReg(BMX160_GYRO_CONFIG_ADDR,BMX160_GYRO_ODR_1600HZ);
             break;
         case eGyroODR_3200Hz:
-            writeBmxReg(BMX160_GYRO_CONFIG_ADDR,(BMX160_GYRO_BW_NORMAL_MODE||BMX160_GYRO_ODR_3200HZ));
+            writeBmxReg(BMX160_GYRO_CONFIG_ADDR,BMX160_GYRO_ODR_3200HZ);
             break;
         default:
             writeBmxReg(BMX160_GYRO_CONFIG_ADDR,BMX160_GYRO_ODR_100HZ);
@@ -186,7 +186,7 @@ void DFRobot_BMX160::setAccelODR(eAccelODR_t bits) {
             writeBmxReg(BMX160_ACCEL_CONFIG_ADDR,BMX160_ACCEL_ODR_1600HZ);
             break;
         default:
-            writeBmxReg(BMX160_ACCEL_CONFIG_ADDR,BMX160_ACCEL_ODR_100HZ);
+            writeBmxReg(BMX160_ACCEL_CONFIG_ADDR,BMX160_ACCEL_ODR_12_5HZ);
             break;
     }
 
@@ -357,4 +357,8 @@ bool DFRobot_BMX160::pubScan() {
     return scan();
 
 
+}
+
+bool DFRobot_BMX160::drdy_acc(){
+    return readBmxReg(0x1b) &  64;
 }

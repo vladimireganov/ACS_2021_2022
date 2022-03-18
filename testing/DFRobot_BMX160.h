@@ -1208,7 +1208,8 @@ typedef enum{
 typedef enum{
     eAccelODR_100Hz,
     eAccelODR_800Hz,
-    eAccelODR_1600Hz
+    eAccelODR_1600Hz,
+    eAccelODR_12HZ
 }eAccelODR_t;
 
 class DFRobot_BMX160{
@@ -1239,6 +1240,7 @@ class DFRobot_BMX160{
     bool softReset();
     void setLowPower();
     void wakeUp();
+    bool drdy_acc();
 
     
   private:

@@ -12,6 +12,9 @@
 #include "LED.h"
 
 
+#include <chrono>
+using namespace std::chrono;
+ 
 
 
 using namespace std;
@@ -25,10 +28,10 @@ int main() {
     // section for init
 
     ///////////////     File Creation       /////////////
-    File_write file;
-    file.connect_data(flight_data);
-    file.create_log_file();
-    file.create_table_names();
+    // File_write file;
+    // file.connect_data(flight_data);
+    // file.create_log_file();
+    // file.create_table_names();
 
     //////////          SERVO, BUZZER/LED INIT AND BMP388 DISABLE  /////////////
 
@@ -135,6 +138,7 @@ int main() {
     /////////               TEST CODE HERE                ///////////////
     ///////////////////////////////////////////////////////////////////////
 
+/*
     /////////               TESTING RADIO               ///////////////
     cout<<"Testing Serial Port to Radio \n";
     Serial.println("Hello World!\n");
@@ -161,77 +165,77 @@ int main() {
     buzzOn();
     sleep(2);
     buzzOff();
-
+*/
 
     ///////////         TESTING SERVO               //////////////
 
-    cout << "Testing Servos!\n";
+    // cout << "Testing Servos!\n";
 
-    SetAngle(0);
-    cout << "0 degrees\n";
-    sleep(2);
-    SetAngle(10);
-    cout << "10 degrees\n";
-    sleep(2);
-    SetAngle(20);
-    cout << "20 degrees\n";
-    sleep(2);
-    SetAngle(30);
-    cout << "30 degrees\n";
-    sleep(2);
-    SetAngle(45);
-    cout << "45 degrees\n";
-    sleep(2);
-    SetAngle(-90);
-    cout << "set to -90, defaults to 0 degrees\n";
-    sleep(2);
-    SetAngle(135);
-    cout << "set to 135, defaults to 45 degrees\n";
-    sleep(2);
+    // SetAngle(0);
+    // cout << "0 degrees\n";
+    // sleep(2);
+    // SetAngle(10);
+    // cout << "10 degrees\n";
+    // sleep(2);
+    // SetAngle(20);
+    // cout << "20 degrees\n";
+    // sleep(2);
+    // SetAngle(30);
+    // cout << "30 degrees\n";
+    // sleep(2);
+    // SetAngle(45);
+    // cout << "45 degrees\n";
+    // sleep(2);
+    // SetAngle(-90);
+    // cout << "set to -90, defaults to 0 degrees\n";
+    // sleep(2);
+    // SetAngle(135);
+    // cout << "set to 135, defaults to 45 degrees\n";
+    // sleep(2);
 
 
 
     ////////    TESTING BMX160 Communications and Test Scheme       ////////
 
-    cout << "\nBMX160_1 Data\n";
-    for (int i = 0; i < 10; i++) {
+    // cout << "\nBMX160_1 Data\n";
+    // for (int i = 0; i < 10; i++) {
 
-        bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
+    //     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
 
-        // Display the magnetometer results (magn is magnetometer in uTesla)
-        cout << "M ";
-        cout << "X: ";
-        cout << Omagn.x << "  ";
-        cout << "Y: ";
-        cout << Omagn.y << "  ";
-        cout << "Z: ";
-        cout << Omagn.z << "  ";
-        cout << "uT\n";
+    //     // Display the magnetometer results (magn is magnetometer in uTesla)
+    //     cout << "M ";
+    //     cout << "X: ";
+    //     cout << Omagn.x << "  ";
+    //     cout << "Y: ";
+    //     cout << Omagn.y << "  ";
+    //     cout << "Z: ";
+    //     cout << Omagn.z << "  ";
+    //     cout << "uT\n";
 
 
-        // Display the gyroscope results (gyroscope data is in g)
-        cout << "G ";
-        cout << "X: ";
-        cout << Ogyro.x << "  ";
-        cout << "Y: ";
-        cout << Ogyro.y << "  ";
-        cout << "Z: ";
-        cout << Ogyro.z << "  ";
-        cout << "g\n";
+    //     // Display the gyroscope results (gyroscope data is in g)
+    //     cout << "G ";
+    //     cout << "X: ";
+    //     cout << Ogyro.x << "  ";
+    //     cout << "Y: ";
+    //     cout << Ogyro.y << "  ";
+    //     cout << "Z: ";
+    //     cout << Ogyro.z << "  ";
+    //     cout << "g\n";
 
-        // Display the accelerometer results (accelerometer data is in m/s^2)
-        cout << "A ";
-        cout << "X: ";
-        cout << Oaccel.x << "  ";
-        cout << "Y: ";
-        cout << Oaccel.y << "  ";
-        cout << "Z: ";
-        cout << Oaccel.z << "  ";
-        cout << "m/s^2\n";
+    //     // Display the accelerometer results (accelerometer data is in m/s^2)
+    //     cout << "A ";
+    //     cout << "X: ";
+    //     cout << Oaccel.x << "  ";
+    //     cout << "Y: ";
+    //     cout << Oaccel.y << "  ";
+    //     cout << "Z: ";
+    //     cout << Oaccel.z << "  ";
+    //     cout << "m/s^2\n";
 
-        cout << "\n";
-        usleep(500000);
-    }
+    //     cout << "\n";
+    //     usleep(500000);
+    // }
     /*
     while (bmx160_1.pubScan()) {
     }
@@ -290,12 +294,12 @@ int main() {
 
             //////////      MS5607 Comm Test and Failures       ///////////////
 
-            for (int i = 0; i < 10; i++) {
-                cout << "MS5607_1 Altitude: " << ms5607_1.getAltitude() << "\n";
-                cout << "MS5607_1 Temperature: " << ms5607_1.getTemperature() << "\n";
-                cout << "MS5607_1 Pressure: " << ms5607_1.getPressure() << "\n\n";
-                usleep(500000);
-            }
+    // for (int i = 0; i < 10; i++) {
+    //     cout << "MS5607_1 Altitude: " << ms5607_1.getAltitude() << "\n";
+    //     cout << "MS5607_1 Temperature: " << ms5607_1.getTemperature() << "\n";
+    //     cout << "MS5607_1 Pressure: " << ms5607_1.getPressure() << "\n\n";
+    //     usleep(500000);
+    // }
 /*
             cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
 
@@ -307,14 +311,91 @@ int main() {
             cout << "MS5607_2 Comm Failure! DYing!\n";
 
 */
+    int x = 0;
+    int count = 0;
+    // Use auto keyword to avoid typing long
+    // type definitions to get the timepoint
+    // at this instant use function now()
+    bmx160SensorData Omagn2, Ogyro2, Oaccel2;
+    bmx160_1.setAccelRange(eAccelRange_16G);
+    bmx160_1.setAccelODR(eAccelODR_1600Hz);
+    bmx160_1.setGyroRange(eGyroRange_1000DPS);
+    bmx160_1.setGyroODR(eGyroODR_3200Hz);
+    sleep(2);
+    cout << "starting perf test" << endl;
+    x = 0;
+    cout << "count test" << endl;
+    auto start = high_resolution_clock::now();
+    while (x < 10000)
+    {
+        // ms5607_1.readDigitalValue();
+        x++;
+        
+        /* code */
+    }
+    auto stop = high_resolution_clock::now();
+
+    auto duration = duration_cast<microseconds>(stop - start);
+ 
+    // To get the value of duration use the count()
+    // member function on the duration object
+    cout << duration.count() << endl;
+    cout << count << endl;
+
+    cout << "bmx test" << endl;
+    // cout << bmx160_1.softReset();
+    // bmx160_1.wakeUp();
+    cout << "bmx ready" << endl;
+    x = 0;
+    start = high_resolution_clock::now();
+    while (x < 10000)
+    {
+        if (bmx160_1.drdy_acc()) {
+            bmx160_1.getAllData(&Omagn2, &Ogyro2, &Oaccel2);
+            x++;
+        }
+        
+        /* code */
+    }
+    stop = high_resolution_clock::now();
+
+    duration = duration_cast<microseconds>(stop - start);
+ 
+    // To get the value of duration use the count()
+    // member function on the duration object
+    cout << duration.count() << endl;
+    cout << count << endl;
+
+    x = 0;
+    cout << "ms5607 test" << endl;
+    start = high_resolution_clock::now();
+    while (x < 10000)
+    {
+        ms5607_1.readDigitalValue();
+        x++;
+        
+        /* code */
+    }
+    stop = high_resolution_clock::now();
+
+    duration = duration_cast<microseconds>(stop - start);
+ 
+    // To get the value of duration use the count()
+    // member function on the duration object
+    cout << duration.count() << endl;
+    cout << count << endl;
+
+    // cout << duration / x;
+    
+
 
 
             //////////////////  closing everything   /////////////////////////
 
-            file.close_files();
-            Serial.end();
-            gpioTerminate();
-            close(RPI_I2C_BUS);
+    // file.close_files();
+    // Serial.end();
+    gpioTerminate();
+    close(RPI_I2C_BUS);
 
-            return 0;
-        }
+    return 0;
+}
