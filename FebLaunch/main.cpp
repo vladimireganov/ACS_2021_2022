@@ -133,7 +133,6 @@ int main() {
     /////////               TEST CODE HERE                ///////////////
     ///////////////////////////////////////////////////////////////////////
 
-/*
     /////////               TESTING RADIO               ///////////////
     cout<<"Testing Serial Port to Radio \n";
     Serial.println("Hello World!\n");
@@ -160,7 +159,7 @@ int main() {
     buzzOn();
     sleep(2);
     buzzOff();
-*/
+
 
     ///////////         TESTING SERVO               //////////////
 
