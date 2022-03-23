@@ -301,8 +301,9 @@ int main() {
            // cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
 
             for (int i = 0; i < 10; i++) {
-                H_val = ms5607_2.getAltitude();
-                cout << "MS5607_2 Altitude: " << H_val << "\n";
+                cout << "MS5607_2 Altitude: " << ms5607_2.getAltitude() << "\n";
+                cout << "MS5607_2 Temperature: " << ms5607_2.getTemperature() << "\n";
+                cout << "MS5607_2 Pressure: " << ms5607_2.getPressure() << "\n\n";
                 usleep(500000);
             }
 
