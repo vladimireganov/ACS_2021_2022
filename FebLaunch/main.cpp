@@ -129,6 +129,16 @@ int main() {
         while (1);
     }
 
+    if (ms5607_2.readDigitalValue()) {
+        T_val = ms5607_2.getTemperature();
+        P_val = ms5607_2.getPressure();
+        H_val = ms5607_2.getAltitude();    //getAltitude() has calls to getTemp() and getPres() to calculate
+    } else {                                          // and return the Altitude. See MS5607.cpp for more.
+        cout << "Error in reading digital value in sensor! \n";
+        while (1);
+    }
+
+
 
 
     ///////////////////////////////////////////////////////////////////////
@@ -292,6 +302,7 @@ int main() {
             //////////      MS5607 Comm Test and Failures       ///////////////
 
             for (int i = 0; i < 10; i++) {
+                ms5607_1.readDigitalValue();
                 cout << "MS5607_1 Altitude: " << ms5607_1.getAltitude() << "\n";
                 cout << "MS5607_1 Temperature: " << ms5607_1.getTemperature() << "\n";
                 cout << "MS5607_1 Pressure: " << ms5607_1.getPressure() << "\n\n";
@@ -301,6 +312,7 @@ int main() {
            // cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
 
             for (int i = 0; i < 10; i++) {
+                ms5607_2.readDigitalValue();
                 cout << "MS5607_2 Altitude: " << ms5607_2.getAltitude() << "\n";
                 cout << "MS5607_2 Temperature: " << ms5607_2.getTemperature() << "\n";
                 cout << "MS5607_2 Pressure: " << ms5607_2.getPressure() << "\n\n";
