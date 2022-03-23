@@ -300,9 +300,10 @@ int main() {
 
            // cout << "MS5607_1 Comm Failure! Using MS5607_2! \n";
 
-            while (ms5607_2.readDigitalValue()) {
+            for (int i = 0; i < 10; i++) {
                 H_val = ms5607_2.getAltitude();
                 cout << "MS5607_2 Altitude: " << H_val << "\n";
+                usleep(500000);
             }
 
            // cout << "MS5607_2 Comm Failure! DYing!\n";
