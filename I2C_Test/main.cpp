@@ -38,7 +38,7 @@ int main() {
 
 
             gpioTerminate();
-            close(RPI_I2C_BUS);
+
 
             return 0;
         }
