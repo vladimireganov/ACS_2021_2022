@@ -25,5 +25,8 @@ int readButton() {
 }
 
 void disBMP() {
+    if (gpioGetMode(BMP_PIN) != PI_OUTPUT) {
+        gpioSetMode(BMP_PIN, PI_OUTPUT);
+    }
     gpioSetPullUpDown(BMP_PIN,GPIO_DOWN);       //set pin 13 (GPIO 27) to pull down
 }
