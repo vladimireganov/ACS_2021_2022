@@ -10,5 +10,5 @@ main.o: main.cpp
 PWM.o: PWM.c PWM.h
 	g++ -c PWM.c
 
-LED.o: LED.cpp LED.h
+LED.o: ../FebLaunch/LED.cpp ../FebLaunch/LED.h
 	g++ -c LED.cpp
