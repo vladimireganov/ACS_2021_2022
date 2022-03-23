@@ -234,7 +234,7 @@ int main() {
     }
 
    // while (bmx160_1.pubScan()) {
-    }
+   // }
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     cout << "\nBMX160_2 Data\n";
     for (int i = 0; i < 10; i++) {
