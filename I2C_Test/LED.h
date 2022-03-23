@@ -16,7 +16,7 @@
 #define BMP_PIN 27
 #define pi_LOW 0
 #define pi_HI 1
-#define GPIO_DOWN 2
+#define GPIO_DOWN 1
 
 void buzzOn();
 void buzzOff();
