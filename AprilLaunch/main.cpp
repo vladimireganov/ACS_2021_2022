@@ -205,13 +205,20 @@ int main() {
     do {
         ms5607_1.readDigitalValue();
         ms5607_1.getAltitude();
-    } while( altDiff < 10 )
-    //look for large change in altitude
+    }while();
+
+    Serial.println("Launched!");
+    cout << "Launched!\n";
 
     /////           wait until burnout is detected                      /////
 
+    do {
+        bmx160_1.getAllData(&Omagn,&Omagn,&Oaccel);
+    } while();
 
     //gauge when acceleration becomes negative again
+    Serial.println("Burnout Detected! Deploying System!");
+    cout << "Burnout Detected! Deploying System!\n";
 
     /////           run until button is pressed after recovery          /////
 
