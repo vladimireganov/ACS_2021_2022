@@ -313,13 +313,6 @@ void DFRobot_BMX160::writeReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 
 }
 
-bool DFRobot_BMX160::pubScan() {
-
-    return scan();
-
-
-}
-
 void DFRobot_BMX160::readReg(uint8_t reg, uint8_t *pBuf, uint16_t len)
 {
     if (ioctl(i2c_bus, I2C_SLAVE, my_addr) < 0) {
