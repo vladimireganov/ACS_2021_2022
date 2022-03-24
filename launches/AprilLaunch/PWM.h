@@ -10,3 +10,4 @@
 
 void ServoOff(void);
 void SetAngle(int angle);
+void servoSweep();
