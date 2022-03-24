@@ -8,6 +8,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+#include <unistd.h>
+#include <fstream>
+#include <fcntl.h>
+#include <time.h>
 #include <signal.h>
 #include <pigpio.h>
 
@@ -18,8 +23,12 @@
 #define pi_HI 1
 #define GPIO_DOWN 1
 
+#define START_TIME 3
+#define END_TIME 5
+
 void buzzOn();
 void buzzOff();
 
 int readButton();
+int press(long dur);
 void disBMP();
