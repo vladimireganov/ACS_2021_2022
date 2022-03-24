@@ -26,3 +26,15 @@ void SetAngle(int angle) {
 	}
 }
 
+void servoSweep() {
+    /////       show off servo motion           /////
+    SetAngle(0); usleep(500000);
+    SetAngle(10); usleep(500000);
+    SetAngle(20); usleep(500000);
+    SetAngle(30); usleep(500000);
+    SetAngle(45); usleep(500000);
+    SetAngle(25); usleep(500000);
+    SetAngle(10); usleep(500000);
+    SetAngle(0); usleep(500000);
+}
+

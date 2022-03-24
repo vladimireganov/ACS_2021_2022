@@ -148,56 +148,34 @@ int main() {
 
 
     ///////         wait for 3 second button press to enable system     //////
-    int hold = 0;
-    long startTime = 3;  //3000 ms = 3s
-    long turnOffTime = 3;
-    long dur = 0;
-    timespec start;
-    timespec end;
-
-    Serial.println("Press and Hold Button for 3 seconds to Begin.");
-    cout("Press and Hold Button for 3 seconds to Begin");
-    while (!hold) {
-        clock_gettime(CLOCK_REALTIME,&start);
-        while(readButton()) {
-            clock_gettime(CLOCK_REALTIME,&end);
-            dur = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec));
-            if (dur >= startTime) {
-                buzzOn(); usleep(500000); buzzOff();
-                hold = 1;
-            }
-            dur = 0;
-        }
+    cout << "Press button for 3 seconds to enter standy.\n";
+    Serial.println("Press button for 3 seconds to enter standy.");
+    int pressed = 0;
+    while(!pressed) {
+        pressed = press(START_TIME);
     }
-    hold = 0;
+    pressed = 0;
+
 
     /////           wait for system arm command         /////
 
-    cout("System ready for arming. Awaiting commend \"Rocket\"\n");
-    Serial.println("System ready for arming. Awaiting commend \"Rocket\"");
+    cout("System in standby. Awaiting commend \"Rocket\"\n");
+    Serial.println("System in standy. Awaiting commend \"Rocket\"");
 
     std::string command = "";
     while ((command.compare("Rocket")) != 0) {
         command = "";
         command = Serial.readString();
+        if(command.compare("Servo Sweep") != 0) {
+            cout << "Running servo sweep!\n";
+            Serial.println("Running servo sweep!");
+            servoSweep();
+        }
     }
-    Serial.println("Armed! Actuator Sweep Starting.");
-    cout("Armed! Actuator Sweep Starting.\n");
+    Serial.println("Armed! Awaiting launch. ");
+    cout("Armed! Awaiting launch. \n");
     usleep(500000);
 
-
-    /////       show off servo motion           /////
-    SetAngle(0); usleep(500000);
-    SetAngle(10); usleep(500000);
-    SetAngle(20); usleep(500000);
-    SetAngle(30); usleep(500000);
-    SetAngle(45); usleep(500000);
-    SetAngle(25); usleep(500000);
-    SetAngle(10); usleep(500000);
-    SetAngle(0); usleep(500000);
-
-    cout("Sweep Completed. System armed and ready!\n");
-    Serial.println("Sweep Completed. System armed and ready!");
 
     /////           wait until launch is detected                       /////
     long altDiff = 0;
@@ -207,8 +185,8 @@ int main() {
         ms5607_1.getAltitude();
     }while();
 
-    Serial.println("Launched!");
-    cout << "Launched!\n";
+    Serial.println("Launched! Awaiting burnout for deployment.");
+    cout << "Launched! Awaiting burnout for deployment.\n";
 
     /////           wait until burnout is detected                      /////
 
