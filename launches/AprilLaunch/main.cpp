@@ -167,7 +167,7 @@ int main() {
     while ((command.compare("Rocket")) != 0) {
         command = "";
         command = Serial.readString();
-        if(command.compare("Servo Sweep") != 0) {
+        if(command.compare("Servo Sweep") == 0) {
             cout << "Running servo sweep!\n";
             Serial.println("Running servo sweep!");
             servoSweep();
