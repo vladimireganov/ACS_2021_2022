@@ -184,7 +184,8 @@ int main() {
     do {
         ms5607_1.readDigitalValue();
         ms5607_1.getAltitude();
-    }while(!readButton());
+    }while(!press(1));
+    sleep(2);
 
     Serial.println("Launched! Awaiting burnout for deployment.");
     cout << "Launched! Awaiting burnout for deployment.\n";
@@ -193,20 +194,21 @@ int main() {
 
     do {
         bmx160_1.getAllData(&Omagn,&Omagn,&Oaccel);
-    } while(!readButton());
+    } while(!press(1));
+    sleep(2);
 
     //gauge when acceleration becomes negative again
     Serial.println("Burnout Detected! Deploying System!");
     cout << "Burnout Detected! Deploying System!\n";
 
-    while(!readButton());
+    while(!press(1));
     sleep(2);
 
     //when velocity becomes negative
     Serial.println("System in free fall.");
     cout << "System in free fall.\n";
 
-    while(!readButton());
+    while(!press(1));
     sleep(2);
 
     /////           run until button is pressed after recovery          /////
