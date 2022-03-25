@@ -76,6 +76,7 @@ int main() {
     bmx160_1.setGyroRange(eGyroRange_1000DPS);
     bmx160_1.setGyroODR(eGyroODR_3200Hz);
     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
+    cout << "BMX160_1 Initialized and Configured.\n";
     Serial.println("BMX160_1 Initialized and Configured.");
 
     DFRobot_BMX160 bmx160_2(RPI_I2C_BUS, 0x69);
