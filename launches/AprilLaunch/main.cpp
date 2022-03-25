@@ -92,7 +92,7 @@ int main() {
     bmx160_2.setGyroODR(eGyroODR_3200Hz);
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     Serial.println("BMX160_2 Initialized and Configured.");
-    cout("BMX160_2 Initialized and Configured.");
+    cout << "BMX160_2 Initialized and Configured.\n";
 
 
     //////////////      MS5607 Initialization       /////////////////
@@ -116,6 +116,7 @@ int main() {
     }
 
     Serial.println("MS5607_1 Initialized and Configured.");
+    cout << "MS5607_1 Initialized and Configured.\n";
 
     /////
 
@@ -138,7 +139,7 @@ int main() {
     }
 
     Serial.println("MS5607_2 Initialized and Configured.");
-    cout("MS5607_2 Initialized and Configured.");
+    cout << "MS5607_2 Initialized and Configured.\n";
     /////
 
 
@@ -159,7 +160,7 @@ int main() {
 
     /////           wait for system arm command         /////
 
-    cout("System in standby. Awaiting commend \"Rocket\"\n");
+    cout << "System in standby. Awaiting commend \"Rocket\"\n";
     Serial.println("System in standy. Awaiting commend \"Rocket\"");
 
     std::string command = "";
@@ -173,7 +174,7 @@ int main() {
         }
     }
     Serial.println("Armed! Awaiting launch. ");
-    cout("Armed! Awaiting launch. \n");
+    cout << "Armed! Awaiting launch. \n";
     usleep(500000);
 
 
@@ -183,7 +184,7 @@ int main() {
     do {
         ms5607_1.readDigitalValue();
         ms5607_1.getAltitude();
-    }while();
+    }while(!readButton());
 
     Serial.println("Launched! Awaiting burnout for deployment.");
     cout << "Launched! Awaiting burnout for deployment.\n";
@@ -192,34 +193,33 @@ int main() {
 
     do {
         bmx160_1.getAllData(&Omagn,&Omagn,&Oaccel);
-    } while();
+    } while(!readButton());
 
     //gauge when acceleration becomes negative again
     Serial.println("Burnout Detected! Deploying System!");
     cout << "Burnout Detected! Deploying System!\n";
 
+    while(!readButton());
+    sleep(2);
+
+    //when velocity becomes negative
+    Serial.println("System in free fall.");
+    cout << "System in free fall.\n";
+
+    while(!readButton());
+    sleep(2);
+
     /////           run until button is pressed after recovery          /////
 
-    do {
-        clock_gettime(CLOCK_REALTIME,&start);
-        while(readButton()) {
-            clock_gettime(CLOCK_REALTIME,&end);
-            dur = ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec));
-            if (dur >= turnOffTime) {
-                buzzOn(); usleep(500000); buzzOff();
-                hold = 1;
-            }
-            dur = 0;
-        }
 
-        //flight code
-
-
-
-
-    } while(!hold)
-
-
+    cout << "System landed. Press and Hold Button for 5 seconds to end program.\n";
+    Serial.println("System landed. Press and Hold Button for 5 seconds to end program.");
+    while (!pressed) {
+        pressed = press(END_TIME);
+    }
+    pressed = 0;
+    cout << "System shutting down.\n";
+    Serial.println("System shutting down.");
     //////////////////  closing everything   /////////////////////////
 
     file.close_files();
