@@ -37,7 +37,9 @@ int press(long dur) {
             clock_gettime(CLOCK_REALTIME,&end);
             timeSpan= ((end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9);
             if (timeSpan>= dur) {
-                buzzOn(); usleep(500000); buzzOff();
+                buzzOn();
+                usleep(500000);
+                buzzOff();
                 break;
             }
             hold = 1;
