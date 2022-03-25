@@ -12,6 +12,7 @@
 #include <fstream>
 #include <fcntl.h>
 #include <time.h>
+#include <unistd.h>
 #include <signal.h>
 #include <pigpio.h>
 

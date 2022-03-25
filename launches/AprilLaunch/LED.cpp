@@ -1,5 +1,4 @@
 #include "LED.h"
-#include <unistd.h>
 
 int hold = 0;
 double timeSpan= 0;
