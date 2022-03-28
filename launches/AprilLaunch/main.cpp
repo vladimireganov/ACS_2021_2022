@@ -24,6 +24,7 @@ int main() {
     File_write file;
     file.connect_data(flight_data);
     file.create_log_file();
+    if(!file.open_data_file()) cout << "File writing is not working.\n";
     file.create_table_names();
 
     //////////          SERVO, BUZZER/LED INIT AND BMP388 DISABLE  /////////////
@@ -156,9 +157,10 @@ int main() {
 
     /////           wait for system arm command         /////
 
-    cout << "System in standby. Awaiting commend \"Rocket\"\n";
-    Serial.println("System in standy. Awaiting commend \"Rocket\"");
+    cout << "System in standby. Awaiting command \"Rocket\"\n";
+    Serial.println("System in standy. Awaiting command \"Rocket\"");
 
+    /*
     std::string command = "";
     while ((command.compare("Rocket")) != 0) {
         command = "";
@@ -168,7 +170,8 @@ int main() {
             Serial.println("Running servo sweep!");
             servoSweep();
         }
-    }
+    }*/
+
     Serial.println("Armed! Awaiting launch. ");
     cout << "Armed! Awaiting launch. \n";
     usleep(500000);
@@ -185,19 +188,20 @@ int main() {
         // This code will be later refactored
 
         // Data collection
-        flight_data.set_altimeter_data(ms5607_1.getAltitude(), ms5607_1.getTemperature());
-        flight_data.set_acceleration_data(Oaccel->x, Oaccel->y, Oaccel->z);
-        flight_data.set_gyroscope_data(Ogyro->x, Ogyro->x, Ogyro->x);
-        flight_data.set_magnetometer_data(Omagn->x, Omagn->x, Omagn->x);
-        time(&flight_data.current_time);
+        flight_data.set_altimeter_data(ms5607_1.getPressure(), ms5607_1.getTemperature());
+        flight_data.set_acceleration_data(Oaccel.x, Oaccel.y, Oaccel.z);
+        flight_data.set_gyroscope_data(Ogyro.x, Ogyro.y, Ogyro.z);
+        flight_data.set_magnetometer_data(Omagn.x, Omagn.y, Omagn.z);
 
         // Data processing
         flight_data.process_data();
 
         // Log the data
-        file.save_data();
+        if (!file.save_data()) cout << "File writing is not working.\n";
+
+        cout << "Running.\n";
         
-    }while(!press(1));
+    } while(true);
     sleep(2);
 
     Serial.println("Launched! Awaiting burnout for deployment.");
