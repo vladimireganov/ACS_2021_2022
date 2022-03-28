@@ -12,18 +12,13 @@
 #include "SerialLinux.h"
 #include "LED.h"
 
-
-
-
 using namespace std;
-
-Data flight_data; // creating class to store data
-
-
 
 
 int main() {
+    ///////////////     Data Manager        //////////////
     // section for init
+    Data flight_data = Data(); // creating class to store data
 
     ///////////////     File Creation       /////////////
     File_write file;
@@ -184,7 +179,24 @@ int main() {
 
     do {
         ms5607_1.readDigitalValue();
-        ms5607_1.getAltitude();
+        bmx160_1.getAllData(&Omagn,&Ogyro,&Oaccel);
+
+        // Please do not updates below here
+        // This code will be later refactored
+
+        // Data collection
+        flight_data.set_altimeter_data(ms5607_1.getAltitude(), ms5607_1.getTemperature());
+        flight_data.set_acceleration_data(Oaccel->x, Oaccel->y, Oaccel->z);
+        flight_data.set_gyroscope_data(Ogyro->x, Ogyro->x, Ogyro->x);
+        flight_data.set_magnetometer_data(Omagn->x, Omagn->x, Omagn->x);
+        time(&flight_data.current_time);
+
+        // Data processing
+        flight_data.process_data();
+
+        // Log the data
+        file.save_data();
+        
     }while(!press(1));
     sleep(2);
 
