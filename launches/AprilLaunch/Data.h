@@ -7,6 +7,7 @@
 // add includes for sensors
 #include <string.h>
 #include <math.h>
+#include <chrono>
 
 #define PI 3.14159265
 #define SEA_LEVEL_PA 101325.0
@@ -16,20 +17,21 @@ class Data
 {
 private:
     /* data */
-    long previous_time;
     float previous_relative_altitude;
+    double previous_time;
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_chrono_time;
 
     void calculate_altitude(float* pressure, float* altitude);
     void calculate_ground_altitude(float* altitude, float* ground_altitude);
     void calculate_relative_altitude(float* altitude, float* ground_altitude, float* relative_altitude);
-    void calculate_vertical_velocity(float* altitude, float* prev_altitude, float* elapsed_time_millis, float * v_vel);
+    void calculate_vertical_velocity(float* altitude, float* prev_altitude, double* elapsed_time, float * v_vel);
     void calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel);
     void calculate_vertical_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * vertical_acceleration);
 
 public:
-    int iterator; // number of iteration
+    int iterator = 0; // number of iteration
 
-    long current_time; // time
+    double current_time; // time
 
     // altimeter data
     float pressure;
@@ -69,6 +71,9 @@ public:
 
 Data::Data(/* args */)
 {
+    start_chrono_time = std::chrono::high_resolution_clock::now();
+    current_time = 1.0;
+    previous_time = 0.0;
 }
 
 Data::~Data()
@@ -103,9 +108,15 @@ void Data::set_magnetometer_data(float mag_x, float mag_y, float mag_z) {
 }
 
 void Data::process_data() {
+    // Update iteration
     iterator++;
+
+    // update time
+    auto current_chrono_time = std::chrono::high_resolution_clock::now();
+    current_time = std::chrono::duration<double>(current_chrono_time - start_chrono_time).count();
+
     // getting processed data
-    float elapsed_time = 0.01; // problem solved
+    double elapsed_time = current_time - previous_time; // problem solved
 
     this->calculate_altitude(&pressure, &altitude);
     this->calculate_ground_altitude(&altitude, &ground_altitude);
@@ -134,9 +145,9 @@ void Data::calculate_relative_altitude(float* altitude, float* ground_altitude, 
     *relative_altitude = *altitude - *ground_altitude;
 }
 
-void Data::calculate_vertical_velocity(float* altitude, float* prev_altitude, float* elapsed_time, float * v_vel) {
+void Data::calculate_vertical_velocity(float* altitude, float* prev_altitude, double* elapsed_time, float * v_vel) {
     float delta_alt = *altitude - *prev_altitude;
-    *v_vel = (float)(delta_alt / (*elapsed_time / 1e3));
+    *v_vel = (float)(delta_alt / (*elapsed_time));
 }
 
 void Data::calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel) {
