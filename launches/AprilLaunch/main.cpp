@@ -19,6 +19,7 @@ int main() {
     ///////////////     Data Manager        //////////////
     // section for init
     Data flight_data = Data(); // creating class to store data
+    flight_data.override_altitude_calculation(true);
 
     ///////////////     File Creation       /////////////
     File_write file;
@@ -70,7 +71,7 @@ int main() {
     bmx160_1.setAccelRange(eAccelRange_16G);
     bmx160_1.setAccelODR(eAccelODR_1600Hz);
     bmx160_1.setGyroRange(eGyroRange_1000DPS);
-    bmx160_1.setGyroODR(eGyroODR_3200Hz);
+    bmx160_1.setGyroODR(eGyroODR_1600Hz);
     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
     cout << "BMX160_1 Initialized and Configured.\n";
     Serial.println("BMX160_1 Initialized and Configured.");
@@ -86,7 +87,7 @@ int main() {
     bmx160_2.setAccelRange(eAccelRange_16G);
     bmx160_2.setAccelODR(eAccelODR_1600Hz);
     bmx160_2.setGyroRange(eGyroRange_1000DPS);
-    bmx160_2.setGyroODR(eGyroODR_3200Hz);
+    bmx160_2.setGyroODR(eGyroODR_1600Hz);
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     Serial.println("BMX160_2 Initialized and Configured.");
     cout << "BMX160_2 Initialized and Configured.\n";
@@ -181,17 +182,19 @@ int main() {
     long altDiff = 0;
 
     do {
+        // Collect data
         ms5607_1.readDigitalValue();
-        bmx160_1.getAllData(&Omagn,&Ogyro,&Oaccel);
+        bmx160_2.getAllData(&Omagn,&Ogyro,&Oaccel);
 
         // Please do not updates below here
         // This code will be later refactored
 
-        // Data collection
+        // Pass raw data to Data
         flight_data.set_altimeter_data(ms5607_1.getPressure(), ms5607_1.getTemperature());
         flight_data.set_acceleration_data(Oaccel.x, Oaccel.y, Oaccel.z);
         flight_data.set_gyroscope_data(Ogyro.x, Ogyro.y, Ogyro.z);
         flight_data.set_magnetometer_data(Omagn.x, Omagn.y, Omagn.z);
+        flight_data.altitude = ms5607_1.getAltitude();
 
         // Data processing
         flight_data.process_data();
@@ -199,7 +202,18 @@ int main() {
         // Log the data
         if (!file.save_data()) cout << "File writing is not working.\n";
 
-        cout << "Running.\n";
+        cout << "Ground altitude: " << flight_data.ground_altitude << endl;
+        cout << "Altitude: " << flight_data.altitude << endl;
+        cout << "Relative altitude: " << flight_data.relative_altitude << endl;
+        cout << "Magnetometer x: " << flight_data.magnetometer_x << endl;
+        cout << "Magnetometer y: " << flight_data.magnetometer_y << endl;
+        cout << "Magnetometer z: " << flight_data.magnetometer_z << endl;
+        cout << "Gyro x: " << flight_data.gyroscope_x << endl;
+        cout << "Gyro y: " << flight_data.gyroscope_y << endl;
+        cout << "Gyro z: " << flight_data.gyroscope_z << endl;
+        cout << "Acceleration x: " << flight_data.acceleration_x << endl;
+        cout << "Acceleration y: " << flight_data.acceleration_y << endl;
+        cout << "Acceleration z: " << flight_data.acceleration_z << endl << endl;
         
     } while(true);
     sleep(2);
