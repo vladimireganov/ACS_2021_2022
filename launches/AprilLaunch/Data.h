@@ -9,6 +9,7 @@
 #include <math.h>
 #include <chrono>
 
+#include "imu_utility/imumaths.h"
 #include "QuaternionFilter.h"
 
 #define PI 3.14159265
@@ -18,6 +19,10 @@
 class Data
 {
 private:
+    // Constants
+    const float DEG_TO_RAD = 0.01745329;
+    float magnetic_declination = -7.51;  // Japan, 24th June
+
     /* data */
     float previous_relative_altitude;
     double previous_time;
@@ -26,6 +31,16 @@ private:
     // Use own or external altitude calculation
     bool override_altitude = false;
 
+    // Something related to quaternions and other complex calculations
+    QuaternionFilter quat_filter;
+    size_t n_filter_iter {1};
+
+    float q[4] = {1.0f, 0.0f, 0.0f, 0.0f};  // vector to hold quaternion
+    float rpy[3] {0.f, 0.f, 0.f};
+    float lin_acc[3] {0.f, 0.f, 0.f};  // linear acceleration (acceleration with gravity component subtracted)
+    
+
+    void calculate_quaternions();
     void calculate_altitude(float* pressure, float* altitude);
     void calculate_ground_altitude(float* altitude, float* ground_altitude);
     void calculate_relative_altitude(float* altitude, float* ground_altitude, float* relative_altitude);
@@ -33,6 +48,9 @@ private:
     void calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel);
     void calculate_vertical_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * vertical_acceleration);
 
+    void update_rpy(float qw, float qx, float qy, float qz);
+    imu::Matrix<3> Data::transformation_matrix(float qw, float qx, float qy, float qz);
+    double Data::vertical_acceleration_from_lin(imu::Vector<3> linear_acceleration, imu::Matrix<3> transformation_matrix);
 public:
     int iterator = 0; // number of processed iteration
 
@@ -53,13 +71,6 @@ public:
     float magnetometer_y;
     float magnetometer_z;
 
-    float q[4] = {1.0f, 0.0f, 0.0f, 0.0f};  // vector to hold quaternion
-    float rpy[3] {0.f, 0.f, 0.f};
-    float lin_acc[3] {0.f, 0.f, 0.f};  // linear acceleration (acceleration with gravity component subtracted)
-    QuaternionFilter quat_filter;
-    
-    size_t n_filter_iter {1};
-
     /* Section for processed data (derived data) */
     // altimeter derived data
     float altitude;
@@ -73,6 +84,12 @@ public:
 
     Data(/* args */);
     ~Data();
+    float getRoll() const { return rpy[0]; }
+    float getPitch() const { return rpy[1]; }
+    float getYaw() const { return rpy[2]; }
+    float getLinearAccX() const { return lin_acc[0]; }
+    float getLinearAccY() const { return lin_acc[1]; }
+    float getLinearAccZ() const { return lin_acc[2]; }
     void set_altimeter_data(float pressure, float temperature);
     void set_acceleration_data(float accel_x, float accel_y, float accel_z);
     void set_gyroscope_data(float gyro_x, float gyro_y, float gyro_z);
@@ -146,6 +163,7 @@ void Data::process_data() {
         this->calculate_altitude(&pressure, &altitude);
     }
 
+    this->calculate_quaternions();
     this->calculate_ground_altitude(&altitude, &ground_altitude);
     this->calculate_relative_altitude(&altitude, &ground_altitude, &relative_altitude);
     this->calculate_vertical_velocity(&relative_altitude, &previous_relative_altitude, &elapsed_time, &vertical_velocity);
@@ -182,10 +200,107 @@ void Data::calculate_net_acceleration(float * acceleration_x, float * accelerati
     *net_accel = sqrt(pow(*acceleration_x,2)+ pow(*acceleration_y, 2) + pow(*acceleration_z, 2));
 }
 
-void Data::calculate_vertical_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * vertical_acceleration) {
-    *vertical_acceleration = *acceleration_z;
+void Data::calculate_vertical_acceleration() {
+    imu::Matrix<3> tm = transformation_matrix(q[0], q[1], q[2], q[3]);
+    imu::Vector<3> linac =  imu::Vector<3>(lin_acc[0], lin_acc[1], lin_acc[2]);
+    vertical_acceleration = vertical_acceleration_from_lin(linac, tm);
 }
 
 void Data::override_altitude_calculation(bool value) {
     this->override_altitude = value;
+}
+
+void Data::calculate_quaternions() {
+    float an = -acceleration_x;
+    float ae = +acceleration_y;
+    float ad = +acceleration_z;
+    float gn = +gyroscope_x * DEG_TO_RAD;
+    float ge = -gyroscope_y * DEG_TO_RAD;
+    float gd = -gyroscope_z * DEG_TO_RAD;
+    float mn = +magnetometer_y;
+    float me = -magnetometer_x;
+    float md = +magnetometer_z;
+
+    for (size_t i = 0; i < n_filter_iter; ++i) {
+        quat_filter.update(an, ae, ad, gn, ge, gd, mn, me, md, q);
+    }
+
+    update_rpy(q[0], q[1], q[2], q[3]);
+}
+
+void Data::update_rpy(float qw, float qx, float qy, float qz) {
+    // Define output variables from updated quaternion---these are Tait-Bryan angles, commonly used in aircraft orientation.
+    // In this coordinate system, the positive z-axis is down toward Earth.
+    // Yaw is the angle between Sensor x-axis and Earth magnetic North (or true North if corrected for local declination, looking down on the sensor positive yaw is counterclockwise.
+    // Pitch is angle between sensor x-axis and Earth ground plane, toward the Earth is positive, up toward the sky is negative.
+    // Roll is angle between sensor y-axis and Earth ground plane, y-axis up is positive roll.
+    // These arise from the definition of the homogeneous rotation matrix constructed from quaternions.
+    // Tait-Bryan angles as well as Euler angles are non-commutative; that is, the get the correct orientation the rotations must be
+    // applied in the correct order which for this configuration is yaw, pitch, and then roll.
+    // For more see http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles which has additional links.
+    float a12, a22, a31, a32, a33;  // rotation matrix coefficients for Euler angles and gravity components
+    a12 = 2.0f * (qx * qy + qw * qz);
+    a22 = qw * qw + qx * qx - qy * qy - qz * qz;
+    a31 = 2.0f * (qw * qx + qy * qz);
+    a32 = 2.0f * (qx * qz - qw * qy);
+    a33 = qw * qw - qx * qx - qy * qy + qz * qz;
+    rpy[0] = atan2f(a31, a33);
+    rpy[1] = -asinf(a32);
+    rpy[2] = atan2f(a12, a22);
+    rpy[0] *= 180.0f / PI;
+    rpy[1] *= 180.0f / PI;
+    rpy[2] *= 180.0f / PI;
+    rpy[2] += magnetic_declination;
+    if (rpy[2] >= +180.f)
+        rpy[2] -= 360.f;
+    else if (rpy[2] < -180.f)
+        rpy[2] += 360.f;
+
+    lin_acc[0] = acceleration_x + a31;
+    lin_acc[1] = acceleration_y + a32;
+    lin_acc[2] = acceleration_z - a33;
+}
+
+
+imu::Matrix<3> Data::transformation_matrix(float qw, float qx, float qy, float qz)
+{
+    float a = qw;
+    float b = qx;
+    float c = qy;
+    float d = qz;
+
+    imu::Vector<3> row1 =
+        imu::Vector<3>(a * a + b * b - c * c - d * d, 2 * b * c - 2 * a * d,
+                    2 * b * d + 2 * a * c);
+    imu::Vector<3> row2 =
+        imu::Vector<3>(2 * b * c + 2 * a * d, a * a - b * b + c * c - d * d,
+                    2 * c * d - 2 * a * b);
+    imu::Vector<3> row3 =
+        imu::Vector<3>(2 * b * d - 2 * a * c, 2 * c * d + 2 * a * b,
+                    a * a - b * b - c * c + d * d);
+
+    imu::Matrix<3> trans_mat;
+    trans_mat.vector_to_row(row1, 0);
+    trans_mat.vector_to_row(row2, 1);
+    trans_mat.vector_to_row(row3, 2);
+    return trans_mat;
+}
+
+/**
+ * Function that returns vertical acceleration measured with ground frame. 
+ * Useful to check if rocket engine burnt out
+ * @param linear_acceleration Linear Acceleration from accelerometer
+ * @return vertical acceleration
+*/
+double Data::vertical_acceleration_from_lin(imu::Vector<3> linear_acceleration, imu::Matrix<3> transformation_matrix)
+{
+    imu::Matrix<3> trans_mat = transformation_matrix;
+    imu::Vector<3> accel = linear_acceleration;
+    imu::Vector<3> inertial_accel;
+    for (int i = 0; i < 3; i++)
+    {
+        imu::Vector<3> row = trans_mat.row_to_vector(i);
+        inertial_accel[i] = row.dot(accel);
+    }
+    return inertial_accel[2];
 }
