@@ -77,6 +77,7 @@ void DFRobot_BMX160::wakeUp(){
     usleep(100000);
     setMagnConf();
     usleep(100000);
+    /* Set accelerometer to normal mode */
     writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x11);
     usleep(100000);
     /* Set gyro to normal mode */
@@ -249,31 +250,42 @@ void DFRobot_BMX160::setAccelRange(eAccelRange_t bits){
 void DFRobot_BMX160::getAllData(struct bmx160SensorData *magn, struct bmx160SensorData *gyro, struct bmx160SensorData *accel){
 
     uint8_t data[23] = {0};
+    int16_t x, y, z;
     // put your main code here, to run repeatedly:
     readReg(BMX160_MAG_DATA_ADDR, data, 23);
     if(magn){
-        magn->x = (int16_t) ((data[1] << 8) | data[0]);
-        magn->y = (int16_t) ((data[3] << 8) | data[2]);
-        magn->z = (int16_t) ((data[5] << 8) | data[4]);
-        magn->x *= BMX160_MAGN_UT_LSB;
-        magn->y *= BMX160_MAGN_UT_LSB;
-        magn->z *= BMX160_MAGN_UT_LSB;
+        x = (int16_t) ((data[1] << 8) | data[0]);
+        y = (int16_t) ((data[3] << 8) | data[2]);
+        z = (int16_t) ((data[5] << 8) | data[4]);
+        magn->x = (float)x * BMX160_MAGN_UT_LSB;
+        magn->y = (float)y * BMX160_MAGN_UT_LSB;
+        magn->z = (float)z * BMX160_MAGN_UT_LSB;
     }
     if(gyro){
-        gyro->x = (int16_t) ((data[9] << 8) | data[8]);
-        gyro->y = (int16_t) ((data[11] << 8) | data[10]);
-        gyro->z = (int16_t) ((data[13] << 8) | data[12]);
-        gyro->x *= gyroRange;
-        gyro->y *= gyroRange;
-        gyro->z *= gyroRange;
+        x = (int16_t) ((data[9] << 8) | data[8]);
+        y = (int16_t) ((data[11] << 8) | data[10]);
+        z = (int16_t) ((data[13] << 8) | data[12]);
+
+        printf("Gyro values x: %#x\n", x);
+        printf("Gyro values y: %#x\n", y);
+        printf("Gyro values z: %#x\n", z);
+
+        gyro->x = (float)x * gyroRange;
+        gyro->y = (float)y * gyroRange;
+        gyro->z = (float)z * gyroRange;
     }
     if(accel){
-        accel->x = (int16_t) ((data[15] << 8) | data[14]);
-        accel->y = (int16_t) ((data[17] << 8) | data[16]);
-        accel->z = (int16_t) ((data[19] << 8) | data[18]);
-        accel->x *= accelRange;
-        accel->y *= accelRange;
-        accel->z *= accelRange;
+        x = (int16_t) ((data[15] << 8) | data[14]);
+        y = (int16_t) ((data[17] << 8) | data[16]);
+        z = (int16_t) ((data[19] << 8) | data[18]);
+
+        printf("Accel values x: %d\n", x);
+        printf("Accel values y: %d\n", y);
+        printf("Accel values z: %d\n", z);
+
+        accel->x = (float)x * accelRange;
+        accel->y = (float)y * accelRange;
+        accel->z = (float)z * accelRange;
     }
 }
 
