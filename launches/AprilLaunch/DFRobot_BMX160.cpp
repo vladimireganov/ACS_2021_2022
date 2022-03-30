@@ -257,6 +257,7 @@ void DFRobot_BMX160::getAllData(struct bmx160SensorData *magn, struct bmx160Sens
         x = (int16_t) ((data[1] << 8) | data[0]);
         y = (int16_t) ((data[3] << 8) | data[2]);
         z = (int16_t) ((data[5] << 8) | data[4]);
+        
         magn->x = (float)x * BMX160_MAGN_UT_LSB;
         magn->y = (float)y * BMX160_MAGN_UT_LSB;
         magn->z = (float)z * BMX160_MAGN_UT_LSB;
@@ -266,10 +267,6 @@ void DFRobot_BMX160::getAllData(struct bmx160SensorData *magn, struct bmx160Sens
         y = (int16_t) ((data[11] << 8) | data[10]);
         z = (int16_t) ((data[13] << 8) | data[12]);
 
-        printf("Gyro values x: %#x\n", x);
-        printf("Gyro values y: %#x\n", y);
-        printf("Gyro values z: %#x\n", z);
-
         gyro->x = (float)x * gyroRange;
         gyro->y = (float)y * gyroRange;
         gyro->z = (float)z * gyroRange;
@@ -278,10 +275,6 @@ void DFRobot_BMX160::getAllData(struct bmx160SensorData *magn, struct bmx160Sens
         x = (int16_t) ((data[15] << 8) | data[14]);
         y = (int16_t) ((data[17] << 8) | data[16]);
         z = (int16_t) ((data[19] << 8) | data[18]);
-
-        printf("Accel values x: %d\n", x);
-        printf("Accel values y: %d\n", y);
-        printf("Accel values z: %d\n", z);
 
         accel->x = (float)x * accelRange;
         accel->y = (float)y * accelRange;
