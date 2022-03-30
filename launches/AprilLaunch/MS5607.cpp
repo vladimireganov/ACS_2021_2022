@@ -54,29 +54,16 @@ char MS5607::resetDevice(void){
 // read calibration data from PROM
 char MS5607::readCalibration(){
   if(resetDevice() &&
-    readUInt_16(PROM_READ+2, C1) &&
-    readUInt_16(PROM_READ+4, C2) &&
-    readUInt_16(PROM_READ+6, C3) &&
-    readUInt_16(PROM_READ+8, C4) &&
-    readUInt_16(PROM_READ+10, C5) &&
-    readUInt_16(PROM_READ+12, C6)
+    readUInt_16(PROM_READ | 0x02, C1) &&
+    readUInt_16(PROM_READ | 0x04, C2) &&
+    readUInt_16(PROM_READ | 0x08, C3) &&
+    readUInt_16(PROM_READ | 0x0A, C4) &&
+    readUInt_16(PROM_READ | 0x0C C5) &&
+    readUInt_16(PROM_READ | 0x0E, C6)
   ){
     return (1);
   }else{return(0);}
 }
-/*
-char MS5607::readPublicConfig(unsigned int &add0,unsigned int &add1,unsigned int &add2,unsigned int &add3,unsigned int &add4,unsigned int &add5) {
-    if(resetDevice() &&
-       readUInt_16(PROM_READ+2, add0) &&
-       readUInt_16(PROM_READ+4, add1) &&
-       readUInt_16(PROM_READ+6, add2) &&
-       readUInt_16(PROM_READ+8, add3) &&
-       readUInt_16(PROM_READ+10, add4) &&
-       readUInt_16(PROM_READ+12, add5)
-            ){
-        return (1);
-    }else{return(0);}
-}*/
 
 // convert raw data into unsigned int
 char MS5607::readUInt_16(char address, unsigned int &value){

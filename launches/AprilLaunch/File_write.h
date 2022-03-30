@@ -36,7 +36,7 @@ public:
 
 File_write::File_write(/* args */)
 {   
-    flight_data_file_name = "data.scv";
+    flight_data_file_name = "data.csv";
     log_file_name = "log.txt";
     //add choosing names for files
 }

@@ -86,7 +86,7 @@ int main() {
     bmx160_2.wakeUp();
     bmx160_2.setAccelRange(eAccelRange_16G);
     bmx160_2.setAccelODR(eAccelODR_1600Hz);
-    bmx160_2.setGyroRange(eGyroRange_1000DPS);
+    bmx160_2.setGyroRange(eGyroRange_125DPS);
     bmx160_2.setGyroODR(eGyroODR_1600Hz);
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     Serial.println("BMX160_2 Initialized and Configured.");
@@ -118,28 +118,6 @@ int main() {
 
     /////
 
-    MS5607 ms5607_2(RPI_I2C_BUS, 0x77);
-    if (ms5607_2.begin() == false) {
-        cout << "77 init false\n";
-        Serial.println("77 init false");
-        while (1);
-    }
-    ms5607_2.setOSR(256);            //set the oversampling ratio to minimum for device
-
-    if (ms5607_2.readDigitalValue()) {
-        T_val = ms5607_2.getTemperature();
-        P_val = ms5607_2.getPressure();
-        H_val = ms5607_2.getAltitude();    //getAltitude() has calls to getTemp() and getPres() to calculate
-    } else {                                          // and return the Altitude. See MS5607.cpp for more.
-        cout << "Error in reading digital value in sensor! \n";
-        Serial.println("Error in reading digital value in sensor!");
-        while (1);
-    }
-
-    Serial.println("MS5607_2 Initialized and Configured.");
-    cout << "MS5607_2 Initialized and Configured.\n";
-    /////
-
 
     ///////////////////////////////////////////////////////////////////////
     /////////               FLIGHT CODE HERE                ///////////////
@@ -151,7 +129,7 @@ int main() {
     Serial.println("Press button for 3 seconds to enter standy.");
     int pressed = 0;
     while(!pressed) {
-        pressed = press(START_TIME);
+        pressed = press(1);
     }
     pressed = 0;
 
