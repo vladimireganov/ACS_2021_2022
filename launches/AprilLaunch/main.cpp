@@ -70,8 +70,8 @@ int main() {
     bmx160_1.wakeUp();
     bmx160_1.setAccelRange(eAccelRange_16G);
     bmx160_1.setAccelODR(eAccelODR_1600Hz);
-    bmx160_1.setGyroRange(eGyroRange_1000DPS);
-    bmx160_1.setGyroODR(eGyroODR_1600Hz);
+    bmx160_1.setGyroRange(eGyroRange_125DPS);
+    bmx160_1.setGyroODR(eGyroODR_100Hz);
     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
     cout << "BMX160_1 Initialized and Configured.\n";
     Serial.println("BMX160_1 Initialized and Configured.");
@@ -86,8 +86,8 @@ int main() {
     bmx160_2.wakeUp();
     bmx160_2.setAccelRange(eAccelRange_16G);
     bmx160_2.setAccelODR(eAccelODR_1600Hz);
-    bmx160_2.setGyroRange(eGyroRange_1000DPS);
-    bmx160_2.setGyroODR(eGyroODR_1600Hz);
+    bmx160_2.setGyroRange(eGyroRange_125DPS);
+    bmx160_2.setGyroODR(eGyroODR_100Hz);
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     Serial.println("BMX160_2 Initialized and Configured.");
     cout << "BMX160_2 Initialized and Configured.\n";
@@ -211,9 +211,16 @@ int main() {
         cout << "Gyro x: " << flight_data.gyroscope_x << endl;
         cout << "Gyro y: " << flight_data.gyroscope_y << endl;
         cout << "Gyro z: " << flight_data.gyroscope_z << endl;
+        cout << "Roll: " << flight_data.getRoll() << endl;
+        cout << "Pitch: " << flight_data.getPitch() << endl;
+        cout << "Yaw: " << flight_data.getYaw() << endl;
+        cout << "L Acceleration x: " << flight_data.getLinearAccX() << endl;
+        cout << "L Acceleration y: " << flight_data.getLinearAccY() << endl;
+        cout << "L Acceleration z: " << flight_data.getLinearAccZ() << endl;
         cout << "Acceleration x: " << flight_data.acceleration_x << endl;
         cout << "Acceleration y: " << flight_data.acceleration_y << endl;
-        cout << "Acceleration z: " << flight_data.acceleration_z << endl << endl;
+        cout << "Acceleration z: " << flight_data.acceleration_z << endl;
+        cout << "V Acceleration: " << flight_data.vertical_acceleration << endl << endl;
         
     } while(true);
     sleep(2);
