@@ -71,26 +71,11 @@ int main() {
     bmx160_1.setAccelRange(eAccelRange_16G);
     bmx160_1.setAccelODR(eAccelODR_1600Hz);
     bmx160_1.setGyroRange(eGyroRange_125DPS);
-    bmx160_1.setGyroODR(eGyroODR_100Hz);
+    bmx160_1.setGyroODR(eGyroODR_1600Hz);
     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
     cout << "BMX160_1 Initialized and Configured.\n";
     Serial.println("BMX160_1 Initialized and Configured.");
 
-    DFRobot_BMX160 bmx160_2(RPI_I2C_BUS, 0x69);
-
-    if (bmx160_2.begin() == false) { //if begin == false
-        cout << "69 init false\n";
-        Serial.println("69 init false");
-        while (1);
-    }
-    bmx160_2.wakeUp();
-    bmx160_2.setAccelRange(eAccelRange_16G);
-    bmx160_2.setAccelODR(eAccelODR_1600Hz);
-    bmx160_2.setGyroRange(eGyroRange_250DPS);
-    bmx160_2.setGyroODR(eGyroODR_1600Hz);
-    bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
-    Serial.println("BMX160_2 Initialized and Configured.");
-    cout << "BMX160_2 Initialized and Configured.\n";
 
 
     //////////////      MS5607 Initialization       /////////////////
@@ -162,7 +147,7 @@ int main() {
     do {
         // Collect data
         ms5607_1.readDigitalValue();
-        bmx160_2.getAllData(&Omagn,&Ogyro,&Oaccel);
+        bmx160_1.getAllData(&Omagn,&Ogyro,&Oaccel);
 
         // Please do not updates below here
         // This code will be later refactored
