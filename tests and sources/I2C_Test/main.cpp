@@ -30,7 +30,7 @@ int main() {
 
         return 0;
     }
-#define CALIBRATE_Altitude
+//#define CALIBRATE_Altitude
 
 /*Create a bmp388 object to communicate with IIC.*/
     DFRobot_BMP388 bmp388(RPI_I2C_BUS);
