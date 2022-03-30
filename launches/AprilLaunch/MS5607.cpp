@@ -58,7 +58,7 @@ char MS5607::readCalibration(){
     readUInt_16(PROM_READ | 0x04, C2) &&
     readUInt_16(PROM_READ | 0x08, C3) &&
     readUInt_16(PROM_READ | 0x0A, C4) &&
-    readUInt_16(PROM_READ | 0x0C C5) &&
+    readUInt_16(PROM_READ | 0x0C, C5) &&
     readUInt_16(PROM_READ | 0x0E, C6)
   ){
     return (1);

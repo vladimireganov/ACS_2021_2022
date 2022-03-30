@@ -9,8 +9,8 @@
 #include <math.h>
 #include <chrono>
 
-#include "imu_utility/imumaths.h"
 #include "QuaternionFilter.h"
+#include "flight_math.h"
 
 #define PI 3.14159265
 #define SEA_LEVEL_PA 101325.0
@@ -46,11 +46,9 @@ private:
     void calculate_relative_altitude(float* altitude, float* ground_altitude, float* relative_altitude);
     void calculate_vertical_velocity(float* altitude, float* prev_altitude, double* elapsed_time, float * v_vel);
     void calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel);
-    void calculate_vertical_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * vertical_acceleration);
+    void calculate_vertical_acceleration();
 
     void update_rpy(float qw, float qx, float qy, float qz);
-    imu::Matrix<3> Data::transformation_matrix(float qw, float qx, float qy, float qz);
-    double Data::vertical_acceleration_from_lin(imu::Vector<3> linear_acceleration, imu::Matrix<3> transformation_matrix);
 public:
     int iterator = 0; // number of processed iteration
 
@@ -168,7 +166,7 @@ void Data::process_data() {
     this->calculate_relative_altitude(&altitude, &ground_altitude, &relative_altitude);
     this->calculate_vertical_velocity(&relative_altitude, &previous_relative_altitude, &elapsed_time, &vertical_velocity);
     this->calculate_net_acceleration(&acceleration_x, &acceleration_y, &acceleration_z, &net_acceleration);
-    this->calculate_vertical_acceleration(&acceleration_x, &acceleration_y, &acceleration_z, &vertical_acceleration);
+    this->calculate_vertical_acceleration();
     /* ------------------------------ */
 
     // Update previous values.
@@ -261,46 +259,3 @@ void Data::update_rpy(float qw, float qx, float qy, float qz) {
     lin_acc[2] = acceleration_z - a33;
 }
 
-
-imu::Matrix<3> Data::transformation_matrix(float qw, float qx, float qy, float qz)
-{
-    float a = qw;
-    float b = qx;
-    float c = qy;
-    float d = qz;
-
-    imu::Vector<3> row1 =
-        imu::Vector<3>(a * a + b * b - c * c - d * d, 2 * b * c - 2 * a * d,
-                    2 * b * d + 2 * a * c);
-    imu::Vector<3> row2 =
-        imu::Vector<3>(2 * b * c + 2 * a * d, a * a - b * b + c * c - d * d,
-                    2 * c * d - 2 * a * b);
-    imu::Vector<3> row3 =
-        imu::Vector<3>(2 * b * d - 2 * a * c, 2 * c * d + 2 * a * b,
-                    a * a - b * b - c * c + d * d);
-
-    imu::Matrix<3> trans_mat;
-    trans_mat.vector_to_row(row1, 0);
-    trans_mat.vector_to_row(row2, 1);
-    trans_mat.vector_to_row(row3, 2);
-    return trans_mat;
-}
-
-/**
- * Function that returns vertical acceleration measured with ground frame. 
- * Useful to check if rocket engine burnt out
- * @param linear_acceleration Linear Acceleration from accelerometer
- * @return vertical acceleration
-*/
-double Data::vertical_acceleration_from_lin(imu::Vector<3> linear_acceleration, imu::Matrix<3> transformation_matrix)
-{
-    imu::Matrix<3> trans_mat = transformation_matrix;
-    imu::Vector<3> accel = linear_acceleration;
-    imu::Vector<3> inertial_accel;
-    for (int i = 0; i < 3; i++)
-    {
-        imu::Vector<3> row = trans_mat.row_to_vector(i);
-        inertial_accel[i] = row.dot(accel);
-    }
-    return inertial_accel[2];
-}
