@@ -86,7 +86,7 @@ int main() {
     bmx160_2.wakeUp();
     bmx160_2.setAccelRange(eAccelRange_16G);
     bmx160_2.setAccelODR(eAccelODR_1600Hz);
-    bmx160_2.setGyroRange(eGyroRange_125DPS);
+    bmx160_2.setGyroRange(eGyroRange_250DPS);
     bmx160_2.setGyroODR(eGyroODR_1600Hz);
     bmx160_2.getAllData(&Omagn, &Ogyro, &Oaccel);
     Serial.println("BMX160_2 Initialized and Configured.");
