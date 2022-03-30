@@ -1,0 +1,17 @@
+#ifndef ARDUINO_TIMER
+#define ARDUINO_TIMER
+#include <chrono>
+
+auto start_chrono_time = std::chrono::high_resolution_clock::now();
+
+long long millis() {
+    auto current_chrono_time = std::chrono::high_resolution_clock::now();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(current_chrono_time - start_chrono_time).count();
+}
+
+long long micros() {
+    auto current_chrono_time = std::chrono::high_resolution_clock::now();
+    return std::chrono::duration_cast<std::chrono::microseconds>(current_chrono_time - start_chrono_time).count();
+}
+
+#endif
