@@ -38,29 +38,29 @@ int main() {
     float seaLevel;
 
 
-        bmp388.set_iic_addr(0x76);
-        /* Initialize bmp388*/
-        while(bmp388.begin()){
-            cout << "initialization error \n";
-            sleep(1);
-        }
-        /*You can use an accurate altitude to calibrate sea level air pressure.
-         *And then use this calibrated sea level pressure as a reference to obtain the calibrated altitude.
-         *In this case,525.0m is chendu accurate altitude.
-         */
-        usleep(100000);
-        seaLevel = bmp388.readSeaLevel(525.0);
-        cout << "seaLevel : ";
-        cout << seaLevel;
-        cout << " Pa \n";
+    bmp388.set_iic_addr(0x76);
+    /* Initialize bmp388*/
+    while (bmp388.begin()) {
+        cout << "initialization error \n";
+        sleep(1);
     }
+    /*You can use an accurate altitude to calibrate sea level air pressure.
+     *And then use this calibrated sea level pressure as a reference to obtain the calibrated altitude.
+     *In this case,525.0m is chendu accurate altitude.
+     */
+    usleep(100000);
+    seaLevel = bmp388.readSeaLevel(525.0);
+    cout << "seaLevel : ";
+    cout << seaLevel;
+    cout << " Pa \n";
+
 
 #ifdef CALIBRATE_Altitude
     /* Read the calibrated altitude */
-  float altitude = bmp388.readCalibratedAltitude(seaLevel);
-  cout << "calibrate Altitude : ";
-  cout << altitude;
-  cout << " m \n";
+    float altitude = bmp388.readCalibratedAltitude(seaLevel);
+    cout << "calibrate Altitude : ";
+    cout << altitude;
+    cout << " m \n";
 #else
     /* Read the altitude */
     float altitude = bmp388.readAltitude();
@@ -69,14 +69,4 @@ int main() {
     cout << " m \n";
 #endif
 
-
-
-
-
-
-
-
-
-
-
-        }
+}
