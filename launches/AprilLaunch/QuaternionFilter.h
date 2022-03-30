@@ -1,6 +1,8 @@
 #pragma once
 #ifndef QUATERNIONFILTER_H
 #define QUATERNIONFILTER_H
+#include <math.h>
+#include "ArduinoTimer.h"
 
 enum class QuatFilterSel {
     NONE,
@@ -10,6 +12,7 @@ enum class QuatFilterSel {
 
 class QuaternionFilter {
     // for madgwick
+    const float PI = 3.14159265;
     float GyroMeasError = PI * (40.0f / 180.0f);     // gyroscope measurement error in rads/s (start at 40 deg/s)
     float GyroMeasDrift = PI * (0.0f / 180.0f);      // gyroscope measurement drift in rad/s/s (start at 0.0 deg/s/s)
     float beta = sqrt(3.0f / 4.0f) * GyroMeasError;  // compute beta
