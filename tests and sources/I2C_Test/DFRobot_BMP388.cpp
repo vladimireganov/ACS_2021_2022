@@ -11,6 +11,7 @@
  * @version  V1.0
  * @date  2018-5-29
  */
+#include <math.h>
 #include <cstdlib>
 #include <stdio.h>
 #include <string.h>
@@ -46,6 +47,7 @@ int8_t user_i2c_write(int i2c_bus, uint8_t dev_id, uint8_t reg_addr,uint8_t *dat
             reg_addr++;
         }
     }
+    return 0;
 }
 
 
@@ -78,9 +80,7 @@ int8_t user_i2c_read(int i2c_bus, uint8_t dev_id, uint8_t reg_addr,uint8_t *data
 DFRobot_BMP388::DFRobot_BMP388(int RPI_FILE){
   dev.i2c_bus = RPI_FILE;
   dev.intf = BMP3_I2C_INTF;
-  dev.read = user_i2c_read;
-  dev.write = user_i2c_write;
-  dev.delay_ms = user_delay_ms;
+
 
 }
 
@@ -168,7 +168,7 @@ int8_t DFRobot_BMP388::begin()
 int8_t DFRobot_BMP388::bmp3_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
 {
 
-  dev.read(dev.i2c_bus, dev.dev_id, reg_addr, reg_data, len);
+  user_i2c_read(dev.i2c_bus, dev.dev_id, reg_addr, reg_data, len);
   return 0;
 }
 
@@ -186,7 +186,7 @@ int8_t DFRobot_BMP388::bmp3_set_regs(uint8_t *reg_addr, const uint8_t *reg_data,
   if ((reg_addr != NULL) && (reg_data != NULL) && (len != 0)) {
     temp_buff[0] = reg_data[0];
 
-    rslt = dev.write(dev.i2c_bus, dev.dev_id, reg_addr[0], temp_buff, len);
+    rslt = user_i2c_write(dev.i2c_bus, dev.dev_id, reg_addr[0], temp_buff, len);
   }
   return rslt;
 }
@@ -229,7 +229,7 @@ int8_t DFRobot_BMP388::reset()
 
     if (rslt == BMP3_OK) {
       /* Wait for 2 ms */
-      dev.delay_ms(2);
+        user_delay_ms(2);
       /* Read for command error status */
       rslt = bmp3_get_regs(BMP3_ERR_REG_ADDR, &cmd_err_status, 1);
       /* check for command error status */

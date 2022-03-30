@@ -676,9 +676,6 @@ struct bmp3_dev {
   enum bmp3_intf intf;
   uint8_t dummy_byte;
   uint8_t dev_en;
-  bmp3_com_fptr_t read;
-  bmp3_com_fptr_t write;
-  bmp3_delay_fptr_t delay_ms;
   struct bmp3_calib_data calib_data;
   struct bmp3_settings settings;
   struct bmp3_status status;
