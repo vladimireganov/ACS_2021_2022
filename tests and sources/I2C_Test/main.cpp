@@ -68,7 +68,7 @@ int main() {
     cout << altitude;
     cout << " m \n";
 
-    int p = readPressure();
+    float p = bmp388.readPressure();
 
     cout << p;
 #endif
