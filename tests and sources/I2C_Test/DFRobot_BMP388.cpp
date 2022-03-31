@@ -68,7 +68,8 @@ int8_t user_i2c_read(int i2c_bus, uint8_t dev_id, uint8_t reg_addr,uint8_t *data
 
             fprintf(stderr, "%s(): ioctl error: %s\n", __func__, strerror(errno));
 
-        } else {
+        }
+        else {
             reg_addr++;
         }
 
