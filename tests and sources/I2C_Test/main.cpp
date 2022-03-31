@@ -54,9 +54,6 @@ int main() {
     cout << seaLevel;
     cout << " Pa \n";
 
-    char code = bmp388.bmp3_get_sensor_data();
-
-    cout << "error code: " << code << "\n";
 
 
 

@@ -71,7 +71,7 @@ int8_t user_i2c_read(int i2c_bus, uint8_t dev_id, uint8_t reg_addr,uint8_t *data
         } else {
             reg_addr++;
         }
-        return 0;
+
 
     }
     return 0;
@@ -283,6 +283,7 @@ int8_t DFRobot_BMP388::bmp3_get_sensor_data(uint8_t sensor_comp, struct bmp3_dat
     }
   } else {
     rslt = BMP3_E_NULL_PTR;
+
   }
 
   return rslt;
