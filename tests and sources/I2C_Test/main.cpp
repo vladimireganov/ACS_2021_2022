@@ -70,7 +70,7 @@ int main() {
 
     float p = bmp388.readPressure();
 
-    cout << p;
+    cout << p << "\n";
 #endif
 
 }
