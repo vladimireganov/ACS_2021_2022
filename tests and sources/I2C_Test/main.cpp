@@ -67,6 +67,10 @@ int main() {
     cout << "Altitude : ";
     cout << altitude;
     cout << " m \n";
+
+    int p = readPressure();
+
+    cout << p;
 #endif
 
 }

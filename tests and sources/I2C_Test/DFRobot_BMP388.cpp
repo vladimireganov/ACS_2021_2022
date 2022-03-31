@@ -12,6 +12,7 @@
  * @date  2018-5-29
  */
 #include <math.h>
+#include<iostream>
 #include <cstdlib>
 #include <stdio.h>
 #include <string.h>
