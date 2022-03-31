@@ -54,14 +54,13 @@ int main() {
     cout << seaLevel;
     cout << " Pa \n";
 
+    char code = bmp388.bmp3_get_sensor_data();
 
-#ifdef CALIBRATE_Altitude
-    /* Read the calibrated altitude */
-    float altitude = bmp388.readCalibratedAltitude(seaLevel);
-    cout << "calibrate Altitude : ";
-    cout << altitude;
-    cout << " m \n";
-#else
+    cout << "error code: " << code << "\n";
+
+
+
+
     /* Read the altitude */
     float altitude = bmp388.readAltitude();
     cout << "Altitude : ";
@@ -71,6 +70,6 @@ int main() {
     float p = bmp388.readPressure();
 
     cout << p << "\n";
-#endif
+
 
 }
