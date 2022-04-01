@@ -26,7 +26,7 @@ class Data
 private:
     // Constants
     const float DEG_TO_RAD = 0.01745329f;
-    const float TESLA_TO_GAUSS = 10000.0f;          // 1 Ts == 10,000 Gauss
+    const float TESLA_TO_GAUSS = 10000.0f;          // 1 T == 10,000 Gauss
     const float MS2_TO_MG = 101.972f;
     const float magnetic_declination = -4.50486;    // Auburn, AL, USA, 1st April
     
@@ -101,6 +101,7 @@ public:
     void set_magnetometer_data(float mag_x, float mag_y, float mag_z);
     void process_data();
     void override_altitude_calculation(bool value);
+    double last_updated_time();
 };
 
 Data::Data(/* args */)
@@ -126,9 +127,9 @@ void Data::set_altimeter_data(float pressure, float temperature){
 }
 
 void Data::set_acceleration_data(float accel_x, float accel_y, float accel_z) {
-    this->acceleration_x = accel_x;
-    this->acceleration_y = accel_y;
-    this->acceleration_z = accel_z;
+    this->acceleration_x = accel_x * GRAVITY;
+    this->acceleration_y = accel_y * GRAVITY;
+    this->acceleration_z = accel_z * GRAVITY;
 }
 
 void Data::set_gyroscope_data(float gyro_x, float gyro_y, float gyro_z) {
@@ -180,7 +181,7 @@ void Data::process_data() {
 }
 
 void Data::calculate_altitude() {
-    altitude = 44330 * (1.0 - pow(pressure / SEA_LEVEL_PA), 0.1903));
+    altitude = 44330 * (1.0 - pow(pressure / SEA_LEVEL_PA, 0.1903));
 }
 
 void Data::calculate_ground_altitude() {
@@ -204,8 +205,8 @@ void Data::calculate_net_acceleration(float * acceleration_x, float * accelerati
 
 void Data::calculate_vertical_acceleration() {
     imu::Matrix<3> tm = transformation_matrix(q[0], q[1], q[2], q[3]);
-    imu::Vector<3> linac =  imu::Vector<3>(acceleration_x, acceleration_y, acceleration_z);
-    vertical_acceleration = vertical_acceleration_from_lin(linac, tm);
+    imu::Vector<3> accel =  imu::Vector<3>(acceleration_x, acceleration_y, acceleration_z);
+    vertical_acceleration = vertical_acceleration_from_lin(accel, tm);
 }
 
 void Data::override_altitude_calculation(bool value) {
@@ -213,15 +214,15 @@ void Data::override_altitude_calculation(bool value) {
 }
 
 void Data::calculate_quaternions() {
-    float an = -acceleration_x * MS2_TO_MG;
-    float ae = +acceleration_y * MS2_TO_MG;
-    float ad = +acceleration_z * MS2_TO_MG;
+    float an = -acceleration_x / 1000.0F; // g to mg
+    float ae = +acceleration_y / 1000.0F; // g to mg
+    float ad = +acceleration_z / 1000.0F; // g to mg
     float gn = +gyroscope_x * DEG_TO_RAD;
     float ge = -gyroscope_y * DEG_TO_RAD;
     float gd = -gyroscope_z * DEG_TO_RAD;
-    float mn = +magnetometer_y * TESLA_TO_GAUSS;
-    float me = -magnetometer_x * TESLA_TO_GAUSS;
-    float md = +magnetometer_z * TESLA_TO_GAUSS;
+    float mn = +magnetometer_y * 1e3 * TESLA_TO_GAUSS; // 1e3 from μ to m
+    float me = -magnetometer_x * 1e3 * TESLA_TO_GAUSS; // 1e3 from μ to m
+    float md = +magnetometer_z * 1e3 * TESLA_TO_GAUSS; // 1e3 from μ to m
 
     for (size_t i = 0; i < n_filter_iter; ++i) {
         quat_filter.update(an, ae, ad, gn, ge, gd, mn, me, md, q);
@@ -232,7 +233,7 @@ void Data::calculate_quaternions() {
 void Data::calculate_raw_pitch_yaw(float qw, float qx, float qy, float qz) {
     // Define output variables from updated quaternion---these are Tait-Bryan angles, commonly used in aircraft orientation.
     // In this coordinate system, the positive z-axis is down toward Earth.
-    // Yaw is the angle between Sensor x-axis and Earth magnetic North (or true North if corrected for local declination, looking down on the sensor positive yaw is counterclockwise.
+    // Yaw is the angle between Sensor z-axis and Earth magnetic North (or true North if corrected for local declination, looking down on the sensor positive yaw is counterclockwise.
     // Pitch is angle between sensor x-axis and Earth ground plane, toward the Earth is positive, up toward the sky is negative.
     // Roll is angle between sensor y-axis and Earth ground plane, y-axis up is positive roll.
     // These arise from the definition of the homogeneous rotation matrix constructed from quaternions.
@@ -262,3 +263,6 @@ void Data::calculate_raw_pitch_yaw(float qw, float qx, float qy, float qz) {
     lin_acc[2] = acceleration_z - a33;
 }
 
+double Data::last_updated_time() {
+    return current_time;
+}

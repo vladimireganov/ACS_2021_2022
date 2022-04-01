@@ -225,23 +225,23 @@ void DFRobot_BMX160::setGyroRange(eGyroRange_t bits){
 void DFRobot_BMX160::setAccelRange(eAccelRange_t bits){
     switch (bits){
         case eAccelRange_2G:
-            accelRange = BMX160_ACCEL_MG_LSB_2G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_2G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_2G);
             break;
         case eAccelRange_4G:
-            accelRange = BMX160_ACCEL_MG_LSB_4G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_4G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_4G);
             break;
         case eAccelRange_8G:
-            accelRange = BMX160_ACCEL_MG_LSB_8G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_8G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_8G);
             break;
         case eAccelRange_16G:
-            accelRange = BMX160_ACCEL_MG_LSB_16G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_16G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_16G);
             break;
         default:
-            accelRange = BMX160_ACCEL_MG_LSB_2G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_2G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_2G);
             break;
     }
@@ -258,27 +258,27 @@ void DFRobot_BMX160::getAllData(struct bmx160SensorData *magn, struct bmx160Sens
         y = (int16_t) ((data[3] << 8) | data[2]);
         z = (int16_t) ((data[5] << 8) | data[4]);
         
-        magn->x = (float)x * BMX160_MAGN_UT_LSB;
-        magn->y = (float)y * BMX160_MAGN_UT_LSB;
-        magn->z = (float)z * BMX160_MAGN_UT_LSB;
+        magn->x = static_cast<float>(x) * BMX160_MAGN_UT_LSB;
+        magn->y = static_cast<float>(y) * BMX160_MAGN_UT_LSB;
+        magn->z = static_cast<float>(z) * BMX160_MAGN_UT_LSB;
     }
     if(gyro){
         x = (int16_t) ((data[9] << 8) | data[8]);
         y = (int16_t) ((data[11] << 8) | data[10]);
         z = (int16_t) ((data[13] << 8) | data[12]);
 
-        gyro->x = (float)x * gyroRange;
-        gyro->y = (float)y * gyroRange;
-        gyro->z = (float)z * gyroRange;
+        gyro->x = static_cast<float>(x) * gyroRange;
+        gyro->y = static_cast<float>(y) * gyroRange;
+        gyro->z = static_cast<float>(z) * gyroRange;
     }
     if(accel){
         x = (int16_t) ((data[15] << 8) | data[14]);
         y = (int16_t) ((data[17] << 8) | data[16]);
         z = (int16_t) ((data[19] << 8) | data[18]);
 
-        accel->x = (float)x * accelRange;
-        accel->y = (float)y * accelRange;
-        accel->z = (float)z * accelRange;
+        accel->x = static_cast<float>(x) * accelRange;
+        accel->y = static_cast<float>(y) * accelRange;
+        accel->z = static_cast<float>(z) * accelRange;
     }
 }
 

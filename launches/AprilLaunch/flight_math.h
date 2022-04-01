@@ -43,6 +43,7 @@ static double vertical_acceleration_from_lin(imu::Vector<3> linear_acceleration,
         imu::Vector<3> row = trans_mat.row_to_vector(i);
         inertial_accel[i] = row.dot(accel);
     }
+    
     return inertial_accel[2];
 }
 

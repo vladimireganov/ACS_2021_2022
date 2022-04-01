@@ -5,7 +5,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <time.h>
+
+#include "ArduinoTimer.h"
 #include "File_write.h"
+#include "Flight_States.h"
 #include "DFRobot_BMX160.h"
 #include "MS5607.h"
 #include "PWM.h"
@@ -14,15 +17,76 @@
 
 using namespace std;
 
+/* Globals */
+bool armed = false;
+
+Data flight_data = Data(); // creating class to store data
+File_write file; // data logging
+bmx160SensorData Omagn, Ogyro, Oaccel;
+
+
+void process_flight_state_changes() {
+    // must call do not remove!
+    rocket_flight_state.process_next_state(
+        flight_data.relative_altitude,
+        flight_data.net_acceleration,
+        millis()
+    );
+
+    if (!armed) {
+        // exit if rocket is not armed
+        return;
+    }
+
+    if (!rocket_flight_state.if_state_changed()) {
+        // exit if rocket is flight state did not change
+        return;
+    }
+
+    if (rocket_flight_state.current_state == FlightState::LAUNCHED) {
+        // do some actions when rocket is launched
+        Serial.println("Launched! Awaiting burnout for deployment.");
+        cout << "Launched! Awaiting burnout for deployment.\n";
+    }
+    else if (rocket_flight_state.current_state == FlightState::BURNT_OUT) {
+        // do some actions when motor is burnt out
+        Serial.println("Burnout Detected! Deploying System!");
+        cout << "Burnout Detected! Deploying System!\n";
+        // deploy servo max
+    }
+    else if (rocket_flight_state.current_state == FlightState::LANDING) {
+        // do some actions when rocket reached apogee
+        Serial.println("Rocket is landing.");
+        cout << "Rocket is landing.\n";
+        // put servo back to initial state
+    }
+    else if (rocket_flight_state.current_state == FlightState::LANDED) {
+        // do some actions when rocket is landed
+        Serial.println("System landed.");
+        cout << "System landed.\n";
+        // disable servo
+    }
+}
+
+void test_display_values() {
+    cout << "Time seconds: " << seconds() << endl;
+    cout << "Time millis: " << millis() << endl;
+    cout << "Ground altitude: " << flight_data.ground_altitude << endl;
+    cout << "Altitude: " << flight_data.altitude << endl;
+    cout << "Relative altitude: " << flight_data.relative_altitude << endl;
+    cout << "Net Acceleration: " << flight_data.net_acceleration  << endl;
+    cout << "Current State: " << rocket_flight_state.current_state << endl << endl;
+    cout << endl << endl << endl;
+}
 
 int main() {
     ///////////////     Data Manager        //////////////
     // section for init
-    Data flight_data = Data(); // creating class to store data
+    
     flight_data.override_altitude_calculation(true);
 
     ///////////////     File Creation       /////////////
-    File_write file;
+    
     file.connect_data(flight_data);
     file.create_log_file();
     if(!file.open_data_file()) cout << "File writing is not working.\n";
@@ -60,7 +124,6 @@ int main() {
     //////////////      BMX160 Initialization      /////////////////
 
     DFRobot_BMX160 bmx160_1(RPI_I2C_BUS, 0x68);
-    bmx160SensorData Omagn, Ogyro, Oaccel;
 
     if (bmx160_1.begin() == false) { //if begin == false
         cout << "68 init false\n";
@@ -69,9 +132,9 @@ int main() {
     }
     bmx160_1.wakeUp();
     bmx160_1.setAccelRange(eAccelRange_16G);
-    bmx160_1.setAccelODR(eAccelODR_1600Hz);
-    bmx160_1.setGyroRange(eGyroRange_125DPS);
-    bmx160_1.setGyroODR(eGyroODR_1600Hz);
+    bmx160_1.setAccelODR(eAccelODR_100Hz);
+    bmx160_1.setGyroRange(eGyroRange_250DPS);
+    bmx160_1.setGyroODR(eGyroODR_100Hz);
     bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
     cout << "BMX160_1 Initialized and Configured.\n";
     Serial.println("BMX160_1 Initialized and Configured.");
@@ -119,6 +182,13 @@ int main() {
     pressed = 0;
 
 
+    servoSweep();
+
+    while(!pressed) {
+        pressed = press(1);
+    }
+    pressed = 0;
+
     /////           wait for system arm command         /////
 
     cout << "System in standby. Awaiting command \"Rocket\"\n";
@@ -140,10 +210,6 @@ int main() {
     cout << "Armed! Awaiting launch. \n";
     usleep(500000);
 
-
-    /////           wait until launch is detected                       /////
-    long altDiff = 0;
-
     do {
         // Collect data
         ms5607_1.readDigitalValue();
@@ -164,65 +230,20 @@ int main() {
 
         // Log the data
         if (!file.save_data()) cout << "File writing is not working.\n";
-
-        cout << "Ground altitude: " << flight_data.ground_altitude << endl;
-        cout << "Altitude: " << flight_data.altitude << endl;
-        cout << "Relative altitude: " << flight_data.relative_altitude << endl;
-        cout << "Magnetometer x: " << flight_data.magnetometer_x << endl;
-        cout << "Magnetometer y: " << flight_data.magnetometer_y << endl;
-        cout << "Magnetometer z: " << flight_data.magnetometer_z << endl;
-        cout << "Gyro x: " << flight_data.gyroscope_x << endl;
-        cout << "Gyro y: " << flight_data.gyroscope_y << endl;
-        cout << "Gyro z: " << flight_data.gyroscope_z << endl;
-        cout << "Roll: " << flight_data.getRoll() << endl;
-        cout << "Pitch: " << flight_data.getPitch() << endl;
-        cout << "Yaw: " << flight_data.getYaw() << endl;
-        cout << "L Acceleration x: " << flight_data.getLinearAccX() << endl;
-        cout << "L Acceleration y: " << flight_data.getLinearAccY() << endl;
-        cout << "L Acceleration z: " << flight_data.getLinearAccZ() << endl;
-        cout << "Acceleration x: " << flight_data.acceleration_x << endl;
-        cout << "Acceleration y: " << flight_data.acceleration_y << endl;
-        cout << "Acceleration z: " << flight_data.acceleration_z << endl;
-        cout << "V Acceleration: " << flight_data.vertical_acceleration << endl << endl;
-        
+        process_flight_state_changes();
+        test_display_values();
     } while(true);
-    sleep(2);
+    
 
-    Serial.println("Launched! Awaiting burnout for deployment.");
-    cout << "Launched! Awaiting burnout for deployment.\n";
+    // I will refactor this and make system shut down later.
 
-    /////           wait until burnout is detected                      /////
+    // while (!pressed) {
+    //     pressed = press(END_TIME);
+    // }
+    // pressed = 0;
 
-    do {
-        bmx160_1.getAllData(&Omagn,&Omagn,&Oaccel);
-    } while(!press(1));
-    sleep(2);
-
-    //gauge when acceleration becomes negative again
-    Serial.println("Burnout Detected! Deploying System!");
-    cout << "Burnout Detected! Deploying System!\n";
-
-    while(!press(1));
-    sleep(2);
-
-    //when velocity becomes negative
-    Serial.println("System in free fall.");
-    cout << "System in free fall.\n";
-
-    while(!press(1));
-    sleep(2);
-
-    /////           run until button is pressed after recovery          /////
-
-
-    cout << "System landed. Press and Hold Button for 5 seconds to end program.\n";
-    Serial.println("System landed. Press and Hold Button for 5 seconds to end program.");
-    while (!pressed) {
-        pressed = press(END_TIME);
-    }
-    pressed = 0;
-    cout << "System shutting down.\n";
-    Serial.println("System shutting down.");
+    // cout << "System shutting down.\n";
+    // Serial.println("System shutting down.");
     //////////////////  closing everything   /////////////////////////
 
     file.close_files();

@@ -126,7 +126,7 @@ bool File_write::save_data(){ // prints data into the file
 
     // raw data
     flight_data_file << flight_data->iterator << ",";
-    flight_data_file << flight_data->current_time << ",";
+    flight_data_file << flight_data->last_updated_time() << ",";
     flight_data_file << flight_data->pressure << ",";
     flight_data_file << flight_data->temperature << ",";
     flight_data_file << flight_data->gyroscope_x << ",";
