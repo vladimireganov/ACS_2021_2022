@@ -1,11 +1,16 @@
-// class for data storage
-// currently stores raw data
-// TO DO
-// add raw data
-// add functions for obtaining processed data
+/**
+ * @file Data.h
+ * @author Kazybek Mizam (kzm0099@auburn.edu)
+ * @brief Processing raw data to useful derived data.
+ * Quaternion & Raw Pitch Yaw (RPY) estimation taken from https://github.com/hideakitai/MPU9250.
+ * 
+ * @version 0.1
+ * @date 2022-04-01
+ * 
+ * @copyright Copyright (c) Auburn Rocketry Association 2022.
+ * 
+ */
 
-// add includes for sensors
-#include <string.h>
 #include <math.h>
 #include <chrono>
 
@@ -21,40 +26,40 @@ class Data
 private:
     // Constants
     const float DEG_TO_RAD = 0.01745329f;
-    const float TESLA_TO_GAUSS = 10000.0f;
+    const float TESLA_TO_GAUSS = 10000.0f;          // 1 Ts == 10,000 Gauss
     const float MS2_TO_MG = 101.972f;
-    float magnetic_declination = -7.51;  // Japan, 24th June
-
-    /* data */
+    const float magnetic_declination = -4.50486;    // Auburn, AL, USA, 1st April
+    
+    // Previous values
     float previous_relative_altitude;
-    double previous_time;
+
+    /* Timing */
+    double current_time;    // time in seconds since program started.
+    double previous_time;   // time in seconds since previous data processing.
     std::chrono::time_point<std::chrono::high_resolution_clock> start_chrono_time;
 
-    // Use own or external altitude calculation
+    // Use own or external altitude calculation.
     bool override_altitude = false;
-
-    // Something related to quaternions and other complex calculations
-    QuaternionFilter quat_filter;
-    size_t n_filter_iter {1};
+    
+    QuaternionFilter quat_filter;   // Filter that estimates quaternions
+    size_t n_filter_iter {1};       // Number of filtering
 
     float q[4] = {1.0f, 0.0f, 0.0f, 0.0f};  // vector to hold quaternion
-    float rpy[3] {0.f, 0.f, 0.f};
-    float lin_acc[3] {0.f, 0.f, 0.f};  // linear acceleration (acceleration with gravity component subtracted)
+    float rpy[3] {0.f, 0.f, 0.f};           // Raw Pitch Yaw in degrees.
+    float lin_acc[3] {0.f, 0.f, 0.f};       // linear acceleration (acceleration with gravity component subtracted)
     
 
     void calculate_quaternions();
-    void calculate_altitude(float* pressure, float* altitude);
-    void calculate_ground_altitude(float* altitude, float* ground_altitude);
+    void calculate_altitude();
+    void calculate_ground_altitude();
     void calculate_relative_altitude(float* altitude, float* ground_altitude, float* relative_altitude);
     void calculate_vertical_velocity(float* altitude, float* prev_altitude, double* elapsed_time, float * v_vel);
     void calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel);
     void calculate_vertical_acceleration();
 
-    void update_rpy(float qw, float qx, float qy, float qz);
+    void calculate_raw_pitch_yaw(float qw, float qx, float qy, float qz);
 public:
-    int iterator = 0; // number of processed iteration
-
-    double current_time; // time in seconds since program started
+    int iterator = 0; // counter of processed data
 
     // altimeter data
     float pressure;
@@ -103,7 +108,7 @@ Data::Data(/* args */)
     // Time starts when Data instance is created.
     this->start_chrono_time = std::chrono::high_resolution_clock::now();
 
-    // Setup initial values of time
+    // Setup initial values of time in seconds.
     this->current_time = 1.0;
     this->previous_time = 0.0;
 
@@ -116,27 +121,23 @@ Data::~Data()
 }
 
 void Data::set_altimeter_data(float pressure, float temperature){
-    // reading all the data
-    this->pressure = pressure * 100.0;// mbar to pa
+    this->pressure = pressure * 100.0;  // mbar to pa
     this->temperature = temperature;
 }
 
 void Data::set_acceleration_data(float accel_x, float accel_y, float accel_z) {
-    // reading all the data
     this->acceleration_x = accel_x;
     this->acceleration_y = accel_y;
     this->acceleration_z = accel_z;
 }
 
 void Data::set_gyroscope_data(float gyro_x, float gyro_y, float gyro_z) {
-    // reading all the data
     this->gyroscope_x = gyro_x;
     this->gyroscope_y = gyro_y;
     this->gyroscope_z = gyro_z;
 }
 
 void Data::set_magnetometer_data(float mag_x, float mag_y, float mag_z) {
-    // reading all the data
     this->magnetometer_x = mag_x;
     this->magnetometer_y = mag_y;
     this->magnetometer_z = mag_z;
@@ -160,11 +161,12 @@ void Data::process_data() {
 
     // Calculate altitude if override_altitude flag is false.
     if (!override_altitude) {
-        this->calculate_altitude(&pressure, &altitude);
+        this->calculate_altitude();
     }
 
     this->calculate_quaternions();
-    this->calculate_ground_altitude(&altitude, &ground_altitude);
+    this->calculate_raw_pitch_yaw(q[0], q[1], q[2], q[3]);
+    this->calculate_ground_altitude();
     this->calculate_relative_altitude(&altitude, &ground_altitude, &relative_altitude);
     this->calculate_vertical_velocity(&relative_altitude, &previous_relative_altitude, &elapsed_time, &vertical_velocity);
     this->calculate_net_acceleration(&acceleration_x, &acceleration_y, &acceleration_z, &net_acceleration);
@@ -177,13 +179,13 @@ void Data::process_data() {
 
 }
 
-void Data::calculate_altitude(float* pressure, float* altitude) {
-    *altitude = 44330 * (1.0 - pow((*pressure / SEA_LEVEL_PA), 0.1903));
+void Data::calculate_altitude() {
+    altitude = 44330 * (1.0 - pow(pressure / SEA_LEVEL_PA), 0.1903));
 }
 
-void Data::calculate_ground_altitude(float* altitude, float* ground_altitude) {
-    if (*ground_altitude > *altitude) {
-        *ground_altitude = *altitude;
+void Data::calculate_ground_altitude() {
+    if (ground_altitude > altitude) {
+        ground_altitude = altitude;
     }
 }
 
@@ -225,10 +227,9 @@ void Data::calculate_quaternions() {
         quat_filter.update(an, ae, ad, gn, ge, gd, mn, me, md, q);
     }
 
-    update_rpy(q[0], q[1], q[2], q[3]);
 }
 
-void Data::update_rpy(float qw, float qx, float qy, float qz) {
+void Data::calculate_raw_pitch_yaw(float qw, float qx, float qy, float qz) {
     // Define output variables from updated quaternion---these are Tait-Bryan angles, commonly used in aircraft orientation.
     // In this coordinate system, the positive z-axis is down toward Earth.
     // Yaw is the angle between Sensor x-axis and Earth magnetic North (or true North if corrected for local declination, looking down on the sensor positive yaw is counterclockwise.
