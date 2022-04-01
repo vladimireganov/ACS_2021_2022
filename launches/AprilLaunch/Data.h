@@ -20,7 +20,9 @@ class Data
 {
 private:
     // Constants
-    const float DEG_TO_RAD = 0.01745329;
+    const float DEG_TO_RAD = 0.01745329f;
+    const float TESLA_TO_GAUSS = 10000.0f;
+    const float MS2_TO_MG = 101.972f;
     float magnetic_declination = -7.51;  // Japan, 24th June
 
     /* data */
@@ -200,7 +202,7 @@ void Data::calculate_net_acceleration(float * acceleration_x, float * accelerati
 
 void Data::calculate_vertical_acceleration() {
     imu::Matrix<3> tm = transformation_matrix(q[0], q[1], q[2], q[3]);
-    imu::Vector<3> linac =  imu::Vector<3>(lin_acc[0], lin_acc[1], lin_acc[2]);
+    imu::Vector<3> linac =  imu::Vector<3>(acceleration_x, acceleration_y, acceleration_z);
     vertical_acceleration = vertical_acceleration_from_lin(linac, tm);
 }
 
@@ -209,15 +211,15 @@ void Data::override_altitude_calculation(bool value) {
 }
 
 void Data::calculate_quaternions() {
-    float an = -acceleration_x;
-    float ae = +acceleration_y;
-    float ad = +acceleration_z;
+    float an = -acceleration_x * MS2_TO_MG;
+    float ae = +acceleration_y * MS2_TO_MG;
+    float ad = +acceleration_z * MS2_TO_MG;
     float gn = +gyroscope_x * DEG_TO_RAD;
     float ge = -gyroscope_y * DEG_TO_RAD;
     float gd = -gyroscope_z * DEG_TO_RAD;
-    float mn = +magnetometer_y;
-    float me = -magnetometer_x;
-    float md = +magnetometer_z;
+    float mn = +magnetometer_y * TESLA_TO_GAUSS;
+    float me = -magnetometer_x * TESLA_TO_GAUSS;
+    float md = +magnetometer_z * TESLA_TO_GAUSS;
 
     for (size_t i = 0; i < n_filter_iter; ++i) {
         quat_filter.update(an, ae, ad, gn, ge, gd, mn, me, md, q);
