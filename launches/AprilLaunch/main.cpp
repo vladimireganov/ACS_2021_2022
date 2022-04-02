@@ -257,6 +257,11 @@ int main() {
     int timeout = millis() + 3000;
     while(millis() < timeout) {}
 
+    // confirming sound
+    buzzOn();
+    sleep(3);
+    buzzOff();
+
     cout << "Data logging started.\n";
     Serial.println("Data logging started.");
 
