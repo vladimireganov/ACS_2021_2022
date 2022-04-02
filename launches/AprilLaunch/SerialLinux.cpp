@@ -318,6 +318,31 @@ std::string SerialLinux::readString() {
 
 }
 
+std::string SerialLinux::asyncReadString() {
+    static std::string cmd = "";
+    char start_byte = ':';
+    char end_byte = ';';
+    char c = 0;
+    
+    while (available()) {
+        unistd::read(fd,&c,1);
+        cmd += (char)c;
+
+        if (c == ':') {
+            cmd = ":";
+        }
+        
+    }
+
+    std::string ret = cmd;
+    if (cmd.front() == ':' && cmd.back() == ';') {
+        cmd = "";
+    }
+    
+    return ret;
+
+}
+
 
 //-------WRITES-------//
 
