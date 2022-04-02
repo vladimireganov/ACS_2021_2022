@@ -155,8 +155,8 @@ void process_io_async() {
 
 int main() {
     // Setup target altitude
-    // 1005.84 m = 3300 ft
-    acs.set_target_altitude(1005.84f);
+    // 990.6 m = 3250 ft
+    acs.set_target_altitude(990.6f);
 
     ///////////////     Data Manager        //////////////
     // section for init
@@ -265,8 +265,9 @@ int main() {
     cout << "Data logging started.\n";
     Serial.println("Data logging started.");
 
-    cout << "v. 1.0.2\n";
-     Serial.println("v. 1.0.2");
+    // version 1.0.3 is actual flight version
+    cout << "v. 1.0.3\n";
+    Serial.println("v. 1.0.3");
 
     do {
 
