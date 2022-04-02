@@ -20,6 +20,7 @@ using namespace std;
 
 /* Globals */
 bool armed = false;
+bool shutdown = false;
 
 Data flight_data = Data(); // creating class to store data
 File_write file; // data logging
@@ -70,36 +71,53 @@ void test_display_values() {
     cout << "Time seconds: " << seconds() << endl;
     cout << "Time millis: " << millis() << endl;
     cout << "Ground altitude: " << flight_data.ground_altitude << endl;
+    cout << "Target altitude: " << acs.get_target_altitude() << endl;
     cout << "Altitude: " << flight_data.altitude << endl;
     cout << "Vertical Velocity: " << flight_data.vertical_velocity << endl;
     cout << "Relative altitude: " << flight_data.relative_altitude << endl;
     cout << "Net Acceleration: " << flight_data.net_acceleration  << endl;
+    cout << "Projected Altitude: " << flight_data.projected_altitude << endl;
+    cout << "Delta target altitude: " << flight_data.projected_altitude-acs.get_target_altitude() << endl;
     cout << "Current State: " << rocket_flight_state.current_state << endl << endl;
     cout << endl << endl << endl;
 }
 
 void control_altitude() {
     static int previous_angle = 0;
-    int angle = acs.estimate_angle(flight_data.projected_altitude);
     
     // Only control altitude when armed
     if (!armed) {
         return;
     }
 
+    // Only run duing burnt out
+    if (rocket_flight_state.current_state != FlightState::BURNT_OUT) {
+        SetAngle(0);
+        return;
+    }
+
+    int angle = acs.estimate_angle(flight_data.projected_altitude);
+
     if (previous_angle != angle) {
+        string msg = "Setting angle " + to_string(angle);
+        file.log_info(msg);
         SetAngle(angle);
     } else {
         previous_angle = angle;
     }
 }
 
-void process_io() {
+void process_io_async() {
     /* Process Radio Requests */
     std::string command = "";
-    command = Serial.readString();
+    command = Serial.asyncReadString();
 
-    if (command.compare("War Eagle") == 0) {
+    if (command.back() != ';') {
+        // make sure packet received
+        return;
+    }
+
+    if (command.compare(":War Eagle;") == 0) {
         // arm or disarm
         armed = !armed;
 
@@ -107,29 +125,38 @@ void process_io() {
             Serial.println("Armed! Awaiting launch.");
             cout << "Armed! Awaiting launch.\n";
             file.log_info("Armed");
+            SetAngle(0);
         } else {
             Serial.println("System is disarmed.");
             cout << "System is disarmed.\n";
             file.log_info("Disarmed");
+            ServoOff();
         }
     }
-    else if(command.compare("Servo Sweep") == 0) {
+    else if(command.compare(":Servo Sweep;") == 0) {
         if (!armed) {
             cout << "Running servo sweep!\n";
             Serial.println("Running servo sweep!");
             file.log_info("Running Servo sweep!");
             servoSweep();
+            Serial.println("Servo sweep ended.");
         } else {
             cout << "Disarm the rocket!\n";
             Serial.println("Disarm the rocket!");
         }
+    }
+    else if(command.compare(":Shutdown;") == 0) {
+        cout << "Shutting down the system\n";
+        Serial.println("Shutting down the system");
+        file.log_info("Shutting down the system");
+        shutdown = true;
     }
 }
 
 int main() {
     // Setup target altitude
     // 1005.84 m = 3300 ft
-    acs.set_target_altitude(1005.84);
+    acs.set_target_altitude(1005.84f);
 
     ///////////////     Data Manager        //////////////
     // section for init
@@ -198,7 +225,7 @@ int main() {
         Serial.println("76 init false");
         while (1);
     }
-    ms5607_1.setOSR(4096);            //set the oversampling ratio to minimum for device
+    ms5607_1.setOSR(4096);  //set the oversampling ratio to maximum for snoothness in vertical velocity
 
     float P_val, T_val, H_val;
     if (ms5607_1.readDigitalValue()) {
@@ -225,18 +252,16 @@ int main() {
 
 
     ///////         wait for 3 second button press to enable system     //////
-    cout << "Press button for 3 seconds to enter standy.\n";
-    Serial.println("Press button for 3 seconds to enter standy.");
-    int pressed = 0;
-    while(!pressed) {
-        pressed = press(1);
-    }
-    pressed = 0;
+    cout << "Waiting\n";
+    Serial.println("Waiting");
+    int timeout = millis() + 3000;
+    while(millis() < timeout) {}
 
     cout << "Data logging started.\n";
     Serial.println("Data logging started.");
 
     do {
+
         // Collect data
         ms5607_1.readDigitalValue();
         bmx160_1.getAllData(&Omagn,&Ogyro,&Oaccel);
@@ -259,21 +284,17 @@ int main() {
 
         process_flight_state_changes();
         control_altitude();
+        process_io_async();
         test_display_values();
-    } while(true);
+    } while(!shutdown);
     
-
-    // I will refactor this and make system shut down later.
-
-    // while (!pressed) {
-    //     pressed = press(END_TIME);
-    // }
-    // pressed = 0;
-
-    // cout << "System shutting down.\n";
-    // Serial.println("System shutting down.");
     //////////////////  closing everything   /////////////////////////
 
+    buzzOn();
+    sleep(3);
+    buzzOff();
+
+    ServoOff();
     file.close_files();
     Serial.end();
     gpioTerminate();
