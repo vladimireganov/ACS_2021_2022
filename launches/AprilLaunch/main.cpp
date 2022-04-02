@@ -128,7 +128,8 @@ void process_io() {
 
 int main() {
     // Setup target altitude
-    acs.set_target_altitude(914.4);
+    // 1005.84 m = 3300 ft
+    acs.set_target_altitude(1005.84);
 
     ///////////////     Data Manager        //////////////
     // section for init
@@ -197,7 +198,7 @@ int main() {
         Serial.println("76 init false");
         while (1);
     }
-    ms5607_1.setOSR(1024);            //set the oversampling ratio to minimum for device
+    ms5607_1.setOSR(4096);            //set the oversampling ratio to minimum for device
 
     float P_val, T_val, H_val;
     if (ms5607_1.readDigitalValue()) {
@@ -231,6 +232,9 @@ int main() {
         pressed = press(1);
     }
     pressed = 0;
+
+    cout << "Data logging started.\n";
+    Serial.println("Data logging started.");
 
     do {
         // Collect data
