@@ -6,6 +6,7 @@ class AltitudeControlSystem {
     float target_altitude = 914.4f; // in m
 
     public:
+    AltitudeControlSystem(/* args */);
     void set_target_altitude(float altitude);
     int estimate_angle(float projected_altitude);
 };
