@@ -203,7 +203,7 @@ void Data::calculate_vertical_velocity() {
     float delta_alt = relative_altitude - previous_relative_altitude;
     double elapsed_time = current_time - previous_time;
     if (delta_alt != 0 && elapsed_time != 0) {
-        vertical_velocity = (float)(delta_alt / (*elapsed_time));
+        vertical_velocity = (float)(delta_alt / (elapsed_time));
     }
 }
 
