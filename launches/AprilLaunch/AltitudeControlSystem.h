@@ -8,6 +8,7 @@ class AltitudeControlSystem {
     public:
     AltitudeControlSystem(/* args */);
     void set_target_altitude(float altitude);
+    float get_target_altitude();
     int estimate_angle(float projected_altitude);
 };
 
@@ -16,6 +17,10 @@ AltitudeControlSystem::AltitudeControlSystem() {
 
 void AltitudeControlSystem::set_target_altitude(float altitude) {
     target_altitude = altitude;
+}
+
+float AltitudeControlSystem::get_target_altitude() {
+    return target_altitude;
 }
 
 int AltitudeControlSystem::estimate_angle(float projected_altitude) {
