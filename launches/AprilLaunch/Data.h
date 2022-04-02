@@ -276,5 +276,5 @@ double Data::last_updated_time() {
 }
 
 void Data::calculate_projected_altitude() {
-    projected_altitude = vertical_velocity * vertical_velocity - 2 * GRAVITY;
+    projected_altitude = relative_altitude + (vertical_velocity * vertical_velocity) / (2.0 * GRAVITY);
 }
