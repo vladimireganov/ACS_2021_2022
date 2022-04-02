@@ -1,7 +1,10 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <stdlib.h>     /* srand, rand */
 #include "Data.h"
+#include "ArduinoTimer.h"
+
 using namespace std;
 
 // currently it is a template for file work
@@ -34,11 +37,24 @@ public:
     Data* flight_data; // pointer to the data
 };
 
+inline bool exists_test(const std::string& name) {
+    ifstream f(name.c_str());
+    return f.good();
+}
+
 File_write::File_write(/* args */)
 {   
-    flight_data_file_name = "data.csv";
-    log_file_name = "log.txt";
-    //add choosing names for files
+    int random_key = rand() % 10000000 + 1;
+    flight_data_file_name = "data_" + to_string(random_key) + "_.csv";
+
+    // Create unique file each time code starts
+    while (exists_test(flight_data_file_name)) {
+        printf("File %s exists looking for different key...", flight_data_file_name);
+        random_key = rand() % 10000000 + 1;
+        flight_data_file_name = "data_" + to_string(random_key) + "_.csv";
+    }
+    
+    log_file_name = "log_" + to_string(random_key) + "_.txt";
 }
 
 File_write::~File_write()
@@ -105,7 +121,7 @@ void File_write::log_error(string msg){ // logs error to the log
     if(!log_file.is_open()) {
         log_file.open(log_file_name);
     }
-    log_file << "ERROR\t" + msg + "\n";
+    log_file << "ERROR\t" + to_string(millis() / 1000.0F) + "\t" + msg + "\n";
     flight_data_file.flush();
     log_file.close();
 }
@@ -114,7 +130,7 @@ void File_write::log_info(string msg){ // logs error to the log
     if(!log_file.is_open()) {
         log_file.open(log_file_name);
     }
-    log_file << "INFO\t" + msg + "\n";
+    log_file << "INFO\t" + to_string(millis() / 1000.0F) + "\t" + msg + "\n";
     flight_data_file.flush();
 }
 
