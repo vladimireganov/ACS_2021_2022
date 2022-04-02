@@ -30,14 +30,14 @@
 
 #define BURNT_OUT_GUARD_TIMER 200                   // in millis
 #define BURNT_OUT_ALTITUDE_THRESHOLD 50.0           // meter
-#define BURNT_OUT_NET_ACCELERATION_THRESHOLD 10.0   // m/s^2
+#define BURNT_OUT_NET_ACCELERATION_THRESHOLD 11.0   // m/s^2
 
 #define APOGEE_GUARD_TIMER 5000                         // in millis
 #define APOGEE_ALTITUDE_DIFFERENCE_MINIMUM 3.0          // meter
 
 #define LAND_GUARD_TIMER 5000                           // in millis
-#define LAND_MAX_ALTITUDE_DIFFERENCE 1.0                // meter
-#define LAND_MAX_ACCELERATION_VIBRATION 10.0            // m/s^2
+#define LAND_MAX_ALTITUDE_DIFFERENCE 2.0                // meter
+#define LAND_MAX_ACCELERATION_VIBRATION 12.0            // m/s^2
 
 enum FlightState {
     PRE_LAUNCH,
