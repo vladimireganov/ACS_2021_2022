@@ -52,10 +52,11 @@ private:
     void calculate_quaternions();
     void calculate_altitude();
     void calculate_ground_altitude();
-    void calculate_relative_altitude(float* altitude, float* ground_altitude, float* relative_altitude);
-    void calculate_vertical_velocity(float* altitude, float* prev_altitude, double* elapsed_time, float * v_vel);
-    void calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel);
+    void calculate_relative_altitude();
+    void calculate_vertical_velocity();
+    void calculate_net_acceleration();
     void calculate_vertical_acceleration();
+    void calculate_projected_altitude();
 
     void calculate_raw_pitch_yaw(float qw, float qx, float qy, float qz);
 public:
@@ -86,6 +87,9 @@ public:
     // imu derived data
     float vertical_acceleration;
     float net_acceleration;
+
+    // ACS Derived Data
+    float projected_altitude;
 
     Data(/* args */);
     ~Data();
@@ -168,10 +172,11 @@ void Data::process_data() {
     this->calculate_quaternions();
     this->calculate_raw_pitch_yaw(q[0], q[1], q[2], q[3]);
     this->calculate_ground_altitude();
-    this->calculate_relative_altitude(&altitude, &ground_altitude, &relative_altitude);
-    this->calculate_vertical_velocity(&relative_altitude, &previous_relative_altitude, &elapsed_time, &vertical_velocity);
-    this->calculate_net_acceleration(&acceleration_x, &acceleration_y, &acceleration_z, &net_acceleration);
+    this->calculate_relative_altitude();
+    this->calculate_vertical_velocity();
+    this->calculate_net_acceleration();
     this->calculate_vertical_acceleration();
+    this->calculate_projected_altitude();
     /* ------------------------------ */
 
     // Update previous values.
@@ -190,17 +195,20 @@ void Data::calculate_ground_altitude() {
     }
 }
 
-void Data::calculate_relative_altitude(float* altitude, float* ground_altitude, float* relative_altitude) {
-    *relative_altitude = *altitude - *ground_altitude;
+void Data::calculate_relative_altitude() {
+    relative_altitude = altitude - ground_altitude;
 }
 
-void Data::calculate_vertical_velocity(float* altitude, float* prev_altitude, double* elapsed_time, float * v_vel) {
-    float delta_alt = *altitude - *prev_altitude;
-    *v_vel = (float)(delta_alt / (*elapsed_time));
+void Data::calculate_vertical_velocity() {
+    float delta_alt = relative_altitude - previous_relative_altitude;
+    double elapsed_time = current_time - previous_time;
+    if (delta_alt != 0 && elapsed_time != 0) {
+        vertical_velocity = (float)(delta_alt / (*elapsed_time));
+    }
 }
 
-void Data::calculate_net_acceleration(float * acceleration_x, float * acceleration_y, float * acceleration_z, float * net_accel) {
-    *net_accel = sqrt(pow(*acceleration_x,2)+ pow(*acceleration_y, 2) + pow(*acceleration_z, 2));
+void Data::calculate_net_acceleration() {
+    net_acceleration = sqrt(pow(acceleration_x,2)+ pow(acceleration_y, 2) + pow(acceleration_z, 2));
 }
 
 void Data::calculate_vertical_acceleration() {
@@ -265,4 +273,8 @@ void Data::calculate_raw_pitch_yaw(float qw, float qx, float qy, float qz) {
 
 double Data::last_updated_time() {
     return current_time;
+}
+
+void Data::calculate_projected_altitude() {
+    projected_altitude = vertical_velocity * vertical_velocity - 2 * GRAVITY;
 }
