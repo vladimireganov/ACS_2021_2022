@@ -36,6 +36,5 @@ void servoSweep() {
     SetAngle(25); usleep(500000);
     SetAngle(10); usleep(500000);
     SetAngle(0); usleep(500000);
-    ServoOff();
 }
 
