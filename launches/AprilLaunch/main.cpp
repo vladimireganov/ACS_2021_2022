@@ -265,6 +265,9 @@ int main() {
     cout << "Data logging started.\n";
     Serial.println("Data logging started.");
 
+    cout << "v. 1.0.2\n";
+     Serial.println("v. 1.0.2");
+
     do {
 
         // Collect data
