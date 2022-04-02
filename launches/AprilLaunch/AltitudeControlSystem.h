@@ -21,7 +21,7 @@ void AltitudeControlSystem::set_target_altitude(float altitude) {
 int AltitudeControlSystem::estimate_angle(float projected_altitude) {
     float delta_alt = projected_altitude - target_altitude;
 
-    if (delta_alt > 15) {
+    if (delta_alt > 15.0) {
         return 40;
     }
     else if (delta_alt > 10.0 && delta_alt <= 15.0) {
