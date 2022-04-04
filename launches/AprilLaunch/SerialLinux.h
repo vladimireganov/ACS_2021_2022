@@ -108,6 +108,7 @@ public:
     int read();
     size_t readBytes(char buffer[], size_t length);
     std::string readString();
+    std::string asyncReadString();
     void setTimeout(long millis);
     size_t write(uint8_t c);
     size_t write(const char *str);

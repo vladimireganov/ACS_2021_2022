@@ -77,6 +77,7 @@ void DFRobot_BMX160::wakeUp(){
     usleep(100000);
     setMagnConf();
     usleep(100000);
+    /* Set accelerometer to normal mode */
     writeBmxReg(BMX160_COMMAND_REG_ADDR, 0x11);
     usleep(100000);
     /* Set gyro to normal mode */
@@ -224,23 +225,23 @@ void DFRobot_BMX160::setGyroRange(eGyroRange_t bits){
 void DFRobot_BMX160::setAccelRange(eAccelRange_t bits){
     switch (bits){
         case eAccelRange_2G:
-            accelRange = BMX160_ACCEL_MG_LSB_2G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_2G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_2G);
             break;
         case eAccelRange_4G:
-            accelRange = BMX160_ACCEL_MG_LSB_4G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_4G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_4G);
             break;
         case eAccelRange_8G:
-            accelRange = BMX160_ACCEL_MG_LSB_8G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_8G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_8G);
             break;
         case eAccelRange_16G:
-            accelRange = BMX160_ACCEL_MG_LSB_16G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_16G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_16G);
             break;
         default:
-            accelRange = BMX160_ACCEL_MG_LSB_2G * 9.8;
+            accelRange = BMX160_ACCEL_MG_LSB_2G;
             writeBmxReg(BMX160_ACCEL_RANGE_ADDR, BMX160_ACCEL_RANGE_2G);
             break;
     }
@@ -249,31 +250,35 @@ void DFRobot_BMX160::setAccelRange(eAccelRange_t bits){
 void DFRobot_BMX160::getAllData(struct bmx160SensorData *magn, struct bmx160SensorData *gyro, struct bmx160SensorData *accel){
 
     uint8_t data[23] = {0};
+    int16_t x, y, z;
     // put your main code here, to run repeatedly:
     readReg(BMX160_MAG_DATA_ADDR, data, 23);
     if(magn){
-        magn->x = (int16_t) ((data[1] << 8) | data[0]);
-        magn->y = (int16_t) ((data[3] << 8) | data[2]);
-        magn->z = (int16_t) ((data[5] << 8) | data[4]);
-        magn->x *= BMX160_MAGN_UT_LSB;
-        magn->y *= BMX160_MAGN_UT_LSB;
-        magn->z *= BMX160_MAGN_UT_LSB;
+        x = (int16_t) ((data[1] << 8) | data[0]);
+        y = (int16_t) ((data[3] << 8) | data[2]);
+        z = (int16_t) ((data[5] << 8) | data[4]);
+        
+        magn->x = static_cast<float>(x) * BMX160_MAGN_UT_LSB;
+        magn->y = static_cast<float>(y) * BMX160_MAGN_UT_LSB;
+        magn->z = static_cast<float>(z) * BMX160_MAGN_UT_LSB;
     }
     if(gyro){
-        gyro->x = (int16_t) ((data[9] << 8) | data[8]);
-        gyro->y = (int16_t) ((data[11] << 8) | data[10]);
-        gyro->z = (int16_t) ((data[13] << 8) | data[12]);
-        gyro->x *= gyroRange;
-        gyro->y *= gyroRange;
-        gyro->z *= gyroRange;
+        x = (int16_t) ((data[9] << 8) | data[8]);
+        y = (int16_t) ((data[11] << 8) | data[10]);
+        z = (int16_t) ((data[13] << 8) | data[12]);
+
+        gyro->x = static_cast<float>(x) * gyroRange;
+        gyro->y = static_cast<float>(y) * gyroRange;
+        gyro->z = static_cast<float>(z) * gyroRange;
     }
     if(accel){
-        accel->x = (int16_t) ((data[15] << 8) | data[14]);
-        accel->y = (int16_t) ((data[17] << 8) | data[16]);
-        accel->z = (int16_t) ((data[19] << 8) | data[18]);
-        accel->x *= accelRange;
-        accel->y *= accelRange;
-        accel->z *= accelRange;
+        x = (int16_t) ((data[15] << 8) | data[14]);
+        y = (int16_t) ((data[17] << 8) | data[16]);
+        z = (int16_t) ((data[19] << 8) | data[18]);
+
+        accel->x = static_cast<float>(x) * accelRange;
+        accel->y = static_cast<float>(y) * accelRange;
+        accel->z = static_cast<float>(z) * accelRange;
     }
 }
 

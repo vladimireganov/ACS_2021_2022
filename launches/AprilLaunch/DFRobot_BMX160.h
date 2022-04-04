@@ -783,11 +783,11 @@ struct bmx160Dev {
 //struct BMX160_sensor_data {
 struct bmx160SensorData {
   /*! X-axis sensor data */
-  int16_t x;
+  float x;
   /*! Y-axis sensor data */
-  int16_t y;
+  float y;
   /*! Z-axis sensor data */
-  int16_t z;
+  float z;
   /*! sensor time */
   uint32_t sensortime;
 };
@@ -1244,7 +1244,7 @@ class DFRobot_BMX160{
   private:
     int8_t softReset(struct bmx160Dev *dev);
     void   defaultParamSettg(struct bmx160Dev *dev);
-    float accelRange = BMX160_ACCEL_MG_LSB_2G * 10;
+    float accelRange = BMX160_ACCEL_MG_LSB_2G;
     float gyroRange = BMX160_GYRO_SENSITIVITY_250DPS;
     //uint8_t _addr = 0x68;
     char my_addr;
