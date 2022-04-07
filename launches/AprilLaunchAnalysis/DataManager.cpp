@@ -7,7 +7,7 @@
  * @version 0.1
  * @date 2022-04-07
  * 
- * @copyright Copyright (c) AURA Embedded Systems 2022
+ * @copyright Copyright (c) AURA Embedded Systems 2022.
  * 
  */
 
@@ -41,3 +41,71 @@ void DataManager::setMagnetometer(float magX, float magY, float magZ) {
     this->magnetometerZ = magZ;
 }
 
+void DataManager::setOverrideAltitude(bool value) {
+    overrideAltitude = value;
+}
+
+void DataManager::resetGroundAltitude() {
+    groundAltitude = defaultGroundAltitude;
+}
+
+void DataManager::resetMaximumAltitude() {
+    maximumAltitude = defaultMaximumAltitude;
+}
+
+void DataManager::calculateElapsedTime() {
+    elapsedTime = currentTime - previousTime;
+    previousTime = currentTime;
+}
+
+void DataManager::calculateGroundAltitude() {
+    if (groundAltitude > relativeAltitude) {
+        groundAltitude = relativeAltitude;
+    }
+}
+
+void DataManager::calculateMaximumAltitude() {
+    if (maximumAltitude < relativeAltitude) {
+        maximumAltitude = relativeAltitude;
+    }
+}
+
+void DataManager::calculateAltitude() {
+    previousAltitude = altitude;
+
+    if (!overrideAltitude) {
+        altitude = altitude_from_pressure(pressure);
+    }
+
+    altitude = low_pass_filter(previousAltitude, altitude, elapsedTime);
+}
+
+void DataManager::calculateRelativeAltitude() {
+    previousRelativeAltitude = relativeAltitude;
+    relativeAltitude = altitude - groundAltitude;
+}
+
+void DataManager::calculateVerticalVelocity() {
+    previousVerticalVelocity = verticalVelocity;
+    verticalVelocity = vertical_velocity(relativeAltitude, previousRelativeAltitude, elapsedTime);
+    verticalVelocity = low_pass_filter(previousVerticalVelocity, verticalVelocity, elapsedTime);
+}
+
+void DataManager::calculateNetAcceleration() {
+    netAcceleration = net_value(accelerationX, accelerationY, accelerationZ);
+}
+
+void DataManager::calculateProjectedAltitude() {
+    projectedAltitude = simple_projected_altitude(relativeAltitude, verticalVelocity);
+}
+
+void DataManager::process() {
+    this->calculateElapsedTime();
+    this->calculateGroundAltitude();
+    this->calculateMaximumAltitude();
+    this->calculateAltitude();
+    this->calculateRelativeAltitude();
+    this->calculateVerticalVelocity();
+    this->calculateNetAcceleration();
+    this->calculateProjectedAltitude();
+}

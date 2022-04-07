@@ -54,7 +54,9 @@ class DataManager {
     float relativeAltitude;
     float verticalVelocity;
 
+    float previousAltitude;
     float previousRelativeAltitude;
+    float previousVerticalVelocity;
 
     // IMU derived data
     float verticalAcceleration;
@@ -63,8 +65,15 @@ class DataManager {
     // ACS Derived Data
     float projectedAltitude;
 
+
+    void calculateElapsedTime();
     void calculateGroundAltitude();
     void calculateMaximumAltitude();
+    void calculateAltitude();
+    void calculateRelativeAltitude();
+    void calculateVerticalVelocity();
+    void calculateNetAcceleration();
+    void calculateProjectedAltitude();
     
 public:// void calculate_quaternions();
     // void calculate_altitude();
@@ -78,7 +87,7 @@ public:// void calculate_quaternions();
     // void calculate_raw_pitch_yaw(float qw, float qx, float qy, float qz);
     
     // Data Manager Configurations
-    void overrideAltitude(bool value);
+    void setOverrideAltitude(bool value);
     void resetGroundAltitude();
     void resetMaximumAltitude();
 
