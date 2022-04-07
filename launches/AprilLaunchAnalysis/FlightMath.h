@@ -13,8 +13,8 @@
  * @copyright Copyright (c) AURA Embedded Systems 2021
  * 
  */
-#ifndef ROCKET_IMU_H
-#define ROCKET_IMU_H
+#ifndef ROCKET_MATH_H
+#define ROCKET_MATH_H
 #include <math.h>
 #include <stdlib.h>
 
@@ -29,30 +29,30 @@ const double GRAVITY = 9.80665;
  * @return transformation matrix
  * @see RocketMath::vertical_acceleration(imu::Vector<3> linear_acceleration);
 */
-static imu::Matrix<3> transformation_matrix(imu::Quaternion quaternions)
-{
-    imu::Quaternion quat = quaternions;
-    double a = quat.w();
-    double b = quat.x();
-    double c = quat.y();
-    double d = quat.z();
+// static imu::Matrix<3> transformation_matrix(imu::Quaternion quaternions)
+// {
+//     imu::Quaternion quat = quaternions;
+//     double a = quat.w();
+//     double b = quat.x();
+//     double c = quat.y();
+//     double d = quat.z();
 
-    imu::Vector<3> row1 =
-        imu::Vector<3>(a * a + b * b - c * c - d * d, 2 * b * c - 2 * a * d,
-                    2 * b * d + 2 * a * c);
-    imu::Vector<3> row2 =
-        imu::Vector<3>(2 * b * c + 2 * a * d, a * a - b * b + c * c - d * d,
-                    2 * c * d - 2 * a * b);
-    imu::Vector<3> row3 =
-        imu::Vector<3>(2 * b * d - 2 * a * c, 2 * c * d + 2 * a * b,
-                    a * a - b * b - c * c + d * d);
+//     imu::Vector<3> row1 =
+//         imu::Vector<3>(a * a + b * b - c * c - d * d, 2 * b * c - 2 * a * d,
+//                     2 * b * d + 2 * a * c);
+//     imu::Vector<3> row2 =
+//         imu::Vector<3>(2 * b * c + 2 * a * d, a * a - b * b + c * c - d * d,
+//                     2 * c * d - 2 * a * b);
+//     imu::Vector<3> row3 =
+//         imu::Vector<3>(2 * b * d - 2 * a * c, 2 * c * d + 2 * a * b,
+//                     a * a - b * b - c * c + d * d);
 
-    imu::Matrix<3> trans_mat;
-    trans_mat.vector_to_row(row1, 0);
-    trans_mat.vector_to_row(row2, 1);
-    trans_mat.vector_to_row(row3, 2);
-    return trans_mat;
-}
+//     imu::Matrix<3> trans_mat;
+//     trans_mat.vector_to_row(row1, 0);
+//     trans_mat.vector_to_row(row2, 1);
+//     trans_mat.vector_to_row(row3, 2);
+//     return trans_mat;
+// }
 
 /**
  * Function that returns vertical acceleration measured with ground frame. 
@@ -60,31 +60,30 @@ static imu::Matrix<3> transformation_matrix(imu::Quaternion quaternions)
  * @param linear_acceleration Linear Acceleration from accelerometer
  * @return vertical acceleration
 */
-double vertical_acceleration(imu::Vector<3> linear_acceleration, imu::Matrix<3> transformation_matrix)
-{
-    imu::Matrix<3> trans_mat = transformation_matrix;
-    imu::Vector<3> accel = linear_acceleration;
-    imu::Vector<3> inertial_accel;
-    for (int i = 0; i < 3; i++)
-    {
-        imu::Vector<3> row = trans_mat.row_to_vector(i);
-        inertial_accel[i] = row.dot(accel);
-    }
-    return inertial_accel[2];
-}
+// double vertical_acceleration(imu::Vector<3> linear_acceleration, imu::Matrix<3> transformation_matrix)
+// {
+//     imu::Matrix<3> trans_mat = transformation_matrix;
+//     imu::Vector<3> accel = linear_acceleration;
+//     imu::Vector<3> inertial_accel;
+//     for (int i = 0; i < 3; i++)
+//     {
+//         imu::Vector<3> row = trans_mat.row_to_vector(i);
+//         inertial_accel[i] = row.dot(accel);
+//     }
+//     return inertial_accel[2];
+// }
 
 /**
- * Function that returns net value of acceleration at 3-axis. 
+ * Function that returns net value of three values. 
  * Useful to detect any motion
  * 
- * @param acceleration Any kind of acceleration at 3-axis
- * @return net acceleration
+ * @param x first value
+ * @param y second value
+ * @param z third value
+ * @return net value of three vales
 */
-double net_acceleration(imu::Vector<3> acceleration)
+double net_value(float x, float y, float z)
 {
-    double x = acceleration[0];
-    double y = acceleration[1];
-    double z = acceleration[2];
     return sqrt(x*x + y*y + z*z);
 }
 
@@ -94,13 +93,13 @@ double net_acceleration(imu::Vector<3> acceleration)
  * 
  * @param altitude Current altitude read
  * @param prev_altitude Previous altitude read
- * @param elapsed_time_millis Elapsed time in milliseconds between current and previous altitude read
- * @return vertical speed
+ * @param elapsed_time Elapsed time in seconds between current and previous altitude reads
+ * @return vertical_velocity
 */
-double vertical_speed(double altitude, double prev_altitude, unsigned int elapsed_time_millis)
+double vertical_velocity(float altitude, float prev_altitude, double elapsed_time)
 {
-    double delta_alt = (altitude - prev_altitude) * 1000;
-    return (double)(delta_alt / elapsed_time_millis);
+    double delta_alt = altitude - prev_altitude;
+    return (double)(delta_alt / elapsed_time);
 }
 
 /**
@@ -177,9 +176,23 @@ double relative_vertical_acceleration(int relative_vertical_direction, imu::Vect
     return 0.0;
 }
 
-double low_pass_filter(double previous_value, double current_value, unsigned long elapsed_time) {
+double low_pass_filter(double previous_value, double current_value, double elapsed_time) {
     const double RC = 0.3;
     const double alpha = elapsed_time / (RC + elapsed_time);
     return (alpha * current_value) + (1.0 - alpha) * previous_value;
 }
+
+/**
+ * Function that calculates projected altitude from current altitude and velocity. 
+ * Useful for real-time apogee prediction.
+ * 
+ * @param altitude Altitude
+ * @param velocity Vertical velocity
+ * @return projected altitude
+*/
+double simple_projected_altitude(double altitude, double velocity)
+{
+    return altitude + (velocity * velocity) / (2.0 * GRAVITY);
+}
+
 #endif
