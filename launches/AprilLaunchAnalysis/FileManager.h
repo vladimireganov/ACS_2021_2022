@@ -27,11 +27,10 @@
 class FileManager {
     bool correctlyInitialized = true;
 
-    std::string baseDirectory = FILE_MANAGER_BASE_DIRECTORY;
+    const std::string baseDirectory = FILE_MANAGER_BASE_DIRECTORY;
     const std::string settingsFileName = FILE_MANAGER_SETTINGS_FILE_NAME;
     const std::string logFileName = FILE_MANAGER_LOG_FILE_NAME;
     std::ofstream logFile;
-
     std::string uniqueFileID;
 
     bool isCorrectlyInitialized() {
