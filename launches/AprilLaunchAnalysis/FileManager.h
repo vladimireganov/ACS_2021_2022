@@ -2,6 +2,7 @@
  * @file FileManager.h
  * @author Kazybek Mizam (kzm0099@auburn.edu)
  * @brief Extended version of file management.
+ * 
  * @version 0.1
  * @date 2022-04-07
  * 
