@@ -12,7 +12,20 @@ void ServoOff() {
 }
 
 
-void SetAngle(int angle) {	
+void SetAngle(int angle) {
+    /*int cyc = angle*2463+135000;      //calculate duty cycle from given angle
+     * if (cyc > 245835) {     //duty cycle to maximum
+     *      cyc = 245835;
+     * }
+     * else if (cyc < 135000) {    //duty cycle to minimum
+     *      cyc = 135000;
+     * }
+     *
+     * if (cyc == gpioGetPWMdutycycle(PWM_PIN) {    //return if duty cycle currently set
+     *      return;
+     * }
+     * gpioHardwarePWM(PWM_PIN, freq, cyc);         //set duty cycle to pin
+     * */
 	if (angle <= 0) {
 		gpioHardwarePWM(PWM_PIN, freq, 135000);     //sets to 0 degrees
 	}
