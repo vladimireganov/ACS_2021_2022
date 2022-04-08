@@ -120,9 +120,17 @@ public:
      * @return false if not apogee
      */
     bool if_reached_apogee(float current_altitude, float current_time) {
+        // std::cout << "Max altitude " << max_altitude << std::endl;
+        // std::cout << "Current altitude " << current_altitude << std::endl;
+        // std::cout << "Current time " << current_time << std::endl;
+        // std::cout << "Elapsed time " << elapsed_time << std::endl;
+        // std::cout << std::endl << std::endl;
+
         if (max_altitude < current_altitude) {
             max_altitude = current_altitude;
             elapsed_time = current_time;
+            // std::cout << "Max altitude is less than current_altitude" << std::endl;
+            // std::cout << max_altitude << std::endl;
             return false;
         }
         
