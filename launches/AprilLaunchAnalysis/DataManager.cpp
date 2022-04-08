@@ -190,3 +190,8 @@ bool DataManager::init() {
 
     return true;
 }
+
+void DataManager::run() {
+    this->process();
+    this->store();
+}

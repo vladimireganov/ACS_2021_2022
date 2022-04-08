@@ -134,6 +134,7 @@ public:
     void process();
     void store();
     bool init();
+    void run();
 };
 
 #endif;
