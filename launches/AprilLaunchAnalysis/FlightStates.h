@@ -23,21 +23,21 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define LAUNCH_GUARD_TIMER 200                      // in millis
+#define LAUNCH_GUARD_TIMER 0.2f                     // in seconds
 #define LAUNCH_NET_ACCELERATION_THRESHOLD 30.0      // m/s^2
 #define LAUNCH_VERTICAL_VELOCITY_THRESHOLD 5.0      // m/s
 #define LAUNCH_ALTITUDE_THRESHOLD 10.0              // meter
 
-#define BURNT_OUT_GUARD_TIMER 200                   // in millis
+#define BURNT_OUT_GUARD_TIMER 0.2f                  // in seconds
 #define BURNT_OUT_ALTITUDE_THRESHOLD 50.0           // meter
 #define BURNT_OUT_NET_ACCELERATION_THRESHOLD 11.0   // m/s^2
 
-#define APOGEE_GUARD_TIMER 5000                         // in millis
-#define APOGEE_ALTITUDE_DIFFERENCE_MINIMUM 3.0          // meter
+#define APOGEE_GUARD_TIMER 5.0f                     // in seconds
+#define APOGEE_ALTITUDE_DIFFERENCE_MINIMUM 3.0      // meter
 
-#define LAND_GUARD_TIMER 5000                           // in millis
-#define LAND_MAX_ALTITUDE_DIFFERENCE 2.0                // meter
-#define LAND_MAX_ACCELERATION_VIBRATION 12.0            // m/s^2
+#define LAND_GUARD_TIMER 5.0f                       // in seconds
+#define LAND_MAX_ALTITUDE_DIFFERENCE 2.0            // meter
+#define LAND_MAX_ACCELERATION_VIBRATION 12.0        // m/s^2
 
 enum FlightState {
     PRE_LAUNCH,
@@ -48,16 +48,16 @@ enum FlightState {
 };
 
 class RocketFlightStates {
-    long long timer;
+    float elapsed_time;
     float max_altitude;
     float land_altitude;
 
-    public:
+public:
     FlightState current_state = PRE_LAUNCH;
     FlightState previous_state = PRE_LAUNCH;
     
-    void setup_timer(long long current_time) {
-        timer = current_time;
+    void setup_timer(float current_time) {
+        elapsed_time = current_time;
     }
 
     /**
@@ -70,16 +70,16 @@ class RocketFlightStates {
      * @return true if laucnhed
      * @return false if not launched
      */
-    bool if_launched_by_altitude(float current_altitude, float net_acceleration, long long current_time) {
+    bool if_launched_by_altitude(float current_altitude, float net_acceleration, float current_time) {
         // (vertical_acceleration >= 20) && (dh >= 50) // for testing
         if (net_acceleration >= LAUNCH_NET_ACCELERATION_THRESHOLD 
             && (current_altitude >= LAUNCH_ALTITUDE_THRESHOLD)) {
-            if (timer + LAUNCH_GUARD_TIMER < current_time) {
+            if (elapsed_time + LAUNCH_GUARD_TIMER < current_time) {
                 return true;
             }
             return false;
         }
-        timer = current_time;
+        elapsed_time = current_time;
         return false;
     }
 
@@ -94,18 +94,18 @@ class RocketFlightStates {
      * @return false if motor not burnt out
      */
     bool if_burnt_out(float current_altitude, float net_acceleration,
-        long long current_time) {
+        float current_time) {
         // return false if vertical acceleration is less than 0
         // Velocity unit is m/s and accel m/s^2
         // (vertical_velocity <= 100) && (vertical_acceleration <= 0.0)
         if ((net_acceleration <= BURNT_OUT_NET_ACCELERATION_THRESHOLD)
             && (current_altitude >= BURNT_OUT_ALTITUDE_THRESHOLD)){
-            if (timer + BURNT_OUT_GUARD_TIMER < current_time) {
+            if (elapsed_time + BURNT_OUT_GUARD_TIMER < current_time) {
                 return true;
             }
             return false;
         }
-        this->timer = current_time;
+        this->elapsed_time = current_time;
         return false;
     }
 
@@ -119,15 +119,15 @@ class RocketFlightStates {
      * @return true if max altitude is verified for time period
      * @return false if not apogee
      */
-    bool if_reached_apogee(float current_altitude, long long current_time) {
+    bool if_reached_apogee(float current_altitude, float current_time) {
         if (max_altitude < current_altitude) {
             max_altitude = current_altitude;
-            timer = current_time;
+            elapsed_time = current_time;
             return false;
         }
         
         float dh = max_altitude - current_altitude;
-        float dt = current_time - timer;
+        float dt = current_time - elapsed_time;
         // Apogee is same as max altitude
         if (dh >= APOGEE_ALTITUDE_DIFFERENCE_MINIMUM && dt >= APOGEE_GUARD_TIMER) {
             return true;
@@ -147,9 +147,9 @@ class RocketFlightStates {
      * @return false if land not detected
      */
     bool if_landed(float current_altitude, float net_linear_acceleration,
-        long long current_time)  {
+        float current_time)  {
         float dh = current_altitude - land_altitude;
-        float dt = current_time - timer;
+        float dt = current_time - elapsed_time;
         if (fabs(dh) <= LAND_MAX_ALTITUDE_DIFFERENCE
             && net_linear_acceleration <= LAND_MAX_ACCELERATION_VIBRATION) {
             if(dt >= LAND_GUARD_TIMER) {
@@ -158,12 +158,12 @@ class RocketFlightStates {
             return false;
         } else {
             land_altitude = current_altitude;
-            timer = current_time;
+            elapsed_time = current_time;
         }
         return false;
     }
 
-    void process_next_state(float current_altitude, float net_acceleration, long long current_time) {
+    void process_next_state(float current_altitude, float net_acceleration, float current_time) {
         previous_state = current_state;
         if (current_state == PRE_LAUNCH) {
             if (this->if_launched_by_altitude(current_altitude, net_acceleration, current_time)) {
@@ -195,6 +195,4 @@ class RocketFlightStates {
         return false;
     }
 };
-
-RocketFlightStates rocket_flight_state = RocketFlightStates();
 #endif
