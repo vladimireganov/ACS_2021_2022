@@ -13,6 +13,39 @@
 
 #include "DataManager.h"
 
+DataManager::DataManager(std::ofstream *dataFile) {
+    this->dataFile = dataFile;
+}
+
+void DataManager::writeHeaderToDataFile() {
+    // raw data
+    *dataFile << "iterator,";
+    *dataFile << "time,";
+    *dataFile << "pressure,";
+    *dataFile << "temperature,";
+    *dataFile << "gyroscope_x,";
+    *dataFile << "gyroscope_y,";
+    *dataFile << "gyroscope_z,";
+    *dataFile << "acceleration_x,";
+    *dataFile << "acceleration_y,";
+    *dataFile << "acceleration_z,";
+    *dataFile << "magnetometer_x,";
+    *dataFile << "magnetometer_y,";
+    *dataFile << "magnetometer_z,";
+
+    // derived data
+    *dataFile << "altitude,";
+    *dataFile << "relative_altitude,";
+    *dataFile << "vertical_velocity,";
+    *dataFile << "vertical_acceleration,";
+    *dataFile << "net_acceleration,";
+    *dataFile << "projected_altitude,";
+
+    *dataFile << "\n";
+
+    dataFile->flush();
+}
+
 void DataManager::setTime(double newTime) {this->currentTime = newTime;}
 
 void DataManager::setPressure(float pressure) {this->pressure = pressure;}
@@ -86,7 +119,13 @@ void DataManager::calculateRelativeAltitude() {
 }
 
 void DataManager::calculateVerticalVelocity() {
+    // Prevent Zero Divsion Error
+    if (elapsedTime == 0.0f) {
+        return;
+    }
+
     previousVerticalVelocity = verticalVelocity;
+
     verticalVelocity = vertical_velocity(relativeAltitude, previousRelativeAltitude, elapsedTime);
     verticalVelocity = low_pass_filter(previousVerticalVelocity, verticalVelocity, elapsedTime);
 }
@@ -108,4 +147,46 @@ void DataManager::process() {
     this->calculateVerticalVelocity();
     this->calculateNetAcceleration();
     this->calculateProjectedAltitude();
+
+    flightState.process_next_state(relativeAltitude, netAcceleration, currentTime);
+}
+
+void DataManager::store() {
+    // raw data
+    *dataFile << counter << ",";
+    *dataFile << currentTime << ",";
+    *dataFile << pressure << ",";
+    *dataFile << altimeterTemperature << ",";
+    *dataFile << gyroscopeX << ",";
+    *dataFile << gyroscopeY << ",";
+    *dataFile << gyroscopeZ << ",";
+    *dataFile << accelerationX << ",";
+    *dataFile << accelerationY << ",";
+    *dataFile << accelerationZ << ",";
+    *dataFile << magnetometerX << ",";
+    *dataFile << magnetometerY << ",";
+    *dataFile << magnetometerZ << ",";
+    
+
+    // processed data
+    *dataFile << altitude << ",";
+    *dataFile << relativeAltitude << ",";
+    *dataFile << verticalVelocity << ",";
+    *dataFile << verticalAcceleration << ",";
+    *dataFile << netAcceleration << ",";
+    *dataFile << projectedAltitude << ",";
+
+    *dataFile << "\n";
+
+    dataFile->flush();
+}
+
+bool DataManager::init() {
+    if (dataFile == nullptr) {
+        return false;
+    }
+
+    this->writeHeaderToDataFile();
+
+    return true;
 }

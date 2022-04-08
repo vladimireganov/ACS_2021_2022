@@ -13,7 +13,10 @@
 #ifndef DATA_MANAGER_H
 #define DATA_MANAGER_H
 
+#include <fstream>
+
 #include "FlightMath.h"
+#include "FlightStates.h"
 
 class DataManager {
 
@@ -27,44 +30,47 @@ class DataManager {
     size_t counter = 0; // counter of processed data
 
     /* Timing */
-    double currentTime;    // time in seconds since current data processing.
-    double previousTime;   // time in seconds since previous data processing.
-    double elapsedTime;     // time in seconds between previous and current data processing.
+    double currentTime = 0.0f;    // time in seconds since current data processing.
+    double previousTime = 0.0f;   // time in seconds since previous data processing.
+    double elapsedTime = 0.0f;     // time in seconds between previous and current data processing.
     
     // Altimeter data
-    float pressure;
-    float altimeterTemperature;
+    float pressure = 0.0f;
+    float altimeterTemperature = 0.0f;
 
     // IMU data
-    float imuTemperature;
-    float accelerationX;
-    float accelerationY;
-    float accelerationZ;
-    float gyroscopeX;
-    float gyroscopeY;
-    float gyroscopeZ;
-    float magnetometerX;
-    float magnetometerY;
-    float magnetometerZ;
+    float imuTemperature = 0.0f;
+    float accelerationX = 0.0f;
+    float accelerationY = 0.0f;
+    float accelerationZ = 0.0f;
+    float gyroscopeX = 0.0f;
+    float gyroscopeY = 0.0f;
+    float gyroscopeZ = 0.0f;
+    float magnetometerX = 0.0f;
+    float magnetometerY = 0.0f;
+    float magnetometerZ = 0.0f;
 
     // Altimeter derived data
-    float altitude;
-    float groundAltitude;
-    float maximumAltitude;
-    float relativeAltitude;
-    float verticalVelocity;
+    float altitude = 0.0f;
+    float groundAltitude = 0.0f;
+    float maximumAltitude = 0.0f;
+    float relativeAltitude = 0.0f;
+    float verticalVelocity = 0.0f;
 
-    float previousAltitude;
-    float previousRelativeAltitude;
-    float previousVerticalVelocity;
+    float previousAltitude = 0.0f;
+    float previousRelativeAltitude = 0.0f;
+    float previousVerticalVelocity = 0.0f;
 
     // IMU derived data
-    float verticalAcceleration;
-    float netAcceleration;
+    float verticalAcceleration = 0.0f;
+    float netAcceleration = 0.0f;
 
     // ACS Derived Data
-    float projectedAltitude;
+    float projectedAltitude = 0.0f;
 
+    RocketFlightStates flightState = RocketFlightStates();
+
+    std::ofstream *dataFile;
 
     void calculateElapsedTime();
     void calculateGroundAltitude();
@@ -74,17 +80,10 @@ class DataManager {
     void calculateVerticalVelocity();
     void calculateNetAcceleration();
     void calculateProjectedAltitude();
+    void writeHeaderToDataFile();
     
-public:// void calculate_quaternions();
-    // void calculate_altitude();
-    // void calculate_ground_altitude();
-    // void calculate_relative_altitude();
-    // void calculate_vertical_velocity();
-    // void calculate_net_acceleration();
-    // void calculate_vertical_acceleration();
-    // void calculate_projected_altitude();
-
-    // void calculate_raw_pitch_yaw(float qw, float qx, float qy, float qz);
+public:
+    DataManager(std::ofstream *dataFile);
     
     // Data Manager Configurations
     void setOverrideAltitude(bool value);
@@ -129,8 +128,12 @@ public:// void calculate_quaternions();
     float getNetAcceleration() {return netAcceleration;};
     float getProjectedAltitude() {return projectedAltitude;};
 
+    FlightState getCurrentFlightState() {return flightState.current_state;};
+    bool isFlightStateChanged() {return flightState.if_state_changed();};
+
     void process();
     void store();
+    bool init();
 };
 
 #endif;
