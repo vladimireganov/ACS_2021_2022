@@ -9,6 +9,17 @@
 int main() {
     /* Initialization & Setup */
     // Order is very importand do not change
+
+    /////////////////////////////
+    // Hardware Initialization //
+    ////////////////////////////
+
+    /* hardware initialization will go here */
+
+    ///////////////////////////////////
+    // Bussines Logic Initialization //
+    //////////////////////////////////
+
     FileManager fileManager = FileManager();
 
     auto logFile = fileManager.createFile(DATA_FILENAME);
@@ -27,7 +38,7 @@ int main() {
     } while (true); // later will change it...
     
 
-    /* Stop */
+    /* Stop & Cleanup */
     logManager.stop();
     dataManager.stop();
 }
