@@ -11,8 +11,8 @@
  * 3. Apogee - reached highest altitude, fixed after some dt
  * 4. Landed - no altitude change and movement of rocket
  * 
- * @version 0.2
- * @date 2021-03-12
+ * @version 0.3
+ * @date 2022-04-09
  * 
  * @copyright Copyright (c) AURA Embedded Systems 2021
  * 
@@ -23,21 +23,21 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define LAUNCH_GUARD_TIMER 0.2f                     // in seconds
-#define LAUNCH_NET_ACCELERATION_THRESHOLD 30.0      // m/s^2
-#define LAUNCH_VERTICAL_VELOCITY_THRESHOLD 5.0      // m/s
-#define LAUNCH_ALTITUDE_THRESHOLD 10.0              // meter
+#define LAUNCH_GUARD_TIMER 0.2f                      // in seconds
+#define LAUNCH_NET_ACCELERATION_THRESHOLD 30.0f      // m/s^2
+#define LAUNCH_VERTICAL_VELOCITY_THRESHOLD 5.0f      // m/s
+#define LAUNCH_ALTITUDE_THRESHOLD 10.0f              // meter
 
-#define BURNT_OUT_GUARD_TIMER 0.2f                  // in seconds
-#define BURNT_OUT_ALTITUDE_THRESHOLD 50.0           // meter
-#define BURNT_OUT_NET_ACCELERATION_THRESHOLD 11.0   // m/s^2
+#define BURNT_OUT_GUARD_TIMER 0.2f                   // in seconds
+#define BURNT_OUT_ALTITUDE_THRESHOLD 50.0f           // meter
+#define BURNT_OUT_NET_ACCELERATION_THRESHOLD 11.0f   // m/s^2
 
-#define APOGEE_GUARD_TIMER 5.0f                     // in seconds
-#define APOGEE_ALTITUDE_DIFFERENCE_MINIMUM 3.0      // meter
+#define APOGEE_GUARD_TIMER 5.0f                      // in seconds
+#define APOGEE_ALTITUDE_DIFFERENCE_MINIMUM 3.0f      // meter
 
-#define LAND_GUARD_TIMER 5.0f                       // in seconds
-#define LAND_MAX_ALTITUDE_DIFFERENCE 2.0            // meter
-#define LAND_MAX_ACCELERATION_VIBRATION 12.0        // m/s^2
+#define LAND_GUARD_TIMER 5.0f                        // in seconds
+#define LAND_MAX_ALTITUDE_DIFFERENCE 2.0f            // meter
+#define LAND_MAX_ACCELERATION_VIBRATION 12.0f        // m/s^2
 
 enum FlightState {
     PRE_LAUNCH,
