@@ -11,6 +11,7 @@
  * 
  */
 
+#include <iostream>
 #include "DataManager.h"
 
 DataManager::DataManager(std::ofstream *dataFile) {
@@ -181,8 +182,9 @@ void DataManager::store() {
     dataFile->flush();
 }
 
-bool DataManager::init() {
+bool DataManager::start() {
     if (dataFile == nullptr) {
+        std::cout << "[DataManager] Error! Data file was not specified" << std::endl;
         return false;
     }
 
@@ -194,4 +196,8 @@ bool DataManager::init() {
 void DataManager::run() {
     this->process();
     this->store();
+}
+
+void DataManager::stop() {
+    dataFile->close();
 }

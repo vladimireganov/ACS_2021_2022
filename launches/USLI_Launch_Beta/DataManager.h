@@ -133,8 +133,9 @@ public:
 
     void process();
     void store();
-    bool init();
+    bool start();
     void run();
+    void stop();
 };
 
 #endif;
