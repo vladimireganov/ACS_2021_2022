@@ -23,3 +23,20 @@ void LogManager::warning(std::string message) {
 void LogManager::error(std::string message) {
     *logFile << "ERROR";
 }
+
+bool LogManager::start() {
+    if (logFile == nullptr) {
+        std::cout << "[LogManager] Error! Data file was not specified" << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+void LogManager::run() {
+    // design
+}
+
+void LogManager::stop() {
+    // design
+}
