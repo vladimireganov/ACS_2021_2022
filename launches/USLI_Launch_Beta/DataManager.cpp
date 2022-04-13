@@ -11,7 +11,6 @@
  * 
  */
 
-#include <iostream>
 #include "DataManager.h"
 
 DataManager::DataManager(std::ofstream *dataFile) {

@@ -13,8 +13,8 @@
 #ifndef DATA_MANAGER_H
 #define DATA_MANAGER_H
 
+#include <iostream>
 #include <fstream>
-
 #include "FlightMath.h"
 #include "FlightStates.h"
 
@@ -138,4 +138,4 @@ public:
     void stop();
 };
 
-#endif;
+#endif

@@ -1,25 +1,40 @@
 
-# objects = main.o
+TARGET = flight
 
-# main : $(objects)
-# 	g++ -o main $(objects) -lpigpio
-
-# main.o: main.cpp 
-# 	g++ -c main.cpp
-
-#see README for a manual compilation process
 CC = g++
-CFLAGS =
-OBJ = main.o FileManager.o LogManager.o DataManager.o MS5607.o DFRobot_BMX160.o PWM.o SerialLinux.o LED.o
+CFLAGS = -g
 
-main: $(OBJ) main.cpp
-	@echo "Creating the main ..."
-	$(CC) -o $@ $^ $(CFLAGS)
+# OBJ = main.o LogManager.o DataManager.o
+# HW_OBJ = MS5607.o DFRobot_BMX160.o PWM.o SerialLinux.o LED.o
+# HARDWARE_DIR = ./hardware
 
-%.o: %.c %.h
-	@echo "Creating object files ..."
-	$(CC) -c $< -o $@
+OUTDIR = ./bin
+DATADIR = ./data
+SUBDIR = hardware
+DIR_OBJ = ./obj
+
+INCS = $(wildcard *.h $(foreach fd, $(SUBDIR), $(fd)/*.h))
+SRCS = $(wildcard *.cpp $(foreach fd, $(SUBDIR), $(fd)/*.cpp))
+NODIR_SRC = $(notdir $(SRCS))
+OBJS = $(addprefix $(DIR_OBJ)/, $(SRCS:cpp=o)) # obj/xxx.o obj/folder/xxx .o
+INC_DIRS = $(addprefix -I, $(SUBDIR))
+
+.PHONY: clean echoes
+
+$(TARGET): $(OBJS)
+	@echo "Creating the final flight code ..."
+	mkdir -p $(OUTDIR)
+	mkdir -p $(DATADIR)
+	$(CC) -o $(OUTDIR)/$@ $(OBJS) -lpigpio
+
+$(DIR_OBJ)/%.o: %.cpp $(INCS)
+	mkdir -p $(@D)
+	$(CC) -o $@ -c $< $(CFLAGS) $(INC_DIRS)
 
 clean:
-	@echo "Deleting object and binary files ..."
-	rm -rvf *.o main
+	rm -rf $(OUTDIR)/* $(DATADIR)/* $(DIR_OBJ)/*
+
+echoes:
+	@echo "INC files: $(INCS)"  
+	@echo "SRC files: $(SRCS)"
+	@echo "OBJ files: $(OBJS)"

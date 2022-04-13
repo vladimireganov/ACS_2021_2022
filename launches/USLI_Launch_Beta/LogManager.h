@@ -1,5 +1,6 @@
 #ifndef LOG_MANAGER_H
 #define LOG_MANAGER_H
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -24,4 +25,4 @@ public:
     void stop();
 };
 
-#endif;
+#endif
