@@ -22,7 +22,7 @@
 
 #include "ArduinoTimer.h"
 
-#define FILE_MANAGER_BASE_DIRECTORY ""
+#define FILE_MANAGER_BASE_DIRECTORY "./data"
 #define FILE_MANAGER_SETTINGS_FILE_NAME "filemanager_settings.txt"
 #define FILE_MANAGER_LOG_FILE_NAME "filemanager_log.txt"
 
