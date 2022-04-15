@@ -17,9 +17,9 @@ void FileManager::getUniqueFileID() {
     std::string line;
     int integerUniqueFileID;
 
-    settingsFile.open(baseDirectory + "/" + settingsFileName, std::ios::in);
+    settingsFile.open(settingsFileName, std::ios::in);
     if (!settingsFile.is_open()) {
-        std::cout << seconds() << "Error opening FileManager settings file" << std::endl;
+        std::cout << millis() << "\t[FileManager] Error opening settings file" << std::endl;
         correctlyInitialized = false;
         return;
     }
@@ -31,9 +31,9 @@ void FileManager::getUniqueFileID() {
     integerUniqueFileID++;
     settingsFile.close();
 
-    settingsFile.open(baseDirectory + "/" + settingsFileName, std::ios::out);
+    settingsFile.open(settingsFileName, std::ios::out);
     if (!settingsFile.is_open()) {
-        std::cout << seconds() << "Error opening FileManager settings file" << std::endl;
+        std::cout << millis() << "\t[FileManager] Error opening settings file" << std::endl;
         correctlyInitialized = false;
         return;
     }
@@ -44,11 +44,14 @@ void FileManager::getUniqueFileID() {
 
 
 void FileManager::openLogFile() {
-    logFile.open(baseDirectory + "/" + logFileName);
+    logFile.open(logFileName, std::ios::app);
 
     if (!logFile.is_open()) {
         correctlyInitialized = false;
+        return;
     }
+
+    std::cout << millis() << "\t[FileManager] Successfully opened log file\n";
 }
 
 bool FileManager::start() {
@@ -59,12 +62,14 @@ bool FileManager::start() {
 }
 
 std::ofstream * FileManager::createFile(std::string fileName) {
-    std::ofstream * newFile;
-    newFile->open(baseDirectory + "/" + fileName + "_" + uniqueFileID);
+    std::ofstream * newFile = new std::ofstream;
+    std::string newFileNamePath = baseDirectory + "/" + uniqueFileID + "_" + fileName;
+    std::cout << millis() << "\t[FileManager] Creating new file in path: \"" << newFileNamePath << "\"\n";
+    newFile->open(newFileNamePath, std::ios::out);
 
     if (!newFile->is_open()) {
-        logFile << seconds() << "Error opening " << fileName << "_" << uniqueFileID << " file!" << std::endl;
-        std::cout << seconds() << "Error opening " << fileName << "_" << uniqueFileID << " file!" << std::endl;
+        logFile << millis() << "\t[FileManager] Error opening " << newFileNamePath << " file!" << std::endl;
+        std::cout << millis() << "\t[FileManager] Error opening " << newFileNamePath << " file!" << std::endl;
     }
     else {
         auto t = std::time(nullptr);
@@ -73,8 +78,8 @@ std::ofstream * FileManager::createFile(std::string fileName) {
         oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
         std::string dateTimeString = oss.str();
 
-        logFile << seconds() << "Opened " << fileName << "_" << uniqueFileID << " at " << dateTimeString << std::endl;
-        std::cout << seconds() << "Opened " << fileName << "_" << uniqueFileID << " at " << dateTimeString << std::endl;
+        logFile << millis() << "\t[FileManager] Opened " << newFileNamePath << " at " << dateTimeString << std::endl;
+        std::cout << millis() << "\t[FileManager] Opened " << newFileNamePath << " at " << dateTimeString << std::endl;
     }
     
     return newFile;
