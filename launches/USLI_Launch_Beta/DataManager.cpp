@@ -92,8 +92,8 @@ void DataManager::calculateElapsedTime() {
 }
 
 void DataManager::calculateGroundAltitude() {
-    if (groundAltitude > relativeAltitude) {
-        groundAltitude = relativeAltitude;
+    if (groundAltitude > altitude) {
+        groundAltitude = altitude;
     }
 }
 
@@ -149,6 +149,7 @@ void DataManager::process() {
     this->calculateProjectedAltitude();
 
     flightState.process_next_state(relativeAltitude, netAcceleration, currentTime);
+    this->counter++;
 }
 
 void DataManager::store() {
