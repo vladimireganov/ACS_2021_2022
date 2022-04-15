@@ -189,6 +189,8 @@ bool DataManager::start() {
     }
 
     this->writeHeaderToDataFile();
+    this->resetGroundAltitude();
+    this->resetMaximumAltitude();
 
     return true;
 }
