@@ -7,12 +7,18 @@
 #include "hardware/SerialLinux.h"
 #include "hardware/LED.h"
 
+#include "ArduinoTimer.h"
+#include "LogManager.h"
+
 class HardwareManager
 {
 private:
+    int RPI_I2C_BUS;
+    LogManager * logManager;
 public:
+    HardwareManager(LogManager *logManager);
     bool start();
-    bool stop();
+    void stop();
 };
 
 #endif
