@@ -31,7 +31,7 @@ THE SOFTWARE.
 */
 
 
-#define LITTLE_ENDIAN 1
+#define LITTLE_ENDIAN_LOCAL 1
 
 /** Mask definitions */
 #define BMX160_ACCEL_BW_MASK                     0x70
@@ -833,7 +833,7 @@ enum bmx160IntTypes {
 };
 
 struct bmx160IntPinSettg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! To enable either INT1 or INT2 pin as output.
    * 0- output disabled ,1- output enabled */
   uint16_t outputEn :1;
@@ -868,7 +868,7 @@ struct bmx160IntPinSettg {
 };
 
 struct bmx160AccTapIntCfg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! tap threshold */
   uint16_t tapThr :5;
   /*! tap shock */
@@ -898,7 +898,7 @@ struct bmx160AccTapIntCfg {
 };
 
 struct bmx160AccAnyMotIntCfg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! 1 any-motion enable, 0 - any-motion disable */
   uint8_t anymotionEn :1;
   /*! slope interrupt x, 1 - enable, 0 - disable */
@@ -932,7 +932,7 @@ struct bmx160AccAnyMotIntCfg {
 };
 
 struct bmx160AccSigMotIntCfg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! skip time of sig-motion interrupt */
   uint8_t sigMotSkip :2;
   /*! proof time of sig-motion interrupt */
@@ -958,7 +958,7 @@ struct bmx160AccSigMotIntCfg {
 };
 
 struct bmx160AccStepDetectIntCfg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! 1- step detector enable, 0- step detector disable */
   uint16_t stepDetectorEn :1;
   /*! minimum threshold */
@@ -984,7 +984,7 @@ struct bmx160AccStepDetectIntCfg {
 };
 
 struct bmx160AccNoMotionIntCfg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! no motion interrupt x */
   uint16_t noMotionX :1;
   /*! no motion interrupt y */
@@ -1018,7 +1018,7 @@ struct bmx160AccNoMotionIntCfg {
 };
 
 struct bmx160AccOrientIntCfg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! thresholds for switching between the different orientations */
   uint16_t orientMode :2;
   /*! blocking_mode */
@@ -1052,7 +1052,7 @@ struct bmx160AccOrientIntCfg {
 };
 
 struct bmx160AccFlatDetectIntCfg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! flat threshold */
   uint16_t flatTheta :6;
   /*! flat interrupt hysteresis */
@@ -1076,7 +1076,7 @@ struct bmx160AccFlatDetectIntCfg {
 };
 
 struct bmx160AccLowGIntCfg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! low-g interrupt trigger delay */
   uint8_t lowDur;
   /*! low-g interrupt trigger threshold */
@@ -1106,7 +1106,7 @@ struct bmx160AccLowGIntCfg {
 };
 
 struct bmx160AccHighGIntCfg {
-#if LITTLE_ENDIAN == 1
+#if LITTLE_ENDIAN_LOCAL == 1
   /*! High-g interrupt x, 1 - enable, 0 - disable */
   uint8_t high_g_x :1;
   /*! High-g interrupt y, 1 - enable, 0 - disable */
