@@ -7,6 +7,11 @@
 #include <unistd.h>
 #include <time.h>
 
+#include "FileManager.h"
+#include "LogManager.h"
+#include "DataManager.h"
+#include "HardwareManager.h"
+
 int main();
 
 #endif

@@ -1,10 +1,5 @@
 #include "flight.h"
 
-#include "FileManager.h"
-#include "LogManager.h"
-#include "DataManager.h"
-#include "HardwareManager.h"
-
 #define DATA_FILENAME "data.csv"
 #define LOG_FILENAME "log.txt"
 
@@ -23,17 +18,17 @@ int main() {
     //////////////////////////////////
 
     FileManager fileManager = FileManager();
+    if (!fileManager.start()) return 1;
 
-    auto logFile = fileManager.createFile(DATA_FILENAME);
+    auto logFile = fileManager.createFile(LOG_FILENAME);
     LogManager logManager = LogManager(logFile);
 
     auto dataFile = fileManager.createFile(DATA_FILENAME);
     DataManager dataManager = DataManager(dataFile);
 
-    HardwareManager hardwareManager = HardwareManager();
+    HardwareManager hardwareManager = HardwareManager(&logManager);
 
     /* Setup */
-    if (!fileManager.start()) return 1;
     if (!logManager.start()) return 1;
     if (!dataManager.start()) return 1;
     if (!hardwareManager.start()) return 1;
