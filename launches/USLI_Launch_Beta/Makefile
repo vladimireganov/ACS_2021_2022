@@ -2,7 +2,7 @@
 TARGET = flight
 
 CC = g++
-CFLAGS = -g
+CFLAGS =
 
 # OBJ = main.o LogManager.o DataManager.o
 # HW_OBJ = MS5607.o DFRobot_BMX160.o PWM.o SerialLinux.o LED.o
