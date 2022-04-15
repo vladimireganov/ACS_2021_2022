@@ -7,12 +7,6 @@ int main() {
     /* Initialization & Setup */
     // Order is very importand do not change
 
-    /////////////////////////////
-    // Hardware Initialization //
-    ////////////////////////////
-
-    /* hardware initialization will go here */
-
     ///////////////////////////////////
     // Bussines Logic Initialization //
     //////////////////////////////////
@@ -25,8 +19,13 @@ int main() {
 
     auto dataFile = fileManager.createFile(DATA_FILENAME);
     DataManager dataManager = DataManager(dataFile);
+    dataManager.setOverrideAltitude(true); // use altitude value from the sensor
 
-    HardwareManager hardwareManager = HardwareManager(&logManager);
+    /////////////////////////////
+    // Hardware Initialization //
+    ////////////////////////////
+
+    HardwareManager hardwareManager = HardwareManager(&logManager, &dataManager);
 
     /* Setup */
     if (!logManager.start()) return 1;
@@ -35,6 +34,7 @@ int main() {
 
     /* Run */
     do {
+        hardwareManager.run();
         dataManager.run();
     } while (true); // later will change it...
     
