@@ -2,13 +2,12 @@
 
 #include "HardwareManager.h"
 
-HardwareManager::HardwareManager(LogManager *logManager) {
+HardwareManager::HardwareManager(LogManager *logManager, DataManager *dataManager) {
     this->logManager = logManager;
+    this->dataManager = dataManager;
 }
 
 bool HardwareManager::start() {
-    bmx160SensorData Omagn, Ogyro, Oaccel;
-
     ///////////         SERIAL INITIALIZATION       //////////////
 
     Serial.begin(9600, SERIAL_8N1);
@@ -49,9 +48,9 @@ bool HardwareManager::start() {
 
     //////////////      BMX160 Initialization      /////////////////
 
-    DFRobot_BMX160 bmx160_1(RPI_I2C_BUS, 0x68);
+    bmx160_1 = new DFRobot_BMX160(RPI_I2C_BUS, 0x68);
 
-    if (bmx160_1.begin() == false) { //if begin == false
+    if (bmx160_1->begin() == false) { //if begin == false
         std::cout << millis() << "\t[HardwareManager] IMU at 0x68 initialization has failed\n";
         logManager->error("[HardwareManager] IMU at 0x68 initialization has failed");
         Serial.println("68 init false");
@@ -61,12 +60,12 @@ bool HardwareManager::start() {
         logManager->info("[HardwareManager] IMU at 0x68 initialization was successfuly");
     }
 
-    bmx160_1.wakeUp();
-    bmx160_1.setAccelRange(eAccelRange_16G);
-    bmx160_1.setAccelODR(eAccelODR_100Hz);
-    bmx160_1.setGyroRange(eGyroRange_250DPS);
-    bmx160_1.setGyroODR(eGyroODR_100Hz);
-    bmx160_1.getAllData(&Omagn, &Ogyro, &Oaccel);
+    bmx160_1->wakeUp();
+    bmx160_1->setAccelRange(eAccelRange_16G);
+    bmx160_1->setAccelODR(eAccelODR_100Hz);
+    bmx160_1->setGyroRange(eGyroRange_250DPS);
+    bmx160_1->setGyroODR(eGyroODR_100Hz);
+    bmx160_1->getAllData(&Omagn, &Ogyro, &Oaccel);
     std::cout << millis() << "\t[HardwareManager] BMX160_1 Initialized and Configured.\n";
     logManager->info("[HardwareManager] BMX160_1 Initialized and Configured.");
     Serial.println("BMX160_1 Initialized and Configured.");
@@ -74,25 +73,21 @@ bool HardwareManager::start() {
 
 
     //////////////      MS5607 Initialization       /////////////////
-    MS5607 ms5607_1(RPI_I2C_BUS, 0x76);
-    if (ms5607_1.begin() == false) {
+    ms5607_1 = new MS5607(RPI_I2C_BUS, 0x76);
+    if (ms5607_1->begin() == false) {
         std::cout << millis() << "\t[HardwareManager] Altimeter at 0x76 initialization has failed\n";
         logManager->error("[HardwareManager] Altimeter at 0x76 initialization has failed");
         Serial.println("76 init false");
-        while (1);
+        return false;
     }  else {
         std::cout << millis() << "\t[HardwareManager] Altimeter at 0x76 initialization was successful\n";
         logManager->info("[HardwareManager] Altimeter at 0x76 initialization was successful");
     }
 
-    ms5607_1.setOSR(4096);  //set the oversampling ratio to maximum for snoothness in vertical velocity
+    ms5607_1->setOSR(256);  //set the oversampling ratio to maximum for snoothness in vertical velocity
 
-    float P_val, T_val, H_val;
-    if (ms5607_1.readDigitalValue()) {
-        T_val = ms5607_1.getTemperature();
-        P_val = ms5607_1.getPressure();
-        H_val = ms5607_1.getAltitude();    //getAltitude() has calls to getTemp() and getPres() to calculate
-    } else {                                          // and return the Altitude. See MS5607.cpp for more.
+
+    if (!ms5607_1->readDigitalValue()) {
         std::cout << millis() << "\t[HardwareManager] Error in reading values from Altimeter sensor!\n";
         logManager->error("[HardwareManager] Error in reading values from Altimeter sensor!");
         Serial.println("Error in reading values from Altimeter sensor!");
@@ -111,4 +106,33 @@ void HardwareManager::stop() {
     Serial.end();
     gpioTerminate();
     close(RPI_I2C_BUS);
+}
+
+void HardwareManager::run() {
+    //////////////////////////////
+    // Collect altimeter values //
+    //////////////////////////////
+
+    if (ms5607_1->readDigitalValue()) {
+        dataManager->setAltimeterTemperature(ms5607_1->getTemperature());
+        dataManager->setPressure(ms5607_1->getPressure());
+        dataManager->setAltitude(ms5607_1->getAltitude());
+    } else {
+        std::cout << millis() << "\t[HardwareManager] Error in reading values from Altimeter sensor!\n";
+        logManager->error("[HardwareManager] Error in reading values from Altimeter sensor!");
+        Serial.println("Error in reading values from Altimeter sensor!");
+    }
+
+    /////////////////////////
+    // Collect IMU values //
+    ////////////////////////
+    bmx160_1->getAllData(&Omagn, &Ogyro, &Oaccel);
+    dataManager->setMagnetometer(Omagn.x, Omagn.y, Omagn.z);
+    dataManager->setGyroscope(Ogyro.x, Ogyro.y, Ogyro.z);
+    dataManager->setAcceleration(Oaccel.x, Oaccel.y, Oaccel.z);
+
+    /////////////////////////
+    // Set time //
+    ////////////////////////
+    dataManager->setTime(millis() / 1000.0);
 }
