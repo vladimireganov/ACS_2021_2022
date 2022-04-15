@@ -115,7 +115,7 @@ void HardwareManager::run() {
 
     if (ms5607_1->readDigitalValue()) {
         dataManager->setAltimeterTemperature(ms5607_1->getTemperature());
-        dataManager->setPressure(ms5607_1->getPressure());
+        dataManager->setPressure(ms5607_1->getPressure() * 1e3); //mPa to Pa
         dataManager->setAltitude(ms5607_1->getAltitude());
     } else {
         std::cout << millis() << "\t[HardwareManager] Error in reading values from Altimeter sensor!\n";
@@ -134,5 +134,5 @@ void HardwareManager::run() {
     /////////////////////////
     // Set time //
     ////////////////////////
-    dataManager->setTime(millis() / 1000.0);
+    dataManager->setTime(micros() / 1000000.0); // to seconds
 }
