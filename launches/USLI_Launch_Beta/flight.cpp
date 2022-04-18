@@ -19,7 +19,7 @@ int main() {
     LogManager logManager = LogManager(logFile);
 
     auto dataFile = fileManager.createFile(DATA_FILENAME);
-    DataManager dataManager = DataManager(dataFile);
+    DataManager dataManager = DataManager(dataFile, &logManager);
     dataManager.setOverrideAltitude(true); // use altitude value from the sensor
 
     /////////////////////////////
@@ -31,7 +31,7 @@ int main() {
     RadioManager radioManager = RadioManager(&configuration, &logManager);
 
     auto servoLogFile = fileManager.createFile(SERVO_LOG_FILENAME);
-    AltitudeControlSystem altitudeControlSystem = AltitudeControlSystem(&configuration, &dataManager, servoLogFile);
+    AltitudeControlSystem altitudeControlSystem = AltitudeControlSystem(&configuration, servoLogFile, &logManager, &dataManager);
 
     /* Setup */
     if (!logManager.start()) return 1;
