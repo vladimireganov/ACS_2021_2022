@@ -214,4 +214,7 @@ void DataManager::stop() {
 
     std::cout << millis() << "\t[DataManager] Data file is closed" << std::endl;
     logManager->info("\t[DataManager] Data file is closed");
+
+    this->dataFile = NULL;
+    this->logManager = NULL;
 }
