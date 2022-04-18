@@ -5,31 +5,25 @@
 #include <vector>
 #include "hardware/SerialLinux.h"
 #include "LogManager.h"
-
-typedef struct requests
-{
-    bool run_servo_sweep = false;
-    bool send_real_time_data = false;
-    bool arm = false;
-    bool shutdown = false;
-} Requests;
+#include "SharedData.h"
 
 
 class RadioManager
 {
 private:
-    const char START_BYTE = ":";
-    const char END_BYTE = ";";
+    const char START_BYTE = ':';
+    const char END_BYTE = ';';
 
-    std::vector<std::string> decoded_requests;
+    std::vector<std::string> decodedRequests;
 
     std::string buffer = "";
-    Requests *groundRequests;
+    Configuration *configuration;
+    LogManager *logManager;
 
     void collect();
     void handle();
 public:
-    RadioManager(Requests *groundRequests, LogManager *logManager);
+    RadioManager(Configuration *configuration, LogManager *logManager);
 
     bool start();
     void run();
