@@ -103,9 +103,22 @@ bool HardwareManager::start() {
 
 void HardwareManager::stop() {
     ServoOff();
+    std::cout << millis() << "\t[HardwareManager] Servo shutdown command sent\n";
+    logManager->info("[HardwareManager] Servo shutdown command sent");
+
     Serial.end();
+    std::cout << millis() << "\t[HardwareManager] Serial.end command sent\n";
+    logManager->info("[HardwareManager] Serial.end command sent");
+
     gpioTerminate();
+    std::cout << millis() << "\t[HardwareManager] GPIO terminate command sent\n";
+    logManager->info("[HardwareManager] GPIO terminate command sent");
+
     close(RPI_I2C_BUS);
+    std::cout << millis() << "\t[HardwareManager] I2C bus is closed\n";
+    logManager->info("[HardwareManager] I2C bus is closed");
+
+    logManager = NULL;
 }
 
 void HardwareManager::run() {
