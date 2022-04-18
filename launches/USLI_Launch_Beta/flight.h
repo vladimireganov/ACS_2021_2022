@@ -11,6 +11,8 @@
 #include "LogManager.h"
 #include "DataManager.h"
 #include "HardwareManager.h"
+#include "RadioManager.h"
+#include "AltitudeControlSystem.h"
 
 int main();
 
