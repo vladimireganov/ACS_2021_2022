@@ -1,6 +1,6 @@
 #include "LogManager.h"
 
-LogManager::LogManager(std::ostream *logFileIn) {
+LogManager::LogManager(std::ofstream *logFileIn) {
     this->logFile = logFileIn;
 }
 
@@ -44,5 +44,5 @@ void LogManager::run() {
 }
 
 void LogManager::stop() {
-    // design
+    logFile->close();
 }

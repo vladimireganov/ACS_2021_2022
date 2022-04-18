@@ -10,11 +10,11 @@
 class LogManager
 {
 private:
-    std::ostream *logFile;
+    std::ofstream *logFile;
     void body(std::string message);
 
 public:
-    LogManager(std::ostream *logFileIn);
+    LogManager(std::ofstream *logFileIn);
     ~LogManager();
     void info(std::string message);
     void warning(std::string message);
