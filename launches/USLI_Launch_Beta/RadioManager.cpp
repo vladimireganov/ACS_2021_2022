@@ -12,12 +12,12 @@ RadioManager::RadioManager(Configuration *configuration, LogManager *logManager)
 bool RadioManager::start() {
     if (configuration == NULL) {
         std::cout << millis() << "\t[RadioManager] groundRequests was not specified ❌\n";
-        logManager->error("[RadioManager] groundRequests was not specified ❌\n");
+        logManager->error("[RadioManager] groundRequests was not specified ❌");
         return false;
     }
 
     std::cout << millis() << "\t[RadioManager] Successfully started ✔️\n";
-    logManager->info("[RadioManager] Successfully started ✔️\n");
+    logManager->info("[RadioManager] Successfully started ✔️");
     return true;
 }
 
