@@ -11,18 +11,18 @@ bool HardwareManager::start() {
     ///////////         SERIAL INITIALIZATION       //////////////
 
     Serial.begin(9600, SERIAL_8N1);
-    std::cout << millis() << "\t[HardwareManager] Serial has started\n";
-    logManager->info("[HardwareManager] Serial has started");
+    std::cout << millis() << "\t[HardwareManager] Serial has started ✔️\n";
+    logManager->info("[HardwareManager] Serial has started ✔️");
 
     //////////          SERVO, BUZZER/LED INIT AND BMP388 DISABLE  /////////////
 
     if (gpioInitialise() < 0) {
-        std::cout << millis() << "\t[HardwareManager] GPIO inialization Failed\n";
-         logManager->error("[HardwareManager] GPIO inialization Failed");
+        std::cout << millis() << "\t[HardwareManager] GPIO inialization Failed ❌\n";
+         logManager->error("[HardwareManager] GPIO inialization Failed ❌");
         return false;
     } else {
-        std::cout << millis() << "\t[HardwareManager] GPIO inialization Successful\n";
-         logManager->info("[HardwareManager] GPIO inialization Successful");
+        std::cout << millis() << "\t[HardwareManager] GPIO inialization Successful ✔️\n";
+         logManager->info("[HardwareManager] GPIO inialization Successful ✔️");
     }
 
     disBMP();
@@ -37,12 +37,12 @@ bool HardwareManager::start() {
 
     RPI_I2C_BUS = open(filename, O_RDWR); // open bus
     if (RPI_I2C_BUS < 0) {
-        std::cout << millis() << "\t[HardwareManager] Error opening I2C bus\n";
-        logManager->error("[HardwareManager] Error opening I2C bus");
+        std::cout << millis() << "\t[HardwareManager] Error opening I2C bus ❌\n";
+        logManager->error("[HardwareManager] Error opening I2C bus ❌");
        return false;
     } else {
-        std::cout << millis() << "\t[HardwareManager] I2C bus started successfully\n";
-        logManager->info("[HardwareManager] I2C bus started successfully");
+        std::cout << millis() << "\t[HardwareManager] I2C bus started successfully ✔️\n";
+        logManager->info("[HardwareManager] I2C bus started successfully ✔️");
     }
 
 
@@ -51,13 +51,13 @@ bool HardwareManager::start() {
     bmx160_1 = new DFRobot_BMX160(RPI_I2C_BUS, 0x68);
 
     if (bmx160_1->begin() == false) { //if begin == false
-        std::cout << millis() << "\t[HardwareManager] IMU at 0x68 initialization has failed\n";
-        logManager->error("[HardwareManager] IMU at 0x68 initialization has failed");
+        std::cout << millis() << "\t[HardwareManager] IMU at 0x68 initialization has failed ❌\n";
+        logManager->error("[HardwareManager] IMU at 0x68 initialization has failed ❌");
         Serial.println("68 init false");
         return false;
     } else {
-        std::cout << millis() << "\t[HardwareManager] IMU at 0x68 initialization was successful\n";
-        logManager->info("[HardwareManager] IMU at 0x68 initialization was successfuly");
+        std::cout << millis() << "\t[HardwareManager] IMU at 0x68 initialization was successful ✔️\n";
+        logManager->info("[HardwareManager] IMU at 0x68 initialization was successfuly ✔️");
     }
 
     bmx160_1->wakeUp();
@@ -66,8 +66,8 @@ bool HardwareManager::start() {
     bmx160_1->setGyroRange(eGyroRange_250DPS);
     bmx160_1->setGyroODR(eGyroODR_100Hz);
     bmx160_1->getAllData(&Omagn, &Ogyro, &Oaccel);
-    std::cout << millis() << "\t[HardwareManager] BMX160_1 Initialized and Configured.\n";
-    logManager->info("[HardwareManager] BMX160_1 Initialized and Configured.");
+    std::cout << millis() << "\t[HardwareManager] BMX160_1 Initialized and Configured. ✔️\n";
+    logManager->info("[HardwareManager] BMX160_1 Initialized and Configured. ✔️");
     Serial.println("BMX160_1 Initialized and Configured.");
 
 
@@ -75,27 +75,27 @@ bool HardwareManager::start() {
     //////////////      MS5607 Initialization       /////////////////
     ms5607_1 = new MS5607(RPI_I2C_BUS, 0x76);
     if (ms5607_1->begin() == false) {
-        std::cout << millis() << "\t[HardwareManager] Altimeter at 0x76 initialization has failed\n";
-        logManager->error("[HardwareManager] Altimeter at 0x76 initialization has failed");
+        std::cout << millis() << "\t[HardwareManager] Altimeter at 0x76 initialization has failed ❌\n";
+        logManager->error("[HardwareManager] Altimeter at 0x76 initialization has failed ❌");
         Serial.println("76 init false");
         return false;
     }  else {
-        std::cout << millis() << "\t[HardwareManager] Altimeter at 0x76 initialization was successful\n";
-        logManager->info("[HardwareManager] Altimeter at 0x76 initialization was successful");
+        std::cout << millis() << "\t[HardwareManager] Altimeter at 0x76 initialization was successful ✔️\n";
+        logManager->info("[HardwareManager] Altimeter at 0x76 initialization was successful ✔️");
     }
 
     ms5607_1->setOSR(256);  //set the oversampling ratio to maximum for snoothness in vertical velocity
 
 
     if (!ms5607_1->readDigitalValue()) {
-        std::cout << millis() << "\t[HardwareManager] Error in reading values from Altimeter sensor!\n";
-        logManager->error("[HardwareManager] Error in reading values from Altimeter sensor!");
+        std::cout << millis() << "\t[HardwareManager] Error in reading values from Altimeter sensor ❌\n";
+        logManager->error("[HardwareManager] Error in reading values from Altimeter sensor ❌");
         Serial.println("Error in reading values from Altimeter sensor!");
         return false;
     }
 
-    logManager->info("[HardwareManager] MS5607_1 Initialized and Configured.");
-    std::cout << millis() << "\t[HardwareManager] MS5607_1 Initialized and Configured.\n";
+    logManager->info("[HardwareManager] MS5607_1 Initialized and Configured. ✔️");
+    std::cout << millis() << "\t[HardwareManager] MS5607_1 Initialized and Configured. ✔️\n";
     Serial.println("MS5607_1 Initialized and Configured.");
 
     return true;

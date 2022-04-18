@@ -12,6 +12,7 @@
  */
 
 #include "DataManager.h"
+#include "ArduinoTimer.h"
 
 DataManager::DataManager(std::ofstream *dataFile) {
     this->dataFile = dataFile;
@@ -184,7 +185,7 @@ void DataManager::store() {
 
 bool DataManager::start() {
     if (dataFile == nullptr) {
-        std::cout << "[DataManager] Error! Data file was not specified" << std::endl;
+        std::cout << millis() << "\t[DataManager] Error! Data file was not specified ❌" << std::endl;
         return false;
     }
 
@@ -192,6 +193,7 @@ bool DataManager::start() {
     this->resetGroundAltitude();
     this->resetMaximumAltitude();
 
+    std::cout << millis() << "\t[DataManager]  Successfully started ✔️" << std::endl;
     return true;
 }
 

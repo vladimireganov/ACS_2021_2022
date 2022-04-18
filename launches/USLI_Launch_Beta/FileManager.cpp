@@ -19,7 +19,7 @@ void FileManager::getUniqueFileID() {
 
     settingsFile.open(settingsFileName, std::ios::in);
     if (!settingsFile.is_open()) {
-        std::cout << millis() << "\t[FileManager] Error opening settings file" << std::endl;
+        std::cout << millis() << "\t[FileManager] Error opening settings file ❌" << std::endl;
         correctlyInitialized = false;
         return;
     }
@@ -33,7 +33,7 @@ void FileManager::getUniqueFileID() {
 
     settingsFile.open(settingsFileName, std::ios::out);
     if (!settingsFile.is_open()) {
-        std::cout << millis() << "\t[FileManager] Error opening settings file" << std::endl;
+        std::cout << millis() << "\t[FileManager] Error opening settings file ❌" << std::endl;
         correctlyInitialized = false;
         return;
     }
@@ -51,12 +51,16 @@ void FileManager::openLogFile() {
         return;
     }
 
-    std::cout << millis() << "\t[FileManager] Successfully opened log file\n";
+    std::cout << millis() << "\t[FileManager] Successfully opened log file ✔️\n";
 }
 
 bool FileManager::start() {
     this->getUniqueFileID();
     this->openLogFile();
+
+    if (correctlyInitialized) {
+        std::cout << millis() << "\t[FileManager] Successfully started ✔️\n";
+    }
 
     return correctlyInitialized;
 }

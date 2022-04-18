@@ -31,10 +31,11 @@ void LogManager::error(std::string message) {
 
 bool LogManager::start() {
     if (logFile == nullptr) {
-        std::cout << "[LogManager] Error! Data file was not specified" << std::endl;
+        std::cout << millis() << "\t[LogManager] Error! Data file was not specified ❌\n" << std::endl;
         return false;
     }
 
+    std::cout << millis() << "\t[LogManager] Successfully started ✔️\n" << std::endl;
     return true;
 }
 
