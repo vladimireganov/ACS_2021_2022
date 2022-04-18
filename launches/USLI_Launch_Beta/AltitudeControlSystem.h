@@ -25,10 +25,10 @@ private:
 
 public:
     AltitudeControlSystem(Configuration *configuration,
-            std::ofstream *servoLogFile, DataManager *dataManager, LogManager *logManager);
+            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager);
     AltitudeControlSystem(Configuration *configuration,
-            std::ofstream *servoLogFile, DataManager *dataManager,
-            LogManager *logManager, float targetAltitude);
+            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager,
+            float targetAltitude);
 
     float getTargetAltitude() {return targetAltitude;}
     void setTargetAltitude(float targetAltitude);

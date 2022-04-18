@@ -2,7 +2,7 @@
 
 
 AltitudeControlSystem::AltitudeControlSystem(Configuration *configuration,
-            std::ostream *servoLogFile, DataManager *dataManager, LogManager *logManager) {
+            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager) {
     this->configuration = configuration;
     this->servoLogFile = servoLogFile;
     this->logManager = logManager;
@@ -11,7 +11,7 @@ AltitudeControlSystem::AltitudeControlSystem(Configuration *configuration,
 }
 
 AltitudeControlSystem::AltitudeControlSystem(Configuration *configuration,
-    DataManager *dataManager, std::ostream *servoLogFile, float targetAltitude) {
+    std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager, float targetAltitude) {
     this->configuration = configuration;
     this->servoLogFile = servoLogFile;
     this->logManager = logManager;
@@ -21,10 +21,6 @@ AltitudeControlSystem::AltitudeControlSystem(Configuration *configuration,
 
 void AltitudeControlSystem::setTargetAltitude(float targetAltitude) {
     this->targetAltitude = targetAltitude;
-}
-
-void AltitudeControlSystem::setProjectedAltitude(float projectedAltitude) {
-    this->projectedAltitude = projectedAltitude;
 }
 
 int AltitudeControlSystem::estimateAngle(float projectedAltitude) {
@@ -62,13 +58,13 @@ void AltitudeControlSystem::run() {
         return;
     }
 
-    angle = acs.estimate_angle(dataManager->getProjectedAltitude());
+    angle = estimateAngle(dataManager->getProjectedAltitude());
 
     if (previousAngle != angle) {
         SetAngle(angle);
 
-        std::string msg = to_string(millis()) + "\t[AltitudeControlSystem] Setting angle " + to_string(angle) + "\n";
-        servoLogFile << msg;
+        std::string msg = std::to_string(millis()) + "\t[AltitudeControlSystem] Setting angle " + std::to_string(angle) + "\n";
+        *servoLogFile << msg;
         servoLogFile->flush();
     }
 
