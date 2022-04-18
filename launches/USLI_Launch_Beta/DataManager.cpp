@@ -23,6 +23,7 @@ void DataManager::writeHeaderToDataFile() {
     // raw data
     *dataFile << "iterator,";
     *dataFile << "time,";
+    *dataFile << "elapsed_time,";
     *dataFile << "pressure,";
     *dataFile << "temperature,";
     *dataFile << "gyroscope_x,";
@@ -160,6 +161,7 @@ void DataManager::store() {
     // raw data
     *dataFile << counter << ",";
     *dataFile << currentTime << ",";
+    *dataFile << elapsedTime << ",";
     *dataFile << pressure << ",";
     *dataFile << altimeterTemperature << ",";
     *dataFile << gyroscopeX << ",";
@@ -189,6 +191,7 @@ void DataManager::store() {
 bool DataManager::start() {
     if (dataFile == nullptr) {
         std::cout << millis() << "\t[DataManager] Error! Data file was not specified ❌" << std::endl;
+        logManager->info("[DataManager] Error! Data file was not specified ❌");
         return false;
     }
 
@@ -197,6 +200,7 @@ bool DataManager::start() {
     this->resetMaximumAltitude();
 
     std::cout << millis() << "\t[DataManager] Successfully started ✔️" << std::endl;
+    logManager->info("\t[DataManager] Successfully started ✔️");
     return true;
 }
 
@@ -207,4 +211,7 @@ void DataManager::run() {
 
 void DataManager::stop() {
     dataFile->close();
+
+    std::cout << millis() << "\t[DataManager] Data file is closed" << std::endl;
+    logManager->info("\t[DataManager] Data file is closed");
 }
