@@ -14,8 +14,9 @@
 #include "DataManager.h"
 #include "ArduinoTimer.h"
 
-DataManager::DataManager(std::ofstream *dataFile) {
+DataManager::DataManager(std::ofstream *dataFile, LogManager *logManager) {
     this->dataFile = dataFile;
+    this->logManager = logManager;
 }
 
 void DataManager::writeHeaderToDataFile() {
@@ -122,6 +123,8 @@ void DataManager::calculateRelativeAltitude() {
 void DataManager::calculateVerticalVelocity() {
     // Prevent Zero Divsion Error
     if (elapsedTime == 0.0f) {
+        std::cout << millis() << "\t[DataManager] Error! Elapsed time is 0, skipping vertical velocity calculation" << std::endl;
+        logManager->error("[DataManager]Error! Elapsed time is 0, skipping vertical velocity calculation");
         return;
     }
 
@@ -193,7 +196,7 @@ bool DataManager::start() {
     this->resetGroundAltitude();
     this->resetMaximumAltitude();
 
-    std::cout << millis() << "\t[DataManager]  Successfully started ✔️" << std::endl;
+    std::cout << millis() << "\t[DataManager] Successfully started ✔️" << std::endl;
     return true;
 }
 

@@ -17,8 +17,10 @@
 #include <fstream>
 #include "FlightMath.h"
 #include "FlightStates.h"
+#include "LogManager.h"
 
 class DataManager {
+    LogManager *logManager;
 
     // default values
     const float defaultGroundAltitude = 9999.9f;
@@ -83,7 +85,7 @@ class DataManager {
     void writeHeaderToDataFile();
     
 public:
-    DataManager(std::ofstream *dataFile);
+    DataManager(std::ofstream *dataFile, LogManager *logManager);
     
     // Data Manager Configurations
     void setOverrideAltitude(bool value);
