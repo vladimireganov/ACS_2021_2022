@@ -68,3 +68,7 @@ void RadioManager::run() {
     this->collect();
     this->handle();
 }
+
+void RadioManager::stop() {
+    this->logManager = NULL;
+}
