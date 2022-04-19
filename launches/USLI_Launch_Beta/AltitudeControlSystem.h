@@ -21,7 +21,7 @@ private:
     LogManager *logManager;
     DataManager *dataManager;
 
-    double timeout = 0.0;
+    size_t timeout = 0;
     const int servoControlDelay = 150; //ms
 
     int estimateAngle(float projectedAltitude);
