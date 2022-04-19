@@ -40,6 +40,10 @@ int main() {
     if (!radioManager.start()) return 1;
     if (!altitudeControlSystem.start()) return 1;
 
+    std::cout << millis() << "\t[Flight] All systems are nominal." << std::endl;
+    logManager.info("[Flight] All systems are nominal");
+    Serial.println("[Flight] All systems are nominal.");
+
     /* Run */
     do {
         hardwareManager.run();
@@ -48,6 +52,9 @@ int main() {
         altitudeControlSystem.run();
     } while (!configuration.shutdown);
     
+    std::cout << millis() << "\t[Flight] Shutting down system." << std::endl;
+    logManager.info("[Flight] Shutting down system.");
+    Serial.println("[Flight] Shutting down system.");
 
     /* Stop & Cleanup */
     logManager.stop();
