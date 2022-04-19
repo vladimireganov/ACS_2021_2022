@@ -200,7 +200,7 @@ bool DataManager::start() {
     this->resetMaximumAltitude();
 
     std::cout << millis() << "\t[DataManager] Successfully started ✔️" << std::endl;
-    logManager->info("\t[DataManager] Successfully started ✔️");
+    logManager->info("[DataManager] Successfully started ✔️");
     return true;
 }
 
@@ -213,7 +213,7 @@ void DataManager::stop() {
     dataFile->close();
 
     std::cout << millis() << "\t[DataManager] Data file is closed" << std::endl;
-    logManager->info("\t[DataManager] Data file is closed");
+    logManager->info("[DataManager] Data file is closed");
 
     this->dataFile = NULL;
     this->logManager = NULL;
