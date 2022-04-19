@@ -1,5 +1,5 @@
 #include "AltitudeControlSystem.h"
-
+#include "hardware/SerialLinux.h"
 
 AltitudeControlSystem::AltitudeControlSystem(Configuration *configuration,
             std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager) {
@@ -44,31 +44,8 @@ int AltitudeControlSystem::estimateAngle(float projectedAltitude) {
 }
 
 void AltitudeControlSystem::run() {
-    static int previousAngle = 0;
-    int angle = 0;
-    
-    // Only control fins altitude when system is armed
-    if (!configuration->arm) {
-        return;
-    }
-
-    // Only control fins during burnt out state
-    if (dataManager->getCurrentFlightState() != FlightState::BURNT_OUT) {
-        SetAngle(0);
-        return;
-    }
-
-    angle = estimateAngle(dataManager->getProjectedAltitude());
-
-    if (previousAngle != angle) {
-        SetAngle(angle);
-
-        std::string msg = std::to_string(millis()) + "\t[AltitudeControlSystem] Setting angle " + std::to_string(angle) + "\n";
-        *servoLogFile << msg;
-        servoLogFile->flush();
-    }
-
-    previousAngle = angle;
+    this->controlAltitude();
+    this->checkAndHandleServoSweep();
 }
 
 bool AltitudeControlSystem::start() {
@@ -112,4 +89,63 @@ void AltitudeControlSystem::stop() {
     this->servoLogFile = NULL;
     this->logManager = NULL;
     this->dataManager = NULL;
+}
+
+void AltitudeControlSystem::controlAltitude() {
+    static int previousAngle = 0;
+    int angle = 0;
+    
+    // Only control fins altitude when system is armed
+    if (!configuration->arm) {
+        return;
+    }
+
+    // Only control fins during burnt out state
+    if (dataManager->getCurrentFlightState() != FlightState::BURNT_OUT) {
+        SetAngle(0);
+        return;
+    }
+
+    // Servo delayed control
+    if (timeout > millis()) {
+        int timeLeft = timeout - millis();
+        *servoLogFile << "[AltitudeControlSystem] Servo timeout for ";
+        *servoLogFile << timeLeft << "ms\n";
+        return;
+    }
+
+    // reset timeout
+    timeout = millis() + servoControlDelay;
+
+    angle = estimateAngle(dataManager->getProjectedAltitude());
+
+    if (previousAngle != angle) {
+        SetAngle(angle);
+
+        std::string msg = std::to_string(millis()) + "\t[AltitudeControlSystem] Setting angle " + std::to_string(angle) + "\n";
+        *servoLogFile << msg;
+        servoLogFile->flush();
+    }
+
+    previousAngle = angle;
+}
+
+void AltitudeControlSystem::checkAndHandleServoSweep() {
+    if (!configuration->run_servo_sweep) {
+        return;
+    }
+
+    if (configuration->arm) {
+        std::cout << millis() << "\t[AltitudeControlSystem] Can not run servo sweep, system should be disarmed!\n";
+        logManager->info("[AltitudeControlSystem] Can not run servo sweep, system should be disarmed!");
+        Serial.println("[AltitudeControlSystem] Can not run servo sweep, system should be disarmed!");
+    }
+
+    std::cout << millis() << "\t[AltitudeControlSystem] Running Servo Sweep command\n";
+    logManager->info("[AltitudeControlSystem] Running Servo Sweep command");
+    Serial.println("[AltitudeControlSystem] Running Servo Sweep command");
+
+    servoSweep();
+
+    configuration->run_servo_sweep = false;
 }

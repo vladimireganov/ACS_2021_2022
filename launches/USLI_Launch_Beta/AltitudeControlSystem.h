@@ -21,6 +21,9 @@ private:
     LogManager *logManager;
     DataManager *dataManager;
 
+    double timeout = 0.0;
+    const int servoControlDelay = 150; //ms
+
     int estimateAngle(float projectedAltitude);
 
 public:
@@ -32,6 +35,9 @@ public:
 
     float getTargetAltitude() {return targetAltitude;}
     void setTargetAltitude(float targetAltitude);
+
+    void checkAndHandleServoSweep();
+    void controlAltitude();
 
     bool start();
     void run();
