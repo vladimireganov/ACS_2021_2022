@@ -11,8 +11,8 @@ RadioManager::RadioManager(Configuration *configuration, LogManager *logManager)
 
 bool RadioManager::start() {
     if (configuration == NULL) {
-        std::cout << millis() << "\t[RadioManager] groundRequests was not specified ❌\n";
-        logManager->error("[RadioManager] groundRequests was not specified ❌");
+        std::cout << millis() << "\t[RadioManager] configuration was not specified ❌\n";
+        logManager->error("[RadioManager] configuration was not specified ❌");
         return false;
     }
 
@@ -93,5 +93,9 @@ void RadioManager::run() {
 }
 
 void RadioManager::stop() {
+    Serial.flush();
+    std::cout << millis() << "\t[RadioManager] Stopping radio processing\n";
+    logManager->info("[RadioManager] Stopping radio processing");
+
     this->logManager = NULL;
 }
