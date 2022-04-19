@@ -46,7 +46,7 @@ int main() {
         dataManager.run();
         radioManager.run();
         altitudeControlSystem.run();
-    } while (true); // later will change it...
+    } while (!configuration.shutdown);
     
 
     /* Stop & Cleanup */
