@@ -50,16 +50,16 @@ void RadioManager::collect() {
 void RadioManager::handle() {
     for (auto i = decodedRequests.begin(); i != decodedRequests.end(); ++i) {
         if (*i == "War Eagle") {
-            configuration->arm = true;
+            configuration->arm = !configuration->arm;
         }
         else if (*i == "Servo Sweep") {
-            configuration->run_servo_sweep = true;
+            configuration->run_servo_sweep = !configuration->run_servo_sweep;
         }
         else if (*i == "Real Time") {
-            configuration->send_real_time_data = true;
+            configuration->send_real_time_data = !configuration->send_real_time_data;
         }
         else if (*i == "Shutdown") {
-            configuration->shutdown = true;
+            configuration->shutdown = !configuration->shutdown;
         }
     }
 }
