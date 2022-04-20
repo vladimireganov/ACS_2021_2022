@@ -7,10 +7,16 @@
 int main() {
     /* Initialization & Setup */
     // Order is very importand do not change
+
+    /////////////////////////
+    // Data Initialization //
+    /////////////////////////
+
     Configuration configuration = Configuration();
+
     ///////////////////////////////////
     // Bussines Logic Initialization //
-    //////////////////////////////////
+    ///////////////////////////////////
 
     FileManager fileManager = FileManager();
     if (!fileManager.start()) return 1;
@@ -22,9 +28,11 @@ int main() {
     DataManager dataManager = DataManager(dataFile, &logManager);
     dataManager.setOverrideAltitude(true); // use altitude value from the sensor
 
+    RealTimeManager realTimeManager = RealTimeManager(&logManager, &dataManager, &configuration);
+
     /////////////////////////////
     // Hardware Initialization //
-    ////////////////////////////
+    /////////////////////////////
 
     HardwareManager hardwareManager = HardwareManager(&logManager, &dataManager);
 
@@ -33,12 +41,16 @@ int main() {
     auto servoLogFile = fileManager.createFile(SERVO_LOG_FILENAME);
     AltitudeControlSystem altitudeControlSystem = AltitudeControlSystem(&configuration, servoLogFile, &logManager, &dataManager);
 
+    ButtonManager buttonManager = ButtonManager(&configuration, &logManager);
+
     /* Setup */
     if (!logManager.start()) return 1;
     if (!dataManager.start()) return 1;
     if (!hardwareManager.start()) return 1;
     if (!radioManager.start()) return 1;
     if (!altitudeControlSystem.start()) return 1;
+    if (!realTimeManager.start()) return 1;
+    if (!buttonManager.start()) return 1;
 
     std::cout << millis() << "\t[Flight] All systems are nominal." << std::endl;
     logManager.info("[Flight] All systems are nominal");
@@ -50,6 +62,8 @@ int main() {
         dataManager.run();
         radioManager.run();
         altitudeControlSystem.run();
+        realTimeManager.run();
+        buttonManager.run();
     } while (!configuration.shutdown);
     
     std::cout << millis() << "\t[Flight] Shutting down system." << std::endl;
@@ -62,4 +76,6 @@ int main() {
     hardwareManager.stop();
     radioManager.stop();
     altitudeControlSystem.stop();
+    realTimeManager.stop();
+    buttonManager.stop();
 }

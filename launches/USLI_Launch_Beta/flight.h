@@ -13,6 +13,8 @@
 #include "HardwareManager.h"
 #include "RadioManager.h"
 #include "AltitudeControlSystem.h"
+#include "RealTimeManager.h"
+#include "ButtonManager.h"
 
 int main();
 
