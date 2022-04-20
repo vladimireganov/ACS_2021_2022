@@ -11,12 +11,12 @@
 
 #define MIN_TIME_TO_START_PROCESSING 500 //ms
 
-#define HALF_SECOND 500
+#define HALF_HALF_SECOND 150
 #define ONE_SECOND 1000
 #define THREE_SECONDS 3000
 #define FIVE_SECONDS 5000
 
-enum class ButtonState {
+enum class ButtonState : int {
     OFF,
     ON
 };
@@ -71,4 +71,4 @@ public:
 
 
 
-#endif _BUTTON_MANAGER_H_
+#endif

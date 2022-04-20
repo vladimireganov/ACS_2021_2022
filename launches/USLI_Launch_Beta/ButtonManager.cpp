@@ -10,13 +10,14 @@ ButtonManager::ButtonManager(Configuration *configuration, LogManager *logManage
 void ButtonManager::listen() {
     int currentButtonState = readButton();
 
-    if (currentButtonState != previousButtonState) {
+    if (currentButtonState != static_cast<int>(previousButtonState)) {
         size_t elapsedTime = millis() - startTime;
-        ButtonEvent buttonEvent = new ButtonEvent(previousButtonState, elapsedTime);
+        ButtonEvent buttonEvent = ButtonEvent(previousButtonState, elapsedTime);
 
         previousEvents.push_back(buttonEvent);
 
-        previousButtonState = currentButtonState;
+        previousButtonState = static_cast<ButtonState>(currentButtonState);
+
         startTime = millis();
     }
 }
@@ -37,19 +38,23 @@ void ButtonManager::process() {
         return;
     }
 
-    ButtonEvent previousButtonEvent = previousEvents.front();
+    for (auto it = previousEvents.begin(); it != previousEvents.end(); ++it) {
+        if (it->state == ButtonState::OFF) {
+            continue;
+        }
 
-    if (previousButtonEvent.elapsedTime >= FIVE_SECONDS) {
-        buttonRequests.push_back(ButtonRequest::LONG_HOLD);
-    }
-    else if (previousButtonEvent.elapsedTime >= THREE_SECONDS) {
-        buttonRequests.push_back(ButtonRequest::HOLD);
-    }
-    else if (previousButtonEvent.elapsedTime >= ONE_SECOND) {
-        buttonRequests.push_back(ButtonRequest::LONG_CLICK);
-    }
-    else if (previousButtonEvent.elapsedTime >= HALF_SECOND) {
-        buttonRequests.push_back(ButtonRequest::CLICK);
+        if (it->elapsedTime >= FIVE_SECONDS) {
+            buttonRequests.push_back(ButtonRequest::LONG_HOLD);
+        }
+        else if (it->elapsedTime >= THREE_SECONDS) {
+            buttonRequests.push_back(ButtonRequest::HOLD);
+        }
+        else if (it->elapsedTime >= ONE_SECOND) {
+            buttonRequests.push_back(ButtonRequest::LONG_CLICK);
+        }
+        else if (it->elapsedTime >= HALF_HALF_SECOND) {
+            buttonRequests.push_back(ButtonRequest::CLICK);
+        }
     }
 
     previousEvents.clear();
@@ -80,8 +85,8 @@ void ButtonManager::handle() {
 }
 
 void ButtonManager::handleClickRequest() {
-    // Functionality has not beed decided yet.
-    // ¯\_(ツ)_/¯
+    std::cout << millis() << "\t[ButtonManager] Processed Hello request\n";
+    logManager->info("[ButtonManager] Processed Hello request");
 }
 
 void ButtonManager::handleLongClickRequest() {
