@@ -61,10 +61,12 @@ void RadioManager::handle() {
             if (configuration->arm) {
                 std::cout << millis() << "\t[RadioManager] System is ARMED\n";
                 logManager->info("[RadioManager] System is ARMED");
+                Serial.println("[RadioManager] System is ARMED");
             }
             else {
                 std::cout << millis() << "\t[RadioManager] System is DISARMED\n";
                 logManager->info("[RadioManager] System is DISARMED");
+                Serial.println("[RadioManager] System is DISARMED");
             }
         }
         else if (*i == "Servo Sweep") {
@@ -77,10 +79,12 @@ void RadioManager::handle() {
             if (configuration->send_real_time_data) {
                 std::cout << millis() << "\t[RadioManager] Real Time Data Enabled\n";
                 logManager->info("[RadioManager] Real Time Data Enabled");
+                Serial.println("[RadioManager] Real Time Data Enabled");
             }
             else {
                 std::cout << millis() << "\t[RadioManager] Real Time Data Disabled\n";
                 logManager->info("[RadioManager] Real Time Data Disabled");
+                Serial.println("[RadioManager] Real Time Data Disabled");
             }
         }
         else if (*i == "Shutdown") {
