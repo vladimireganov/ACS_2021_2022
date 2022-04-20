@@ -42,6 +42,9 @@ void RealTimeManager::checkAndHanleRadioData() {
         return;
     }
 
+    std::cout << millis() << "\t[RealTimeManager] Timeup! Sending data over radio.\n";
+    logManager->info("[RealTimeManager] Timeup! Sending data over radio.");
+
     Serial.print(":");
     Serial.print(dataManager->getCurrentFlightState());
     Serial.print(",");
