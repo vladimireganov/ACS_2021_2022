@@ -11,18 +11,26 @@ RealTimeManager::RealTimeManager(LogManager *logManager, DataManager *dataManage
 bool RealTimeManager::start() {
     if (logManager == NULL) {
         std::cout << millis() << "\t[RealTimeManager] Error! logManager was not specified ❌\n";
+        logManager->info("[RealTimeManager] Error! logManager was not specified ❌");
+        return false;
     }
 
     if (dataManager == NULL) {
         std::cout << millis() << "\t[RealTimeManager] Error! dataManager was not specified ❌\n";
+        logManager->info("[RealTimeManager]Error! dataManager was not specified ❌");
+        return false;
     }
 
     if (configuration == NULL) {
         std::cout << millis() << "\t[RealTimeManager] Error! configuration was not specified ❌\n";
+        logManager->info("[RealTimeManager] Error! configuration was not specified ❌");
+        return false;
     }
 
     std::cout << millis() << "\t[RealTimeManager] Successfully started ✔️\n";
     logManager->info("[RealTimeManager] Successfully started ✔️");
+
+    return true;
 }
 
 void RealTimeManager::checkAndHanleRadioData() {
