@@ -16,6 +16,12 @@ bool RadioManager::start() {
         return false;
     }
 
+    if (logManager == NULL) {
+        std::cout << millis() << "\t[RadioManager] logManager was not specified ❌\n";
+        logManager->error("[RadioManager] logManager was not specified ❌");
+        return false;
+    }
+
     std::cout << millis() << "\t[RadioManager] Successfully started ✔️\n";
     logManager->info("[RadioManager] Successfully started ✔️");
     return true;
@@ -62,7 +68,7 @@ void RadioManager::handle() {
             }
         }
         else if (*i == "Servo Sweep") {
-            configuration->run_servo_sweep = !configuration->run_servo_sweep;
+            configuration->run_servo_sweep = true;
             std::cout << millis() << "\t[RadioManager] Processed Servo Sweep request\n";
             logManager->info("[RadioManager] Processed Servo Sweep request");
         }
@@ -78,7 +84,7 @@ void RadioManager::handle() {
             }
         }
         else if (*i == "Shutdown") {
-            configuration->shutdown = !configuration->shutdown;
+            configuration->shutdown = true;
             std::cout << millis() << "\t[RadioManager] Processed Shutdown request\n";
             logManager->info("[RadioManager] Processed Shutdown request");
         }
@@ -97,5 +103,6 @@ void RadioManager::stop() {
     std::cout << millis() << "\t[RadioManager] Stopping radio processing\n";
     logManager->info("[RadioManager] Stopping radio processing");
 
+    this->configuration = NULL;
     this->logManager = NULL;
 }
