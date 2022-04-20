@@ -39,7 +39,7 @@
 #define LAND_MAX_ALTITUDE_DIFFERENCE 2.0f            // meter
 #define LAND_MAX_ACCELERATION_VIBRATION 12.0f        // m/s^2
 
-enum FlightState {
+enum class FlightState : int {
     PRE_LAUNCH,
     LAUNCHED,
     BURNT_OUT,
@@ -53,8 +53,8 @@ class RocketFlightStates {
     float land_altitude;
 
 public:
-    FlightState current_state = PRE_LAUNCH;
-    FlightState previous_state = PRE_LAUNCH;
+    FlightState current_state = FlightState::PRE_LAUNCH;
+    FlightState previous_state = FlightState::PRE_LAUNCH;
     
     void setup_timer(float current_time) {
         elapsed_time = current_time;
@@ -173,24 +173,24 @@ public:
 
     void process_next_state(float current_altitude, float net_acceleration, float current_time) {
         previous_state = current_state;
-        if (current_state == PRE_LAUNCH) {
+        if (current_state == FlightState::PRE_LAUNCH) {
             if (this->if_launched_by_altitude(current_altitude, net_acceleration, current_time)) {
-                current_state = LAUNCHED;
+                current_state = FlightState::LAUNCHED;
             }
         }
-        else if (current_state == LAUNCHED) {
+        else if (current_state == FlightState::LAUNCHED) {
             if (this->if_burnt_out(current_altitude, net_acceleration, current_time)) {
-                current_state = BURNT_OUT;
+                current_state = FlightState::BURNT_OUT;
             }
         }
-        else if (current_state == BURNT_OUT) {
+        else if (current_state == FlightState::BURNT_OUT) {
             if (this->if_reached_apogee(current_altitude, current_time)) {
-                current_state = LANDING;
+                current_state = FlightState::LANDING;
             }
         }
-        else if (current_state == LANDING) {
+        else if (current_state == FlightState::LANDING) {
             if (this->if_landed(current_altitude, net_acceleration, current_time)) {
-                current_state = LANDED;
+                current_state = FlightState::LANDED;
             }
         }
     }
