@@ -32,7 +32,10 @@ $(DIR_OBJ)/%.o: %.cpp $(INCS)
 	$(CC) -o $@ -c $< $(CFLAGS) $(INC_DIRS)
 
 clean:
-	rm -rf $(OUTDIR)/* $(DATADIR)/* $(DIR_OBJ)/*
+	rm -rf $(OUTDIR)/* $(DIR_OBJ)/*
+
+clean_data:
+	rm -rf $(DATADIR)/*
 
 echoes:
 	@echo "INC files: $(INCS)"  
