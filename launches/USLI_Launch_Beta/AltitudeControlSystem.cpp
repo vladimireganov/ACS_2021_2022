@@ -148,4 +148,8 @@ void AltitudeControlSystem::checkAndHandleServoSweep() {
     Serial.println("[AltitudeControlSystem] Running Servo Sweep command");
 
     servoSweep();
+
+    std::cout << millis() << "\t[AltitudeControlSystem] Finished Servo Sweep command\n";
+    logManager->info("[AltitudeControlSystem] Finished Servo Sweep command");
+    Serial.println("[AltitudeControlSystem] Finished Servo Sweep command");
 }
