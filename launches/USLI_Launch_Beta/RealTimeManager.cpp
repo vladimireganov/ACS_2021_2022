@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "RealTimeManager.h"
 
@@ -44,17 +45,19 @@ void RealTimeManager::checkAndHanleRadioData() {
 
     std::cout << millis() << "\t[RealTimeManager] Timeup! Sending data over radio.\n";
     logManager->info("[RealTimeManager] Timeup! Sending data over radio.");
+    int flightState = static_cast<int>(dataManager->getCurrentFlightState());
 
     Serial.print(":");
-    Serial.print(dataManager->getCurrentFlightState());
+    Serial.print(std::to_string(dataManager->getElapsedTime()).c_str());
     Serial.print(",");
-    Serial.print(dataManager->getRelativeAltitude());
+    Serial.print(std::to_string(dataManager->getRelativeAltitude()).c_str());
     Serial.print(",");
-    Serial.print(dataManager->getMaximumAltitude());
+    Serial.print(std::to_string(dataManager->getMaximumAltitude()).c_str());
     Serial.print(",");
-    Serial.print(dataManager->getProjectedAltitude());
+    Serial.print(std::to_string(dataManager->getProjectedAltitude()).c_str());
+    Serial.print(",");
+    Serial.print(std::to_string(flightState).c_str());
     Serial.print(";");
-    Serial.flush();
 
     radioDataTimer.start();
 }

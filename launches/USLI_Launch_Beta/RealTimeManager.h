@@ -7,7 +7,7 @@
 #include "hardware/SerialLinux.h"
 #include "SharedData.h"
 
-#define RADIO_DATA_DURATION 250 //ms
+#define RADIO_DATA_DURATION 500 //ms
 
 class Timer
 {
