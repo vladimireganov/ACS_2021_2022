@@ -43,7 +43,10 @@ void ButtonManager::process() {
             continue;
         }
 
-        if (it->elapsedTime >= FIVE_SECONDS) {
+        if (it->elapsedTime >= TEN_SECONDS) {
+            buttonRequests.push_back(ButtonRequest::LONG_LONG_HOLD);
+        }
+        else if (it->elapsedTime >= FIVE_SECONDS) {
             buttonRequests.push_back(ButtonRequest::LONG_HOLD);
         }
         else if (it->elapsedTime >= THREE_SECONDS) {
@@ -76,6 +79,9 @@ void ButtonManager::handle() {
         case ButtonRequest::LONG_HOLD:
             this->handleLongHoldRequest();
             break;
+        case ButtonRequest::LONG_LONG_HOLD:
+            this->handleLongLongHoldRequest();
+            break;
         default:
             break;
         }
@@ -106,7 +112,20 @@ void ButtonManager::handleHoldRequest() {
         logManager->info("[ButtonManager] System is DISARMED");
     }
 }
+
 void ButtonManager::handleLongHoldRequest() {
+    configuration->send_real_time_data = !configuration->send_real_time_data;
+    if (configuration->send_real_time_data) {
+                std::cout << millis() << "\t[ButtonManager] Real Time Data Enabled\n";
+        logManager->info("[RadioManButtonManagerager] Real Time Data Enabled");
+    }
+    else {
+        std::cout << millis() << "\t[ButtonManager] Real Time Data Disabled\n";
+        logManager->info("[ButtonManager] Real Time Data Disabled");
+    }
+}
+
+void ButtonManager::handleLongLongHoldRequest() {
     configuration->shutdown = true;
     std::cout << millis() << "\t[ButtonManager] Processed Shutdown request\n";
     logManager->info("[ButtonManager] Processed Shutdown request");

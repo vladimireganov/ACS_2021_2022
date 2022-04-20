@@ -15,6 +15,7 @@
 #define ONE_SECOND 1000
 #define THREE_SECONDS 3000
 #define FIVE_SECONDS 5000
+#define TEN_SECONDS 10000
 
 enum class ButtonState : int {
     OFF,
@@ -25,7 +26,8 @@ enum class ButtonRequest {
     CLICK,
     LONG_CLICK,
     HOLD,
-    LONG_HOLD
+    LONG_HOLD,
+    LONG_LONG_HOLD
 };
 
 
@@ -57,6 +59,7 @@ private:
     void handleLongClickRequest();
     void handleHoldRequest();
     void handleLongHoldRequest();
+    void handleLongLongHoldRequest();
 public:
     ButtonManager(Configuration *configuration, LogManager *logManager);
 
