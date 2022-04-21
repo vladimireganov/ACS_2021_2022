@@ -11,6 +11,7 @@
 #include "FileManager.h"
 #include "LogManager.h"
 #include "DataManager.h"
+#include "BuzzerManager.h"
 
 
 class AltitudeControlSystem {
@@ -33,7 +34,7 @@ public:
     AltitudeControlSystem(Configuration *configuration,
             std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager, BuzzerManager *buzzerManager);
     AltitudeControlSystem(Configuration *configuration,
-            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager, BuzzerManager *buzzerManager
+            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager, BuzzerManager *buzzerManager,
             float targetAltitude);
 
     float getTargetAltitude() {return targetAltitude;}
