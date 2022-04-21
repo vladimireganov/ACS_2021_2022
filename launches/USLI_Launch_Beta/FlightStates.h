@@ -30,7 +30,7 @@
 
 #define BURNT_OUT_GUARD_TIMER 0.2f                   // in seconds
 #define BURNT_OUT_ALTITUDE_THRESHOLD 50.0f           // meter
-#define BURNT_OUT_NET_ACCELERATION_THRESHOLD 11.0f   // m/s^2
+#define BURNT_OUT_NET_ACCELERATION_THRESHOLD 9.0f   // m/s^2
 
 #define APOGEE_GUARD_TIMER 5.0f                      // in seconds
 #define APOGEE_ALTITUDE_DIFFERENCE_MINIMUM 3.0f      // meter
