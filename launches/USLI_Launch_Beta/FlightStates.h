@@ -48,9 +48,9 @@ enum class FlightState : int {
 };
 
 class RocketFlightStates {
-    float elapsed_time;
-    float max_altitude;
-    float land_altitude;
+    float elapsed_time = 0.0f;
+    float max_altitude = -999.9f;
+    float land_altitude = 0.0f;
 
 public:
     FlightState current_state = FlightState::PRE_LAUNCH;
@@ -175,6 +175,7 @@ public:
         previous_state = current_state;
         if (current_state == FlightState::PRE_LAUNCH) {
             if (this->if_launched_by_altitude(current_altitude, net_acceleration, current_time)) {
+                this->setup_timer(current_time);
                 current_state = FlightState::LAUNCHED;
             }
         }
