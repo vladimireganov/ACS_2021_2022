@@ -28,8 +28,6 @@ int main() {
     DataManager dataManager = DataManager(dataFile, &logManager);
     dataManager.setOverrideAltitude(true); // use altitude value from the sensor
 
-    RealTimeManager realTimeManager = RealTimeManager(&logManager, &dataManager, &configuration);
-
     /////////////////////////////
     // Hardware Initialization //
     /////////////////////////////
@@ -37,6 +35,8 @@ int main() {
     HardwareManager hardwareManager = HardwareManager(&logManager, &dataManager);
 
     BuzzerManager buzzerManager = BuzzerManager(&logManager);
+
+    RealTimeManager realTimeManager = RealTimeManager(&logManager, &dataManager, &configuration, &buzzerManager);
 
     RadioManager radioManager = RadioManager(&configuration, &logManager, &buzzerManager);
 
