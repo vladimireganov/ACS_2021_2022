@@ -1,3 +1,13 @@
+/**
+ * @file flight.cpp
+ * @author Kazybek Mizam (kzm0099@auburn.com)
+ * @brief Main file for the USLI 2022 Flight.
+ * @version 0.1
+ * @date 2022-04-21
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 #include "flight.h"
 
 #define DATA_FILENAME "data.csv"
