@@ -7,7 +7,7 @@
 #include "LogManager.h"
 #include "hardware/LED.h"
 
-#define TASK_DELAY 3000 // 3s
+#define TASK_DELAY 1000 // 3s
 
 enum class BuzzerState : int {
     PASSIVE,
