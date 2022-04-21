@@ -16,7 +16,7 @@ void BuzzerManager::endOfSound() {
     this->addRequest(BuzzerState::PASSIVE, TASK_DELAY);
 }
 
-void BuzzerManager::addRepeatingSoundRequest(size_t duration, size delay, int repeats) {
+void BuzzerManager::addRepeatingSoundRequest(size_t duration, size_t delay, int repeats) {
     for (int i = 0; i < repeats; i++) {
         buzzerRequests.push(BuzzerRequest(BuzzerState::ACTIVE, duration));
         buzzerRequests.push(BuzzerRequest(BuzzerState::PASSIVE, delay));
@@ -195,22 +195,22 @@ void BuzzerManager::realTimeDataDisabledSound() {
 }
 
 void BuzzerManager::servoSweepSound() {
-    this->addRequest(BuzzerState::ACTIVE, 200);
-    this->addRequest(BuzzerState::PASSIVE, 300);
-    this->addRequest(BuzzerState::ACTIVE, 200);
-    this->addRequest(BuzzerState::PASSIVE, 300);
-    this->addRequest(BuzzerState::ACTIVE, 200);
-    this->addRequest(BuzzerState::PASSIVE, 300);
-    this->addRequest(BuzzerState::ACTIVE, 200);
-    this->addRequest(BuzzerState::PASSIVE, 300);
-    this->addRequest(BuzzerState::ACTIVE, 200);
-    this->addRequest(BuzzerState::PASSIVE, 300);
-    this->addRequest(BuzzerState::ACTIVE, 200);
-    this->addRequest(BuzzerState::PASSIVE, 300);
-    this->addRequest(BuzzerState::ACTIVE, 200);
-    this->addRequest(BuzzerState::PASSIVE, 300);
-    this->addRequest(BuzzerState::ACTIVE, 200);
-    this->addRequest(BuzzerState::PASSIVE, 300);
+    this->addRequest(BuzzerState::ACTIVE, 150);
+    this->addRequest(BuzzerState::PASSIVE, 100);
+    this->addRequest(BuzzerState::ACTIVE, 150);
+    this->addRequest(BuzzerState::PASSIVE, 100);
+    this->addRequest(BuzzerState::ACTIVE, 150);
+    this->addRequest(BuzzerState::PASSIVE, 100);
+    this->addRequest(BuzzerState::ACTIVE, 150);
+    this->addRequest(BuzzerState::PASSIVE, 100);
+    this->addRequest(BuzzerState::ACTIVE, 150);
+    this->addRequest(BuzzerState::PASSIVE, 100);
+    this->addRequest(BuzzerState::ACTIVE, 150);
+    this->addRequest(BuzzerState::PASSIVE, 100);
+    this->addRequest(BuzzerState::ACTIVE, 150);
+    this->addRequest(BuzzerState::PASSIVE, 100);
+    this->addRequest(BuzzerState::ACTIVE, 150);
+    this->addRequest(BuzzerState::PASSIVE, 100);
 
     // avoid overlapping sounds by adding small delay between them
     endOfSound();

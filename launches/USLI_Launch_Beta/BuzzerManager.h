@@ -30,7 +30,7 @@ class BuzzerManager
 private:
     bool busy = false;
     std::queue<BuzzerRequest> buzzerRequests;
-    size_t timeout;
+    size_t timeout = 0;
 
     LogManager *logManager;
 public:
@@ -40,7 +40,7 @@ public:
     void addRequest(BuzzerRequest buzzerRequest);
     void addRequest(BuzzerState state, size_t duration);
     void endOfSound();
-    void addRepeatingSoundRequest(size_t duration, size delay)
+    void addRepeatingSoundRequest(size_t duration, size_t delay, int repeats);
 
     void sosSound();
     void successSound();
