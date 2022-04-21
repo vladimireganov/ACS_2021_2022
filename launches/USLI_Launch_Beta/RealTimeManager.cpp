@@ -1,6 +1,3 @@
-#include <iostream>
-#include <string>
-
 #include "RealTimeManager.h"
 
 RealTimeManager::RealTimeManager(LogManager *logManager, DataManager *dataManager, Configuration *configuration) {

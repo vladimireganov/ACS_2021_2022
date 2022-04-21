@@ -5,6 +5,8 @@
 #include <fstream>
 
 #include "hardware/PWM.h"
+#include "hardware/SerialLinux.h"
+
 #include "SharedData.h"
 #include "FileManager.h"
 #include "LogManager.h"
@@ -20,6 +22,7 @@ private:
     
     LogManager *logManager;
     DataManager *dataManager;
+    BuzzerManager *buzzerManager;
 
     size_t timeout = 0;
     const int servoControlDelay = 150; //ms
@@ -28,9 +31,9 @@ private:
 
 public:
     AltitudeControlSystem(Configuration *configuration,
-            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager);
+            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager, BuzzerManager *buzzerManager);
     AltitudeControlSystem(Configuration *configuration,
-            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager,
+            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager, BuzzerManager *buzzerManager
             float targetAltitude);
 
     float getTargetAltitude() {return targetAltitude;}

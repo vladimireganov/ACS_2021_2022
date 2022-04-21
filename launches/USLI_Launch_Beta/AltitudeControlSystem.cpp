@@ -1,21 +1,23 @@
 #include "AltitudeControlSystem.h"
-#include "hardware/SerialLinux.h"
 
 AltitudeControlSystem::AltitudeControlSystem(Configuration *configuration,
-            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager) {
+            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager, BuzzerManager *buzzerManager) {
     this->configuration = configuration;
     this->servoLogFile = servoLogFile;
     this->logManager = logManager;
     this->dataManager = dataManager;
+    this->buzzerManager = buzzerManager;
 
 }
 
 AltitudeControlSystem::AltitudeControlSystem(Configuration *configuration,
-    std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager, float targetAltitude) {
+            std::ofstream *servoLogFile, LogManager *logManager, DataManager *dataManager, BuzzerManager *buzzerManager,
+            float targetAltitude) {
     this->configuration = configuration;
     this->servoLogFile = servoLogFile;
     this->logManager = logManager;
     this->dataManager = dataManager;
+    this->buzzerManager = buzzerManager;
     this->targetAltitude = targetAltitude;
 }
 
@@ -147,6 +149,7 @@ void AltitudeControlSystem::checkAndHandleServoSweep() {
     logManager->info("[AltitudeControlSystem] Running Servo Sweep command");
     Serial.println("[AltitudeControlSystem] Running Servo Sweep command");
 
+    buzzerManager->servoSweepSound();
     servoSweep();
 
     std::cout << millis() << "\t[AltitudeControlSystem] Finished Servo Sweep command\n";

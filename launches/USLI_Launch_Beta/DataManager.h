@@ -15,8 +15,11 @@
 
 #include <iostream>
 #include <fstream>
+
 #include "FlightMath.h"
 #include "FlightStates.h"
+
+#include "ArduinoTimer.h"
 #include "LogManager.h"
 
 class DataManager {

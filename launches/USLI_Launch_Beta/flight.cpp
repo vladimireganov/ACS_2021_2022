@@ -36,12 +36,14 @@ int main() {
 
     HardwareManager hardwareManager = HardwareManager(&logManager, &dataManager);
 
-    RadioManager radioManager = RadioManager(&configuration, &logManager);
+    BuzzerManager buzzerManager = BuzzerManager(&logManager);
+
+    RadioManager radioManager = RadioManager(&configuration, &logManager, &buzzerManager);
 
     auto servoLogFile = fileManager.createFile(SERVO_LOG_FILENAME);
-    AltitudeControlSystem altitudeControlSystem = AltitudeControlSystem(&configuration, servoLogFile, &logManager, &dataManager);
+    AltitudeControlSystem altitudeControlSystem = AltitudeControlSystem(&configuration, servoLogFile, &logManager, &dataManager, &buzzerManager);
 
-    ButtonManager buttonManager = ButtonManager(&configuration, &logManager);
+    ButtonManager buttonManager = ButtonManager(&configuration, &logManager, &buzzerManager);
 
     /* Setup */
     if (!logManager.start()) return 1;
@@ -51,10 +53,12 @@ int main() {
     if (!altitudeControlSystem.start()) return 1;
     if (!realTimeManager.start()) return 1;
     if (!buttonManager.start()) return 1;
+    if (!buzzerManager.start()) return 1;
 
     std::cout << millis() << "\t[Flight] All systems are nominal." << std::endl;
     logManager.info("[Flight] All systems are nominal");
     Serial.println("[Flight] All systems are nominal.");
+    buzzerManager.successSound();
 
     /* Run */
     do {
@@ -64,11 +68,13 @@ int main() {
         altitudeControlSystem.run();
         realTimeManager.run();
         buttonManager.run();
+        buzzerManager.run();
     } while (!configuration.shutdown);
     
     std::cout << millis() << "\t[Flight] Shutting down system." << std::endl;
     logManager.info("[Flight] Shutting down system.");
     Serial.println("[Flight] Shutting down system.");
+    buzzerManager.unInterruptableConfirmationSound();
 
     /* Stop & Cleanup */
     logManager.stop();
@@ -78,4 +84,5 @@ int main() {
     altitudeControlSystem.stop();
     realTimeManager.stop();
     buttonManager.stop();
+    buzzerManager.stop();
 }

@@ -12,7 +12,6 @@
  */
 
 #include "DataManager.h"
-#include "ArduinoTimer.h"
 
 DataManager::DataManager(std::ofstream *dataFile, LogManager *logManager) {
     this->dataFile = dataFile;

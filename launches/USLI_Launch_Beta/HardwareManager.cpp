@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "HardwareManager.h"
 
 HardwareManager::HardwareManager(LogManager *logManager, DataManager *dataManager) {

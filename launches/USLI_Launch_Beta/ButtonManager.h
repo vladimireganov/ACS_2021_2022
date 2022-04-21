@@ -1,10 +1,13 @@
 #ifndef _BUTTON_MANAGER_H_
 #define _BUTTON_MANAGER_H_
 
+#include <iostream>
 #include <vector>
+
 #include "ArduinoTimer.h"
 #include "SharedData.h"
 #include "LogManager.h"
+#include "BuzzerManager.h"
 
 #include "hardware/LED.h"
 #include "hardware/SerialLinux.h"
@@ -54,6 +57,7 @@ private:
 
     Configuration *configuration;
     LogManager *logManager;
+    BuzzerManager *buzzerManager;
 
     void handleClickRequest();
     void handleLongClickRequest();
@@ -61,7 +65,7 @@ private:
     void handleLongHoldRequest();
     void handleLongLongHoldRequest();
 public:
-    ButtonManager(Configuration *configuration, LogManager *logManager);
+    ButtonManager(Configuration *configuration, LogManager *logManager, BuzzerManager *buzzerManager);
 
     void listen();
     void process();

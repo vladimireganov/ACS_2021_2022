@@ -1,10 +1,9 @@
-#include <iostream>
-
 #include "ButtonManager.h"
 
-ButtonManager::ButtonManager(Configuration *configuration, LogManager *logManager) {
+ButtonManager::ButtonManager(Configuration *configuration, LogManager *logManager, BuzzerManager *buzzerManager) {
     this->configuration = configuration;
     this->logManager = logManager;
+    this->buzzerManager = buzzerManager;
 }
 
 void ButtonManager::listen() {
@@ -93,6 +92,7 @@ void ButtonManager::handle() {
 void ButtonManager::handleClickRequest() {
     std::cout << millis() << "\t[ButtonManager] Processed Hello request\n";
     logManager->info("[ButtonManager] Processed Hello request");
+    buzzerManager->confirmationOneSound();
 }
 
 void ButtonManager::handleLongClickRequest() {
@@ -106,10 +106,12 @@ void ButtonManager::handleHoldRequest() {
     if (configuration->arm) {
         std::cout << millis() << "\t[ButtonManager] System is ARMED\n";
         logManager->info("[ButtonManager] System is ARMED");
+        buzzerManager->armedSound();
     }
     else {
         std::cout << millis() << "\t[ButtonManager] System is DISARMED\n";
         logManager->info("[ButtonManager] System is DISARMED");
+        buzzerManager->disarmedSound();
     }
 }
 
@@ -118,10 +120,12 @@ void ButtonManager::handleLongHoldRequest() {
     if (configuration->send_real_time_data) {
                 std::cout << millis() << "\t[ButtonManager] Real Time Data Enabled\n";
         logManager->info("[RadioManButtonManagerager] Real Time Data Enabled");
+        buzzerManager->realTimeDataEnabledSound();
     }
     else {
         std::cout << millis() << "\t[ButtonManager] Real Time Data Disabled\n";
         logManager->info("[ButtonManager] Real Time Data Disabled");
+        buzzerManager->realTimeDataDisabledSound();
     }
 }
 

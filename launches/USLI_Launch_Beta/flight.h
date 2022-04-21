@@ -15,6 +15,7 @@
 #include "AltitudeControlSystem.h"
 #include "RealTimeManager.h"
 #include "ButtonManager.h"
+#include "BuzzerManager.h""
 
 int main();
 

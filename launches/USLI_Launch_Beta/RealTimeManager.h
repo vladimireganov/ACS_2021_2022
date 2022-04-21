@@ -1,10 +1,14 @@
 #ifndef _REAL_TIME_MANAGER_H
 #define _REAL_TIME_MANAGER_H
 
+#include <iostream>
+#include <string>
+
+#include "hardware/SerialLinux.h"
+
 #include "ArduinoTimer.h"
 #include "LogManager.h"
 #include "DataManager.h"
-#include "hardware/SerialLinux.h"
 #include "SharedData.h"
 
 #define RADIO_DATA_DURATION 500 //ms

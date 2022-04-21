@@ -1,12 +1,10 @@
-#include <iostream>
 #include "RadioManager.h"
-#include "ArduinoTimer.h"
 
-
-RadioManager::RadioManager(Configuration *configuration, LogManager *logManager)
+RadioManager::RadioManager(Configuration *configuration, LogManager *logManager, BuzzerManager *buzzerManager)
 {
     this->configuration = configuration;
     this->logManager = logManager;
+    this->buzzerManager = buzzerManager;
 }
 
 bool RadioManager::start() {
@@ -19,6 +17,12 @@ bool RadioManager::start() {
     if (logManager == NULL) {
         std::cout << millis() << "\t[RadioManager] logManager was not specified ❌\n";
         logManager->error("[RadioManager] logManager was not specified ❌");
+        return false;
+    }
+
+    if (buzzerManager == NULL) {
+        std::cout << millis() << "\t[RadioManager] buzzerManager was not specified ❌\n";
+        logManager->error("[RadioManager] buzzerManager was not specified ❌");
         return false;
     }
 
@@ -62,11 +66,13 @@ void RadioManager::handle() {
                 std::cout << millis() << "\t[RadioManager] System is ARMED\n";
                 logManager->info("[RadioManager] System is ARMED");
                 Serial.println("[RadioManager] System is ARMED");
+                buzzerManager->armedSound();
             }
             else {
                 std::cout << millis() << "\t[RadioManager] System is DISARMED\n";
                 logManager->info("[RadioManager] System is DISARMED");
                 Serial.println("[RadioManager] System is DISARMED");
+                buzzerManager->disarmedSound();
             }
         }
         else if (*i == "Servo Sweep") {
@@ -80,11 +86,13 @@ void RadioManager::handle() {
                 std::cout << millis() << "\t[RadioManager] Real Time Data Enabled\n";
                 logManager->info("[RadioManager] Real Time Data Enabled");
                 Serial.println("[RadioManager] Real Time Data Enabled");
+                buzzerManager->realTimeDataEnabledSound();
             }
             else {
                 std::cout << millis() << "\t[RadioManager] Real Time Data Disabled\n";
                 logManager->info("[RadioManager] Real Time Data Disabled");
                 Serial.println("[RadioManager] Real Time Data Disabled");
+                buzzerManager->realTimeDataDisabledSound();
             }
         }
         else if (*i == "Shutdown") {
@@ -109,4 +117,5 @@ void RadioManager::stop() {
 
     this->configuration = NULL;
     this->logManager = NULL;
+    this->buzzerManager = NULL;
 }
