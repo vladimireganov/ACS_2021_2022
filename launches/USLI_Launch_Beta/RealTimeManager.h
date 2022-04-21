@@ -10,8 +10,10 @@
 #include "LogManager.h"
 #include "DataManager.h"
 #include "SharedData.h"
+#include "BuzzerManager.h"
 
 #define RADIO_DATA_DURATION 500 //ms
+#define FIVE_SECOND_DELAY 5000 //ms
 
 class Timer
 {
@@ -31,14 +33,19 @@ class RealTimeManager
 {
 private:
     Timer radioDataTimer = Timer(RADIO_DATA_DURATION);
+    Timer armedStateTimer = Timer(FIVE_SECOND_DELAY);
+    Timer landedStateTimer = Timer(FIVE_SECOND_DELAY);
     
     LogManager *logManager;
     DataManager *dataManager;
     Configuration *configuration;
+    BuzzerManager *buzzerManager;
 
     void checkAndHanleRadioData();
+    void checkAndHandleArmedState();
+    void checkAndHandleLandedState();
 public:
-    RealTimeManager(LogManager *logManager, DataManager *dataManager, Configuration *configuration);
+    RealTimeManager(LogManager *logManager, DataManager *dataManager, Configuration *configuration, BuzzerManager *buzzerManager);
 
     bool start();
     void run();

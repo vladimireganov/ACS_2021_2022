@@ -1,9 +1,11 @@
 #include "RealTimeManager.h"
 
-RealTimeManager::RealTimeManager(LogManager *logManager, DataManager *dataManager, Configuration *configuration) {
+RealTimeManager::RealTimeManager(LogManager *logManager, DataManager *dataManager,
+        Configuration *configuration, BuzzerManager *buzzerManager) {
     this->logManager = logManager;
     this->dataManager = dataManager;
     this->configuration = configuration;
+    this->buzzerManager = buzzerManager;
 }
 
 bool RealTimeManager::start() {
@@ -22,6 +24,12 @@ bool RealTimeManager::start() {
     if (configuration == NULL) {
         std::cout << millis() << "\t[RealTimeManager] Error! configuration was not specified ❌\n";
         logManager->info("[RealTimeManager] Error! configuration was not specified ❌");
+        return false;
+    }
+
+    if (buzzerManager == NULL) {
+        std::cout << millis() << "\t[RealTimeManager] Error! buzzerManager was not specified ❌\n";
+        logManager->info("[RealTimeManager] Error! buzzerManager was not specified ❌");
         return false;
     }
 
@@ -61,7 +69,10 @@ void RealTimeManager::checkAndHanleRadioData() {
 
 void RealTimeManager::run() {
     this->checkAndHanleRadioData();
+    this->checkAndHandleArmedState();
+    this->checkAndHandleLandedState();
 }
+
 void RealTimeManager::stop() {
     configuration->send_real_time_data = false;
 
@@ -71,4 +82,37 @@ void RealTimeManager::stop() {
     this->logManager = NULL;
     this->dataManager = NULL;
     this->configuration = NULL;
+}
+
+void RealTimeManager::checkAndHandleArmedState() {
+    if (!configuration->arm) {
+        return;
+    }
+
+    if (dataManager->getCurrentFlightState() == FlightState::LANDED) {
+        // Do not activate during landed state, because other sound is requested
+        return;
+    }
+
+    if (!armedStateTimer.isTimeUp()) {
+        return;
+    }
+
+    buzzerManager->confirmationThreeSound();
+
+    armedStateTimer.start();
+}
+
+void RealTimeManager::checkAndHandleLandedState() {
+    if (dataManager->getCurrentFlightState() != FlightState::LANDED) {
+        return;
+    }
+
+    if (!landedStateTimer.isTimeUp()) {
+        return;
+    }
+
+    buzzerManager->sosSound();
+
+    landedStateTimer.start();
 }
