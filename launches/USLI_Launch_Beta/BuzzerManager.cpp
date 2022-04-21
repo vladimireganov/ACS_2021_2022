@@ -131,19 +131,19 @@ void BuzzerManager::unInterruptableConfirmationSound(double duration) {
 }
 
 void BuzzerManager::confirmationOneSound() {
-    this->addRepeatingSoundRequest(300, 200, 1);
+    this->addRepeatingSoundRequest(150, 100, 1);
 }
 
 void BuzzerManager::confirmationTwoSound() {
-    this->addRepeatingSoundRequest(300, 200, 2);
+    this->addRepeatingSoundRequest(150, 100, 2);
 }
 
 void BuzzerManager::confirmationThreeSound() {
-    this->addRepeatingSoundRequest(300, 200, 3);
+    this->addRepeatingSoundRequest(150, 100, 3);
 }
 
 void BuzzerManager::confirmationFourSound() {
-    this->addRepeatingSoundRequest(300, 200, 4);
+    this->addRepeatingSoundRequest(150, 100, 4);
 }
 
 void BuzzerManager::armedSound() {
