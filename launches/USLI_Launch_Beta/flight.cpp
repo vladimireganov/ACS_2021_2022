@@ -79,10 +79,10 @@ int main() {
     /* Stop & Cleanup */
     logManager.stop();
     dataManager.stop();
-    hardwareManager.stop();
     radioManager.stop();
     altitudeControlSystem.stop();
     realTimeManager.stop();
     buttonManager.stop();
     buzzerManager.stop();
+    hardwareManager.stop();
 }
