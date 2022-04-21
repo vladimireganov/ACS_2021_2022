@@ -100,6 +100,18 @@ void RadioManager::handle() {
             std::cout << millis() << "\t[RadioManager] Processed Shutdown request\n";
             logManager->info("[RadioManager] Processed Shutdown request");
         }
+        else if (*i == "SOS") {
+            std::cout << millis() << "\t[RadioManager] Received SOS request\n";
+            logManager->info("[RadioManager] Received SOS request");
+            Serial.println("[RadioManager] Received SOS request");
+            buzzerManager->sosSound();
+        }
+        else if (*i == "Hello") {
+            std::cout << millis() << "\t[RadioManager] Processed Hello request\n";
+            logManager->info("[RadioManager] Processed Hello request");
+            Serial.println("[RadioManager] Hi there!");
+            buzzerManager->confirmationOneSound();
+        }
     }
 
     decodedRequests.clear();
