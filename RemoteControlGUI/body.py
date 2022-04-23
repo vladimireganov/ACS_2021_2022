@@ -19,6 +19,7 @@ class BodyUI(QWidget):
         # Adding widgets from left to right
         layout.addWidget(self.flightpacketUI())
         layout.addWidget(self.niceDataUI())
+        layout.addWidget(self.messagesUI())
 
         self.setLayout(layout) 
 
@@ -105,5 +106,61 @@ class BodyUI(QWidget):
             # self.verticalVelocityValueLabel.setText(f'{str(event.data.vertical_velocity)} m/s  {str(round(float(event.data.vertical_velocity) * 3.28, 2))} ft/s')
             # self.verticalAccelerationValueLabel.setText(f'{str(event.data.vertical_acceleration)} m/s^2  {str(round(float(event.data.vertical_acceleration) * 3.28, 2))} ft/ss')
             # self.temperatureValueLabel.setText(f'{str()} C\t{str(round(float(event.data.temperature) * 1.8 + 32, 2))} F')
+
+
+            if len(shared_data.messages) >= 10:
+                self.radio_messages_label_1.setText(shared_data.messages[0])
+                self.radio_messages_label_2.setText(shared_data.messages[1])
+                self.radio_messages_label_3.setText(shared_data.messages[2])
+                self.radio_messages_label_4.setText(shared_data.messages[3])
+                self.radio_messages_label_5.setText(shared_data.messages[4])
+                self.radio_messages_label_6.setText(shared_data.messages[5])
+                self.radio_messages_label_7.setText(shared_data.messages[6])
+                self.radio_messages_label_8.setText(shared_data.messages[7])
+                self.radio_messages_label_9.setText(shared_data.messages[8])
+                self.radio_messages_label_10.setText(shared_data.messages[9])
+
         except ValueError:
             pass
+
+    def messagesUI(self):
+        self.messages_str = "Radio Messages Appear Here"
+        self.radio_messages_label_1 = QLabel(self.messages_str, self)
+        self.radio_messages_label_2 = QLabel(self.messages_str, self)
+        self.radio_messages_label_3 = QLabel(self.messages_str, self)
+        self.radio_messages_label_4 = QLabel(self.messages_str, self)
+        self.radio_messages_label_5 = QLabel(self.messages_str, self)
+        self.radio_messages_label_6 = QLabel(self.messages_str, self)
+        self.radio_messages_label_7 = QLabel(self.messages_str, self)
+        self.radio_messages_label_8 = QLabel(self.messages_str, self)
+        self.radio_messages_label_9 = QLabel(self.messages_str, self)
+        self.radio_messages_label_10 = QLabel(self.messages_str, self)
+  
+        # setting geometry to the label
+        # self.radio_messages_label_1.setGeometry(200, 250, 100, 50)
+        # self.radio_messages_label_2.setGeometry(200, 250, 100, 50)
+        # self.radio_messages_label_3.setGeometry(200, 250, 100, 50)
+        # self.radio_messages_label_4.setGeometry(200, 250, 100, 50)
+        # self.radio_messages_label_5.setGeometry(200, 250, 100, 50)
+        # self.radio_messages_label_6.setGeometry(200, 250, 100, 50)
+        # self.radio_messages_label_7.setGeometry(200, 250, 100, 50)
+        # self.radio_messages_label_8.setGeometry(200, 250, 100, 50)
+        # self.radio_messages_label_9.setGeometry(200, 250, 100, 50)
+        # self.radio_messages_label_10.setGeometry(200, 250, 100, 50)
+
+        radioMessagesWidget = QWidget()
+        radioMessagesLayout = QVBoxLayout()
+        
+        radioMessagesLayout.addWidget(self.radio_messages_label_1)
+        radioMessagesLayout.addWidget(self.radio_messages_label_2)
+        radioMessagesLayout.addWidget(self.radio_messages_label_3)
+        radioMessagesLayout.addWidget(self.radio_messages_label_4)
+        radioMessagesLayout.addWidget(self.radio_messages_label_5)
+        radioMessagesLayout.addWidget(self.radio_messages_label_6)
+        radioMessagesLayout.addWidget(self.radio_messages_label_7)
+        radioMessagesLayout.addWidget(self.radio_messages_label_8)
+        radioMessagesLayout.addWidget(self.radio_messages_label_9)
+        radioMessagesLayout.addWidget(self.radio_messages_label_10)
+        radioMessagesWidget.setLayout(radioMessagesLayout)
+
+        return radioMessagesWidget

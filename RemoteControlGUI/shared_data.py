@@ -1,4 +1,5 @@
 from enum import Enum
+from time import sleep
 
 class FlightState(Enum):
     PRE_LAUNCH = 0
@@ -17,17 +18,29 @@ class SharedData:
         self.projected_altitude = ""
         self.flight_state = FlightState.PRE_LAUNCH
 
+        self.messages = []
+
     def update(self, data_list: list):
+        self._process_messages(data_list)
+
         for data in data_list:
             self._process_arm_state(data)
             self._process_real_time_data(data)
 
+    def _process_messages(self, messages: list):
+        if len(self.messages) > 10:
+            self.messages = self.messages[len(self.messages) - 10:]
+
+        self.messages += messages
+
     def _process_arm_state(self, data: str):
-        if "ARMED" in data:
-            self.arm_state = "ARMED"
-            return True
-        elif "DISARMED" in data:
+        if "DISARMED" in data:
+            sleep(3)
             self.arm_state = "DISARMED"
+            return True
+        
+        elif "ARMED" in data:
+            self.arm_state = "ARMED"
             return True
 
         return False
@@ -35,13 +48,13 @@ class SharedData:
     def _process_real_time_data(self, data: str):
         if not isinstance(data, str):
             print("Error! data is not string")
-            return
+            return False
 
         data_list = data.split(',')
 
         if len(data_list) != 5:
             print("Error! Invalid data")
-            return
+            return False
 
         self.elapsed_time = data_list[0]
         self.relative_altitude = data_list[1]
@@ -54,3 +67,6 @@ class SharedData:
         except TypeError:
             self.flight_state = data_list[4]
             print("Flight state decoding error")
+
+        return True
+        
