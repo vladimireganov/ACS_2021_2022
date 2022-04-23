@@ -29,7 +29,7 @@ class SharedData:
 
     def _process_messages(self, messages: list):
         if len(self.messages) > 10:
-            self.messages = self.messages[len(self.messages) - 10:]
+            self.messages = self.messages[len(messages) - 10:]
 
         self.messages += messages
 
@@ -52,7 +52,7 @@ class SharedData:
 
         data_list = data.split(',')
 
-        if len(data_list) != 5:
+        if len(data_list) != 8:
             print("Error! Invalid data")
             return False
 

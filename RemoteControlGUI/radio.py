@@ -31,7 +31,7 @@ class USLI2022Radio:
     def _process(self, message):
         for char in message:
             if char == self.START_BYTE:
-                if self.decoded_message_buffer != "":
+                if self.decoded_message_buffer != "" and self.decoded_message_buffer != "\r\n":
                     self.messages.append(self.decoded_message_buffer)
                 continue
 

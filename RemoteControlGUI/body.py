@@ -107,20 +107,12 @@ class BodyUI(QWidget):
             self.verticalAccelerationValueLabel.setText(f'{str(shared_data.net_acceleration)} m/s^2  {str(round(float(shared_data.net_acceleration) * 3.28, 2))} ft/ss')
             self.temperatureValueLabel.setText(f'{str(shared_data.temperature)} C\t{str(round(float(shared_data.temperature) * 1.8 + 32, 2))} F')
 
-
-            if len(shared_data.messages) >= 10:
-                self.radio_messages_label_1.setText(shared_data.messages[0])
-                self.radio_messages_label_2.setText(shared_data.messages[1])
-                self.radio_messages_label_3.setText(shared_data.messages[2])
-                self.radio_messages_label_4.setText(shared_data.messages[3])
-                self.radio_messages_label_5.setText(shared_data.messages[4])
-                self.radio_messages_label_6.setText(shared_data.messages[5])
-                self.radio_messages_label_7.setText(shared_data.messages[6])
-                self.radio_messages_label_8.setText(shared_data.messages[7])
-                self.radio_messages_label_9.setText(shared_data.messages[8])
-                self.radio_messages_label_10.setText(shared_data.messages[9])
+            if len(shared_data.messages) <= 10:
+                for index, message in enumerate(shared_data.messages):
+                    self.radio_label_list[index].setText(message)
 
         except ValueError:
+            print("Value error!")
             pass
 
     def messagesUI(self):
@@ -136,18 +128,6 @@ class BodyUI(QWidget):
         self.radio_messages_label_9 = QLabel(self.messages_str, self)
         self.radio_messages_label_10 = QLabel(self.messages_str, self)
   
-        # setting geometry to the label
-        # self.radio_messages_label_1.setGeometry(200, 250, 100, 50)
-        # self.radio_messages_label_2.setGeometry(200, 250, 100, 50)
-        # self.radio_messages_label_3.setGeometry(200, 250, 100, 50)
-        # self.radio_messages_label_4.setGeometry(200, 250, 100, 50)
-        # self.radio_messages_label_5.setGeometry(200, 250, 100, 50)
-        # self.radio_messages_label_6.setGeometry(200, 250, 100, 50)
-        # self.radio_messages_label_7.setGeometry(200, 250, 100, 50)
-        # self.radio_messages_label_8.setGeometry(200, 250, 100, 50)
-        # self.radio_messages_label_9.setGeometry(200, 250, 100, 50)
-        # self.radio_messages_label_10.setGeometry(200, 250, 100, 50)
-
         radioMessagesWidget = QWidget()
         radioMessagesLayout = QVBoxLayout()
         
@@ -162,5 +142,18 @@ class BodyUI(QWidget):
         radioMessagesLayout.addWidget(self.radio_messages_label_9)
         radioMessagesLayout.addWidget(self.radio_messages_label_10)
         radioMessagesWidget.setLayout(radioMessagesLayout)
+
+        self.radio_label_list = [
+            self.radio_messages_label_1,
+            self.radio_messages_label_2,
+            self.radio_messages_label_3,
+            self.radio_messages_label_4,
+            self.radio_messages_label_5,
+            self.radio_messages_label_6,
+            self.radio_messages_label_7,
+            self.radio_messages_label_8,
+            self.radio_messages_label_9,
+            self.radio_messages_label_10,
+        ]
 
         return radioMessagesWidget
