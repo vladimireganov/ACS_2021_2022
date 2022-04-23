@@ -103,9 +103,9 @@ class BodyUI(QWidget):
             self.altitudeValueLabel.setText(f'{str(shared_data.relative_altitude)} m\t{str(round(float(shared_data.relative_altitude) * 3.28, 2))} ft')
             self.projectedAltitudeValueLabel.setText(f'{str(shared_data.projected_altitude)} m\t{str(round(float(shared_data.projected_altitude) * 3.28, 2))} ft')
             self.maxAltitudeValueLabel.setText(f'{str(shared_data.max_altitude)} m\t{str(round(float(shared_data.max_altitude) * 3.28, 2))} ft')
-            # self.verticalVelocityValueLabel.setText(f'{str(event.data.vertical_velocity)} m/s  {str(round(float(event.data.vertical_velocity) * 3.28, 2))} ft/s')
-            # self.verticalAccelerationValueLabel.setText(f'{str(event.data.vertical_acceleration)} m/s^2  {str(round(float(event.data.vertical_acceleration) * 3.28, 2))} ft/ss')
-            # self.temperatureValueLabel.setText(f'{str()} C\t{str(round(float(event.data.temperature) * 1.8 + 32, 2))} F')
+            self.verticalVelocityValueLabel.setText(f'{str(shared_data.vertical_velocity)} m/s  {str(round(float(shared_data.vertical_velocity) * 3.28, 2))} ft/s')
+            self.verticalAccelerationValueLabel.setText(f'{str(shared_data.net_acceleration)} m/s^2  {str(round(float(shared_data.net_acceleration) * 3.28, 2))} ft/ss')
+            self.temperatureValueLabel.setText(f'{str(shared_data.temperature)} C\t{str(round(float(shared_data.temperature) * 1.8 + 32, 2))} F')
 
 
             if len(shared_data.messages) >= 10:

@@ -60,12 +60,15 @@ class SharedData:
         self.relative_altitude = data_list[1]
         self.max_altitude = data_list[2]
         self.projected_altitude = data_list[3]
+        self.vertical_velocity = data_list[4]
+        self.net_acceleration = data_list[5]
+        self.temperature = data_list[6]
 
         try:
-            flight_state_value = int(data_list[4])
+            flight_state_value = int(data_list[7])
             self.flight_state = FlightState(flight_state_value)
         except TypeError:
-            self.flight_state = data_list[4]
+            self.flight_state = data_list[7]
             print("Flight state decoding error")
 
         return True
