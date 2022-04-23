@@ -21,7 +21,7 @@ from radio import USLI2022Radio
 class Window(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("ASC Remote App Beta")
+        self.setWindowTitle("EBS Remote Control Beta")
 
         # Create a QHBoxLayout instance
         layout = QVBoxLayout()

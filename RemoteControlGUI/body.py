@@ -107,13 +107,13 @@ class BodyUI(QWidget):
             self.verticalAccelerationValueLabel.setText(f'{str(shared_data.net_acceleration)} m/s^2  {str(round(float(shared_data.net_acceleration) * 3.28, 2))} ft/ss')
             self.temperatureValueLabel.setText(f'{str(shared_data.temperature)} C\t{str(round(float(shared_data.temperature) * 1.8 + 32, 2))} F')
 
-            if len(shared_data.messages) <= 10:
-                for index, message in enumerate(shared_data.messages):
-                    self.radio_label_list[index].setText(message)
-
         except ValueError:
             print("Value error!")
             pass
+
+        if len(shared_data.messages) <= 10:
+             for index, message in enumerate(shared_data.messages):
+                self.radio_label_list[index].setText(message)
 
     def messagesUI(self):
         self.messages_str = "Radio Messages Appear Here"
