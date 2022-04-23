@@ -48,9 +48,12 @@ def button_callback(command: str):
 def data_event(messages):
     print("Received Data")
     print(messages)
-    
+
     global shared_data
     shared_data.update(messages)
+
+    global window
+    window.bodyWidget.update(shared_data)
    
 if __name__ == '__main__':
     global shared_data

@@ -1,4 +1,5 @@
 import threading
+from time import sleep
 import serial
 
 from shared_data import SharedData
@@ -19,6 +20,8 @@ class USLI2022Radio:
         self.stop_listening = False
         self.func = None
 
+        self.decoded_message_buffer = ""
+
     def start(self, func):
         self.func = func
 
@@ -26,18 +29,21 @@ class USLI2022Radio:
         self._radio_listening_thread.start()
 
     def _process(self, message):
-        buf = ""
-
         for char in message:
-            if not (char == self.START_BYTE or char == self.END_BYTE or char == '\n'):
-                buf += char
+            if char == self.START_BYTE:
+                if self.decoded_message_buffer != "":
+                    self.messages.append(self.decoded_message_buffer)
                 continue
 
-            if buf != "":
-                self.messages.append(buf)
-                buf = ""
+            if char == self.END_BYTE:
+                self.messages.append(self.decoded_message_buffer)
+                self.decoded_message_buffer = ""
+                continue
+
+            self.decoded_message_buffer += char
         
-        self.func(self.messages)
+        if self.messages:
+            self.func(self.messages)
         self.messages = []
 
     def _listen(self):
@@ -47,9 +53,10 @@ class USLI2022Radio:
             c = self.radio_serial.read()
 
             while c:
+                print(c)
                 message += c.decode('utf-8')
                 c = self.radio_serial.read()
-            
+
             self._process(message)
             message = ""
 
