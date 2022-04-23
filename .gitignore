@@ -41,3 +41,5 @@
 *.txt
 
 .vs
+
+__pycache__
