@@ -51,11 +51,12 @@ bool HardwareManager::start() {
     if (bmx160_1->begin() == false) { //if begin == false
         std::cout << millis() << "\t[HardwareManager] IMU at 0x68 initialization has failed ❌\n";
         logManager->error("[HardwareManager] IMU at 0x68 initialization has failed ❌");
-        Serial.println("68 init false");
+        Serial.println(":[HardwareManager] IMU at 0x68 initialization has failed;");
         return false;
     } else {
         std::cout << millis() << "\t[HardwareManager] IMU at 0x68 initialization was successful ✔️\n";
         logManager->info("[HardwareManager] IMU at 0x68 initialization was successfuly ✔️");
+        Serial.println(":[HardwareManager] IMU at 0x68 initialization was successfuly;");
     }
 
     bmx160_1->wakeUp();
@@ -66,7 +67,7 @@ bool HardwareManager::start() {
     bmx160_1->getAllData(&Omagn, &Ogyro, &Oaccel);
     std::cout << millis() << "\t[HardwareManager] BMX160_1 Initialized and Configured. ✔️\n";
     logManager->info("[HardwareManager] BMX160_1 Initialized and Configured. ✔️");
-    Serial.println("BMX160_1 Initialized and Configured.");
+    Serial.println(":BMX160_1 Initialized and Configured.;");
 
 
 
@@ -75,11 +76,12 @@ bool HardwareManager::start() {
     if (ms5607_1->begin() == false) {
         std::cout << millis() << "\t[HardwareManager] Altimeter at 0x76 initialization has failed ❌\n";
         logManager->error("[HardwareManager] Altimeter at 0x76 initialization has failed ❌");
-        Serial.println("76 init false");
+        Serial.println(":[HardwareManager] Altimeter at 0x76 initialization has failed;");
         return false;
     }  else {
         std::cout << millis() << "\t[HardwareManager] Altimeter at 0x76 initialization was successful ✔️\n";
         logManager->info("[HardwareManager] Altimeter at 0x76 initialization was successful ✔️");
+        Serial.println(":[HardwareManager] Altimeter at 0x76 initialization was successful;");
     }
 
     ms5607_1->setOSR(256);  //set the oversampling ratio to maximum for snoothness in vertical velocity
@@ -88,13 +90,13 @@ bool HardwareManager::start() {
     if (!ms5607_1->readDigitalValue()) {
         std::cout << millis() << "\t[HardwareManager] Error in reading values from Altimeter sensor ❌\n";
         logManager->error("[HardwareManager] Error in reading values from Altimeter sensor ❌");
-        Serial.println("Error in reading values from Altimeter sensor!");
+        Serial.println(":Error in reading values from Altimeter sensor!;");
         return false;
     }
 
     logManager->info("[HardwareManager] MS5607_1 Initialized and Configured. ✔️");
     std::cout << millis() << "\t[HardwareManager] MS5607_1 Initialized and Configured. ✔️\n";
-    Serial.println("MS5607_1 Initialized and Configured.");
+    Serial.println(":MS5607_1 Initialized and Configured.;");
 
     return true;
 }
@@ -131,7 +133,7 @@ void HardwareManager::run() {
     } else {
         std::cout << millis() << "\t[HardwareManager] Error in reading values from Altimeter sensor!\n";
         logManager->error("[HardwareManager] Error in reading values from Altimeter sensor!");
-        Serial.println("Error in reading values from Altimeter sensor!");
+        Serial.println(":Error in reading values from Altimeter sensor!;");
     }
 
     /////////////////////////

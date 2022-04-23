@@ -47,7 +47,9 @@ void RadioManager::collect() {
             std::string infoMessage = "[RadioManager] Received request " + request;
             std::cout << millis() << "\t[RadioManager] Received request " << request << "\n";
             logManager->info(infoMessage);
-            Serial.println(infoMessage);
+            Serial.print(":");
+            Serial.print(infoMessage);
+            Serial.print(";");
         }
         else {
             request += buffer[i];
@@ -65,13 +67,13 @@ void RadioManager::handle() {
             if (configuration->arm) {
                 std::cout << millis() << "\t[RadioManager] System is ARMED\n";
                 logManager->info("[RadioManager] System is ARMED");
-                Serial.println("[RadioManager] System is ARMED");
+                Serial.println(":[RadioManager] System is ARMED;");
                 buzzerManager->armedSound();
             }
             else {
                 std::cout << millis() << "\t[RadioManager] System is DISARMED\n";
                 logManager->info("[RadioManager] System is DISARMED");
-                Serial.println("[RadioManager] System is DISARMED");
+                Serial.println(":[RadioManager] System is DISARMED;");
                 buzzerManager->disarmedSound();
             }
         }
@@ -85,13 +87,13 @@ void RadioManager::handle() {
             if (configuration->send_real_time_data) {
                 std::cout << millis() << "\t[RadioManager] Real Time Data Enabled\n";
                 logManager->info("[RadioManager] Real Time Data Enabled");
-                Serial.println("[RadioManager] Real Time Data Enabled");
+                Serial.println(":[RadioManager] Real Time Data Enabled;");
                 buzzerManager->realTimeDataEnabledSound();
             }
             else {
                 std::cout << millis() << "\t[RadioManager] Real Time Data Disabled\n";
                 logManager->info("[RadioManager] Real Time Data Disabled");
-                Serial.println("[RadioManager] Real Time Data Disabled");
+                Serial.println(":[RadioManager] Real Time Data Disabled;");
                 buzzerManager->realTimeDataDisabledSound();
             }
         }
@@ -103,13 +105,13 @@ void RadioManager::handle() {
         else if (*i == "SOS") {
             std::cout << millis() << "\t[RadioManager] Received SOS request\n";
             logManager->info("[RadioManager] Received SOS request");
-            Serial.println("[RadioManager] Received SOS request");
+            Serial.println(":[RadioManager] Received SOS request;");
             buzzerManager->sosSound();
         }
         else if (*i == "Hello") {
             std::cout << millis() << "\t[RadioManager] Processed Hello request\n";
             logManager->info("[RadioManager] Processed Hello request");
-            Serial.println("[RadioManager] Hi there!");
+            Serial.println(":[RadioManager] Hi there!;");
             buzzerManager->confirmationOneSound();
         }
     }

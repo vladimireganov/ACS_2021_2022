@@ -141,18 +141,18 @@ void AltitudeControlSystem::checkAndHandleServoSweep() {
     if (configuration->arm) {
         std::cout << millis() << "\t[AltitudeControlSystem] Can not run servo sweep, system should be disarmed!\n";
         logManager->info("[AltitudeControlSystem] Can not run servo sweep, system should be disarmed!");
-        Serial.println("[AltitudeControlSystem] Can not run servo sweep, system should be disarmed!");
+        Serial.println(":[AltitudeControlSystem] Can not run servo sweep, system should be disarmed!;");
         return;
     }
 
     std::cout << millis() << "\t[AltitudeControlSystem] Running Servo Sweep command\n";
     logManager->info("[AltitudeControlSystem] Running Servo Sweep command");
-    Serial.println("[AltitudeControlSystem] Running Servo Sweep command");
+    Serial.println(":[AltitudeControlSystem] Running Servo Sweep command;");
 
     buzzerManager->servoSweepSound();
     servoSweep();
 
     std::cout << millis() << "\t[AltitudeControlSystem] Finished Servo Sweep command\n";
     logManager->info("[AltitudeControlSystem] Finished Servo Sweep command");
-    Serial.println("[AltitudeControlSystem] Finished Servo Sweep command");
+    Serial.println(":[AltitudeControlSystem] Finished Servo Sweep command;");
 }

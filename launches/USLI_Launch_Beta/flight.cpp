@@ -67,7 +67,7 @@ int main() {
 
     std::cout << millis() << "\t[Flight] All systems are nominal." << std::endl;
     logManager.info("[Flight] All systems are nominal");
-    Serial.println("[Flight] All systems are nominal.");
+    Serial.println(":[Flight] All systems are nominal.;");
     buzzerManager.successSound();
 
     /* Run */
@@ -83,7 +83,7 @@ int main() {
     
     std::cout << millis() << "\t[Flight] Shutting down system." << std::endl;
     logManager.info("[Flight] Shutting down system.");
-    Serial.println("[Flight] Shutting down system.");
+    Serial.println(":[Flight] Shutting down system.;");
     buzzerManager.unInterruptableConfirmationSound();
 
     /* Stop & Cleanup */

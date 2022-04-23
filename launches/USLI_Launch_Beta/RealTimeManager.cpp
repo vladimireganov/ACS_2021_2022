@@ -61,6 +61,12 @@ void RealTimeManager::checkAndHanleRadioData() {
     Serial.print(",");
     Serial.print(std::to_string(dataManager->getProjectedAltitude()).c_str());
     Serial.print(",");
+    Serial.print(std::to_string(dataManager->getVerticalVelocity()).c_str());
+    Serial.print(",");
+    Serial.print(std::to_string(dataManager->getNetAcceleration()).c_str());
+    Serial.print(",");
+    Serial.print(std::to_string(dataManager->getAltimeterTemperature()).c_str());
+    Serial.print(",");
     Serial.print(std::to_string(flightState).c_str());
     Serial.print(";");
 
