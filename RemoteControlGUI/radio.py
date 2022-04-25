@@ -53,6 +53,7 @@ class USLI2022Radio:
             c = self.radio_serial.read()
 
             while c:
+                print(c.decode('utf-8'))
                 message += c.decode('utf-8')
                 c = self.radio_serial.read()
 

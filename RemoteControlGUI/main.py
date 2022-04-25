@@ -60,7 +60,7 @@ if __name__ == '__main__':
     shared_data = SharedData()
 
     global usli_radio
-    usli_radio = USLI2022Radio("/dev/tty.usbserial-AB0ML1P5")
+    usli_radio = USLI2022Radio("/dev/tty.usbserial-AB0MKVO0")
     usli_radio.start(data_event)
 
     app = QApplication(sys.argv)

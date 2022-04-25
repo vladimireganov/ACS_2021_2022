@@ -30,14 +30,17 @@ class FooterUI(QWidget):
         echoButton = QPushButton('Hello')
         armSystemButton = QPushButton('SOS')
         servoSweepButton = QPushButton('Servo Sweep')
+        targetButton = QPushButton('Target')
 
         echoButton.clicked.connect(functools.partial(self.button_callback, "Hello"))
         armSystemButton.clicked.connect(functools.partial(self.button_callback, "SOS"))
         servoSweepButton.clicked.connect(functools.partial(self.button_callback, "Servo Sweep"))
+        targetButton.clicked.connect(functools.partial(self.button_callback, "Target"))
 
         sendCommandLayout.addWidget(echoButton, 0, 0)
         sendCommandLayout.addWidget(armSystemButton, 0, 1)
         sendCommandLayout.addWidget(servoSweepButton, 0, 2)
+        sendCommandLayout.addWidget(servoSweepButton, 1, 0)
 
         sendCommandWidget.setLayout(sendCommandLayout)
         return sendCommandWidget
