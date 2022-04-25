@@ -8,6 +8,7 @@ public:
     bool send_real_time_data = false;
     bool arm = false;
     bool shutdown = false;
+    bool get_target_altitude = false;
 };
 
 #endif

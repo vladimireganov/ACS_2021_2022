@@ -114,6 +114,13 @@ void RadioManager::handle() {
             Serial.println(":[RadioManager] Hi there!;");
             buzzerManager->confirmationOneSound();
         }
+        else if (*i == "Target") {
+            configuration->get_target_altitude = true;
+            std::cout << millis() << "\t[RadioManager] Processed Target Altitude request\n";
+            logManager->info("[RadioManager] Processed Target Altitude request");
+            Serial.println(":[RadioManager] Processed Target Altitude request;");
+            buzzerManager->confirmationFourSound();
+        }
     }
 
     decodedRequests.clear();

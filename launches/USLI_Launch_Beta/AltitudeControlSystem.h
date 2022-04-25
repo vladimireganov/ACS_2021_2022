@@ -16,7 +16,7 @@
 
 class AltitudeControlSystem {
 private:
-    float targetAltitude = 914.4f; // in m
+    float targetAltitude = 1280.16f; // in m 4200 ft
 
     Configuration *configuration;
     std::ofstream *servoLogFile;
@@ -41,6 +41,7 @@ public:
     void setTargetAltitude(float targetAltitude);
 
     void checkAndHandleServoSweep();
+    void checkAndHandleTargetAltitude();
     void controlAltitude();
 
     bool start();

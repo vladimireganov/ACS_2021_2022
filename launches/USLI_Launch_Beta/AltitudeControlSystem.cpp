@@ -48,6 +48,7 @@ int AltitudeControlSystem::estimateAngle(float projectedAltitude) {
 void AltitudeControlSystem::run() {
     this->controlAltitude();
     this->checkAndHandleServoSweep();
+    this->checkAndHandleTargetAltitude();
 }
 
 bool AltitudeControlSystem::start() {
@@ -155,4 +156,20 @@ void AltitudeControlSystem::checkAndHandleServoSweep() {
     std::cout << millis() << "\t[AltitudeControlSystem] Finished Servo Sweep command\n";
     logManager->info("[AltitudeControlSystem] Finished Servo Sweep command");
     Serial.println(":[AltitudeControlSystem] Finished Servo Sweep command;");
+}
+
+void AltitudeControlSystem::checkAndHandleTargetAltitude() {
+    if (!configuration->get_target_altitude) {
+        return;
+    }
+
+    configuration->get_target_altitude = false;
+
+    std::cout << millis() << "\t[AltitudeControlSystem] Target Altitude: " << targetAltitude << "\n";
+    std::string msg = "[AltitudeControlSystem] Target Altitude: " + std::to_string(targetAltitude);
+    logManager->info(msg);
+
+    Serial.print(":");
+    Serial.print(msg.c_str());
+    Serial.print(";");
 }
