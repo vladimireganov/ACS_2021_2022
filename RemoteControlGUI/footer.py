@@ -40,7 +40,7 @@ class FooterUI(QWidget):
         sendCommandLayout.addWidget(echoButton, 0, 0)
         sendCommandLayout.addWidget(armSystemButton, 0, 1)
         sendCommandLayout.addWidget(servoSweepButton, 0, 2)
-        sendCommandLayout.addWidget(servoSweepButton, 1, 0)
+        sendCommandLayout.addWidget(targetButton, 1, 0)
 
         sendCommandWidget.setLayout(sendCommandLayout)
         return sendCommandWidget
@@ -49,15 +49,15 @@ class FooterUI(QWidget):
         stateCommandWidget = QWidget()
         stateCommandLayout = QGridLayout()
 
-        armEBSBoneButton = QPushButton('Arm')
+        armEBSButton = QPushButton('Arm')
         realTimeDataButton = QPushButton('Real Time')
         shutdownButton = QPushButton('Shutdown')
         
-        armEBSBoneButton.clicked.connect(functools.partial(self.button_callback, "War Eagle"))
+        armEBSButton.clicked.connect(functools.partial(self.button_callback, "War Eagle"))
         realTimeDataButton.clicked.connect(functools.partial(self.button_callback, "Real Time"))
         shutdownButton.clicked.connect(functools.partial(self.button_callback, "Shutdown"))
 
-        stateCommandLayout.addWidget(armEBSBoneButton, 0, 0)
+        stateCommandLayout.addWidget(armEBSButton, 0, 0)
         stateCommandLayout.addWidget(realTimeDataButton, 0, 1)
         stateCommandLayout.addWidget(shutdownButton, 0, 2)
 
