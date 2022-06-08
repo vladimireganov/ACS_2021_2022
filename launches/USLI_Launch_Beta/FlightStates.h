@@ -30,7 +30,7 @@
 
 #define BURNT_OUT_GUARD_TIMER 0.2f                   // in seconds
 #define BURNT_OUT_ALTITUDE_THRESHOLD 50.0f           // meter
-#define BURNT_OUT_NET_ACCELERATION_THRESHOLD 11.0f   // m/s^2
+#define BURNT_OUT_NET_ACCELERATION_THRESHOLD 9.0f   // m/s^2
 
 #define APOGEE_GUARD_TIMER 5.0f                      // in seconds
 #define APOGEE_ALTITUDE_DIFFERENCE_MINIMUM 3.0f      // meter
@@ -39,7 +39,7 @@
 #define LAND_MAX_ALTITUDE_DIFFERENCE 2.0f            // meter
 #define LAND_MAX_ACCELERATION_VIBRATION 12.0f        // m/s^2
 
-enum FlightState {
+enum class FlightState : int {
     PRE_LAUNCH,
     LAUNCHED,
     BURNT_OUT,
@@ -48,13 +48,13 @@ enum FlightState {
 };
 
 class RocketFlightStates {
-    float elapsed_time;
-    float max_altitude;
-    float land_altitude;
+    float elapsed_time = 0.0f;
+    float max_altitude = -999.9f;
+    float land_altitude = 0.0f;
 
 public:
-    FlightState current_state = PRE_LAUNCH;
-    FlightState previous_state = PRE_LAUNCH;
+    FlightState current_state = FlightState::PRE_LAUNCH;
+    FlightState previous_state = FlightState::PRE_LAUNCH;
     
     void setup_timer(float current_time) {
         elapsed_time = current_time;
@@ -173,24 +173,25 @@ public:
 
     void process_next_state(float current_altitude, float net_acceleration, float current_time) {
         previous_state = current_state;
-        if (current_state == PRE_LAUNCH) {
+        if (current_state == FlightState::PRE_LAUNCH) {
             if (this->if_launched_by_altitude(current_altitude, net_acceleration, current_time)) {
-                current_state = LAUNCHED;
+                this->setup_timer(current_time);
+                current_state = FlightState::LAUNCHED;
             }
         }
-        else if (current_state == LAUNCHED) {
+        else if (current_state == FlightState::LAUNCHED) {
             if (this->if_burnt_out(current_altitude, net_acceleration, current_time)) {
-                current_state = BURNT_OUT;
+                current_state = FlightState::BURNT_OUT;
             }
         }
-        else if (current_state == BURNT_OUT) {
+        else if (current_state == FlightState::BURNT_OUT) {
             if (this->if_reached_apogee(current_altitude, current_time)) {
-                current_state = LANDING;
+                current_state = FlightState::LANDING;
             }
         }
-        else if (current_state == LANDING) {
+        else if (current_state == FlightState::LANDING) {
             if (this->if_landed(current_altitude, net_acceleration, current_time)) {
-                current_state = LANDED;
+                current_state = FlightState::LANDED;
             }
         }
     }

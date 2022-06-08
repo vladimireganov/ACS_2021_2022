@@ -36,3 +36,9 @@
 
 .vscode
 .idea
+
+*.csv
+
+.vs
+
+__pycache__

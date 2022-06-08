@@ -11,17 +11,18 @@
  * 
  */
 
-#include <iostream>
 #include "DataManager.h"
 
-DataManager::DataManager(std::ofstream *dataFile) {
+DataManager::DataManager(std::ofstream *dataFile, LogManager *logManager) {
     this->dataFile = dataFile;
+    this->logManager = logManager;
 }
 
 void DataManager::writeHeaderToDataFile() {
     // raw data
     *dataFile << "iterator,";
     *dataFile << "time,";
+    *dataFile << "elapsed_time,";
     *dataFile << "pressure,";
     *dataFile << "temperature,";
     *dataFile << "gyroscope_x,";
@@ -93,8 +94,8 @@ void DataManager::calculateElapsedTime() {
 }
 
 void DataManager::calculateGroundAltitude() {
-    if (groundAltitude > relativeAltitude) {
-        groundAltitude = relativeAltitude;
+    if (groundAltitude > altitude) {
+        groundAltitude = altitude;
     }
 }
 
@@ -122,6 +123,8 @@ void DataManager::calculateRelativeAltitude() {
 void DataManager::calculateVerticalVelocity() {
     // Prevent Zero Divsion Error
     if (elapsedTime == 0.0f) {
+        std::cout << millis() << "\t[DataManager] Error! Elapsed time is 0, skipping vertical velocity calculation" << std::endl;
+        logManager->error("[DataManager]Error! Elapsed time is 0, skipping vertical velocity calculation");
         return;
     }
 
@@ -150,12 +153,14 @@ void DataManager::process() {
     this->calculateProjectedAltitude();
 
     flightState.process_next_state(relativeAltitude, netAcceleration, currentTime);
+    this->counter++;
 }
 
 void DataManager::store() {
     // raw data
     *dataFile << counter << ",";
     *dataFile << currentTime << ",";
+    *dataFile << elapsedTime << ",";
     *dataFile << pressure << ",";
     *dataFile << altimeterTemperature << ",";
     *dataFile << gyroscopeX << ",";
@@ -184,12 +189,17 @@ void DataManager::store() {
 
 bool DataManager::start() {
     if (dataFile == nullptr) {
-        std::cout << "[DataManager] Error! Data file was not specified" << std::endl;
+        std::cout << millis() << "\t[DataManager] Error! Data file was not specified ❌" << std::endl;
+        logManager->info("[DataManager] Error! Data file was not specified ❌");
         return false;
     }
 
     this->writeHeaderToDataFile();
+    this->resetGroundAltitude();
+    this->resetMaximumAltitude();
 
+    std::cout << millis() << "\t[DataManager] Successfully started ✔️" << std::endl;
+    logManager->info("[DataManager] Successfully started ✔️");
     return true;
 }
 
@@ -200,4 +210,10 @@ void DataManager::run() {
 
 void DataManager::stop() {
     dataFile->close();
+
+    std::cout << millis() << "\t[DataManager] Data file is closed" << std::endl;
+    logManager->info("[DataManager] Data file is closed");
+
+    this->dataFile = NULL;
+    this->logManager = NULL;
 }

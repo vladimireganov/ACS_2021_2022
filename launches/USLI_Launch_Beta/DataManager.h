@@ -13,13 +13,16 @@
 #ifndef DATA_MANAGER_H
 #define DATA_MANAGER_H
 
+#include <iostream>
 #include <fstream>
 
 #include "FlightMath.h"
 #include "FlightStates.h"
 
-class DataManager {
+#include "ArduinoTimer.h"
+#include "LogManager.h"
 
+class DataManager {
     // default values
     const float defaultGroundAltitude = 9999.9f;
     const float defaultMaximumAltitude = -9999.9f;
@@ -71,7 +74,8 @@ class DataManager {
     RocketFlightStates flightState = RocketFlightStates();
 
     std::ofstream *dataFile;
-
+    LogManager *logManager;
+    
     void calculateElapsedTime();
     void calculateGroundAltitude();
     void calculateMaximumAltitude();
@@ -83,7 +87,7 @@ class DataManager {
     void writeHeaderToDataFile();
     
 public:
-    DataManager(std::ofstream *dataFile);
+    DataManager(std::ofstream *dataFile, LogManager *logManager);
     
     // Data Manager Configurations
     void setOverrideAltitude(bool value);
@@ -138,4 +142,4 @@ public:
     void stop();
 };
 
-#endif;
+#endif
