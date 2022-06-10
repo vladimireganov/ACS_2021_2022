@@ -76,8 +76,14 @@ bool AltitudeControlSystem::start() {
         return false;
     }
 
+    this->setupTargetAltitude();
+
     std::cout << millis() << "\t[AltitudeControlSystem] Successfully started ✔️\n";
     logManager->info("[AltitudeControlSystem] Successfully started ✔️");
+    
+    std::string targetAltitudeInfo = "[AltitudeControlSystem] Current target altitude is " + std::to_string(targetAltitude) + " m.";
+    std::cout << millis() << "\t" << targetAltitudeInfo << std::endl;
+    logManager->info(targetAltitudeInfo.c_str());
 
     return true;
 }
@@ -172,4 +178,37 @@ void AltitudeControlSystem::checkAndHandleTargetAltitude() {
     Serial.print(":");
     Serial.print(msg.c_str());
     Serial.print(";");
+}
+
+void AltitudeControlSystem::setupTargetAltitude() {
+    std::ifstream altitudeSettingsFile;
+    std::string settingsTargetAltitude;
+
+    altitudeSettingsFile.open(ALTITUDE_SETTINGS_FILE_NAME, std::ios::in);
+    if (!settingsFile.is_open()) {
+        std::cout << millis() << "\t[AltitudeControlSystem] Could not open altitude settings file ⚠️" << std::endl;
+        logManager->warning("[AltitudeControlSystem] Could not open altitude settings file ⚠️");
+        return;
+    }
+
+    getline(altitudeSettingsFile, settingsTargetAltitude);
+    settingsFile.close();
+
+    try {
+        this->targetAltitude = std::stof(settingsTargetAltitude);
+    } catch (const std::invalid_argument&) {
+        std::cout << "[AltitudeControlSystem] Argument is invalid, could not parse target altitude.\n";
+        logManager->warning("[AltitudeControlSystem] Argument is invalid, could not parse target altitude.");
+        throw;
+    } catch (const std::out_of_range&) {
+        std::cout << "[AltitudeControlSystem] Argument is out of range for a float, could not parse target altitude.\n";
+        logManager->warning("[AltitudeControlSystem] Argument is out of range for a float, could not parse target altitude.");
+        throw;
+    } catch (const std::exception& e) {
+        std::cout << "[AltitudeControlSystem] Unknown target altitude parsing error!\n";
+        logManager->error("[AltitudeControlSystem] Unknown target altitude parsing error!");
+    }
+    
+    std::cout << "[AltitudeControlSystem] Successfully parsed target altitude ✔️\n";
+    logManager->info("[AltitudeControlSystem] Successfully parsed target altitude ✔️");
 }

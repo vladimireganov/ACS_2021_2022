@@ -13,6 +13,7 @@
 #include "DataManager.h"
 #include "BuzzerManager.h"
 
+#define ALTITUDE_SETTINGS_FILE_NAME "altitude_settings.txt"
 
 class AltitudeControlSystem {
 private:
@@ -29,6 +30,7 @@ private:
     const int servoControlDelay = 150; //ms
 
     int estimateAngle(float projectedAltitude);
+    void setupTargetAltitude();
 
 public:
     AltitudeControlSystem(Configuration *configuration,
